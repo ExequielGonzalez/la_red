@@ -6,19 +6,17 @@ import 'package:la_red/widgets/screen_title.dart';
 
 import '../constants.dart';
 
-class Equipos extends StatefulWidget {
+class Fixture extends StatefulWidget {
   @override
-  _EquiposState createState() => _EquiposState();
+  _FixtureState createState() => _FixtureState();
 }
 
-class _EquiposState extends State<Equipos> {
+class _FixtureState extends State<Fixture> {
   double getHeight(double percent) =>
       MediaQuery.of(context).size.height * percent;
   double getWidth(double percent) =>
       MediaQuery.of(context).size.width * percent;
-
   Leagues _leagues = Leagues.libre;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +42,13 @@ class _EquiposState extends State<Equipos> {
                         ScreenTitle(
                           width: getWidth(1),
                           height: getHeight(1),
-                          title: 'equipos',
+                          title: 'fixture',
+                        ),
+                        SizedBox(
+                          height: 1,
+                          child: Container(
+                            color: Colors.blueGrey,
+                          ),
                         ),
                         SizedBox(
                           height: 1,
@@ -104,5 +108,6 @@ class _EquiposState extends State<Equipos> {
         ],
       ),
     );
+    ;
   }
 }

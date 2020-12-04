@@ -78,11 +78,17 @@ class _HomeState extends State<Home> {
                                 width: getWidth(0.38),
                                 height: getHeight(0.127),
                                 title: 'equipos',
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/equipos');
+                                },
                               ),
                               HomeButton(
                                 width: getWidth(0.38),
                                 height: getHeight(0.127),
                                 title: 'fixture',
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/fixture');
+                                },
                               ),
                             ],
                           ),
@@ -93,11 +99,17 @@ class _HomeState extends State<Home> {
                                 width: getWidth(0.38),
                                 height: getHeight(0.127),
                                 title: 'posiciones',
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/posiciones');
+                                },
                               ),
                               HomeButton(
                                 width: getWidth(0.38),
                                 height: getHeight(0.127),
                                 title: 'goleadores',
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/goleadores');
+                                },
                               ),
                             ],
                           ),
@@ -108,11 +120,18 @@ class _HomeState extends State<Home> {
                                 width: getWidth(0.38),
                                 height: getHeight(0.127),
                                 title: 'instalaciones',
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, '/instalaciones');
+                                },
                               ),
                               HomeButton(
                                 width: getWidth(0.38),
                                 height: getHeight(0.127),
                                 title: 'contacto',
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/contacto');
+                                },
                               ),
                             ],
                           ),

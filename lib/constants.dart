@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+enum Leagues { libre, m30, m40, femenino }
+
 Color kBordo = Color(0xFF601A24);
 
 TextStyle kTextStyleBold = TextStyle(
-//  fontWeight: FontWeight.bold,
+  fontWeight: FontWeight.bold,
   color: Colors.white,
   fontSize: 60,
 );
