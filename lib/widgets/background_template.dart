@@ -45,7 +45,7 @@ class BackgroundTemplate extends StatelessWidget {
                           color: Colors.blueGrey,
                         ),
                       ),
-                      child,
+                      child ?? Container(),
                     ],
                   ),
                 ),

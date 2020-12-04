@@ -5,7 +5,9 @@ import 'package:la_red/screens/goleadores.dart';
 import 'package:la_red/screens/home.dart';
 import 'package:la_red/screens/equipos.dart';
 import 'package:la_red/screens/instalaciones.dart';
+import 'package:la_red/screens/novedades.dart';
 import 'package:la_red/screens/posiciones.dart';
+import 'package:la_red/screens/reglamento.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,8 +28,8 @@ class MyApp extends StatelessWidget {
         '/goleadores': (context) => Goleadores(),
         '/instalaciones': (context) => Instalaciones(),
         '/contacto': (context) => Contacto(),
-//        '/reglamento': (context) => Reglamento(),
-//        '/novedades': (context) => Novedades(),
+        '/reglamento': (context) => Reglamento(),
+        '/novedades': (context) => Novedades(),
       },
     );
   }
