@@ -3,7 +3,7 @@ import 'package:la_red/screens/contacto.dart';
 import 'package:la_red/screens/fixture.dart';
 import 'package:la_red/screens/goleadores.dart';
 import 'package:la_red/screens/home.dart';
-import 'package:la_red/screens/equipos.dart';
+import 'package:la_red/screens/equiposScreen.dart';
 import 'package:la_red/screens/instalaciones.dart';
 import 'package:la_red/screens/novedades.dart';
 import 'package:la_red/screens/posiciones.dart';

@@ -4,7 +4,7 @@ class Partido {
   Equipo equipo1;
   Equipo equipo;
 
-  String cancha;
+  int numCancha;
   String fecha;
   String hora;
   int golE1;
