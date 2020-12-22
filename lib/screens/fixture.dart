@@ -37,6 +37,7 @@ class _FixtureState extends State<Fixture> {
                   children: [
                     LeaguesTab(
                         text: 'libre',
+                        width: getWidth(1),
                         selected: _leagues == Leagues.libre,
                         onTap: () {
                           setState(() {
@@ -45,6 +46,7 @@ class _FixtureState extends State<Fixture> {
                         }),
                     LeaguesTab(
                       text: 'm30',
+                      width: getWidth(1),
                       selected: _leagues == Leagues.m30,
                       onTap: () {
                         setState(() {
@@ -54,6 +56,7 @@ class _FixtureState extends State<Fixture> {
                     ),
                     LeaguesTab(
                       text: 'm40',
+                      width: getWidth(1),
                       selected: _leagues == Leagues.m40,
                       onTap: () {
                         setState(() {
@@ -63,6 +66,7 @@ class _FixtureState extends State<Fixture> {
                     ),
                     LeaguesTab(
                       text: 'femenino',
+                      width: getWidth(1),
                       selected: _leagues == Leagues.femenino,
                       onTap: () {
                         setState(() {
@@ -77,7 +81,7 @@ class _FixtureState extends State<Fixture> {
                 fit: FlexFit.loose,
                 child: Container(
                   width: double.infinity,
-                  margin: EdgeInsets.only(top: getHeight(0.029)),
+                  margin: EdgeInsets.only(top: getHeight(0.005)),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -89,8 +93,8 @@ class _FixtureState extends State<Fixture> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 20),
+                        padding:  EdgeInsets.symmetric(
+                             horizontal: getWidth(0.05)),
                         child: Text(
                           'PARTIDOS',
                           style: kTextStyleBold.copyWith(

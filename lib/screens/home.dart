@@ -40,18 +40,18 @@ class _HomeState extends State<Home> {
                 ),
                 Text(
                   'LA RED',
-                  style: kTextStyleBold.copyWith(fontSize: 56, height: 1),
+                  style: kTextStyleBold.copyWith(fontSize: getWidth(0.10), height: 1),
                 ),
                 Text(
                   'Liga de fútbol',
-                  style: kTextStyle.copyWith(fontSize: 26, height: 1),
+                  style: kTextStyleBold.copyWith(fontSize: getWidth(0.046), height: 1),
                 ),
                 SizedBox(
                   height: 5,
                 ),
                 SizedBox(
                   height: 5,
-                  width: 140,
+                  width: getWidth(0.31),
                   child: Container(
                     color: Colors.white,
                   ),
@@ -67,7 +67,7 @@ class _HomeState extends State<Home> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.all(11.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

@@ -25,6 +25,9 @@ class _instalacionesState extends State<Instalaciones> {
         height: getHeight(1),
         width: getWidth(1),
         title: 'instalaciones',
+        child: Column(
+          children: [Text('asdasdas')],
+        ),
       ),
     );
     ;

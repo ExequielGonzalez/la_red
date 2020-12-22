@@ -12,6 +12,8 @@ class FixtureListItem extends StatelessWidget {
   final String fecha;
   final String hora;
 
+  final double scale = 0.043;
+
   FixtureListItem(
       {this.width,
       this.height,
@@ -73,7 +75,7 @@ class FixtureListItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    padding:  EdgeInsets.symmetric(horizontal: 4.0),
                     child: Image.asset("assets/images/fixture.png"),
                   ),
                 ),
@@ -86,24 +88,24 @@ class FixtureListItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Flexible(
-                  flex: 2,
+                  flex: 3,
                   child: Text(
                     equipo1,
-                    style: kTextStyle.copyWith(fontSize: 20),
+                    style: kTextStyle.copyWith(fontSize: width*scale),
                   ),
                 ),
                 Flexible(
-                  flex: 1,
+                  flex: 3,
                   child: Text(
                     'vs',
-                    style: kTextStyle.copyWith(fontSize: 16),
+                    style: kTextStyle.copyWith(fontSize: width*scale),
                   ),
                 ),
                 Flexible(
-                  flex: 2,
+                  flex: 3,
                   child: Text(
                     equipo2,
-                    style: kTextStyle.copyWith(fontSize: 20),
+                    style: kTextStyle.copyWith(fontSize: width*scale),
                   ),
                 )
               ],
@@ -119,21 +121,21 @@ class FixtureListItem extends StatelessWidget {
                   flex: 2,
                   child: Text(
                     'CANCHA $numCancha',
-                    style: kTextStyle.copyWith(fontSize: 20),
+                    style: kTextStyle.copyWith(fontSize: width*scale),
                   ),
                 ),
                 Flexible(
                   flex: 2,
                   child: Text(
                     fecha,
-                    style: kTextStyle.copyWith(fontSize: 20),
+                    style: kTextStyle.copyWith(fontSize: width*scale),
                   ),
                 ),
                 Flexible(
                   flex: 2,
                   child: Text(
                     '$hora HS',
-                    style: kTextStyle.copyWith(fontSize: 20),
+                    style: kTextStyle.copyWith(fontSize: width*scale),
                   ),
                 )
               ],

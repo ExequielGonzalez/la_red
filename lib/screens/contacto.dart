@@ -24,10 +24,10 @@ class _contactoState extends State<Contacto> {
 
     return Scaffold(
       body: BackgroundTemplate(
-        height: getHeight(1),
-        width: getWidth(1),
-        title: 'contacto',
-      ),
+          height: getHeight(1),
+          width: getWidth(1),
+          title: 'contacto',
+          child: Column()),
     );
   }
 }

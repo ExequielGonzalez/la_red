@@ -5,8 +5,9 @@ class LeaguesTab extends StatefulWidget {
   final String text;
   final bool selected;
   final Function onTap;
+  final double width;
 
-  LeaguesTab({this.text, this.selected = false, this.onTap});
+  LeaguesTab({this.text, this.selected = false, this.onTap,this.width});
 
   @override
   _LeaguesTabState createState() => _LeaguesTabState();
@@ -30,7 +31,7 @@ class _LeaguesTabState extends State<LeaguesTab> {
           child: Center(
             child: Text(
               widget.text.toUpperCase(),
-              style: kTextStyleBold.copyWith(fontSize: 24),
+              style: kTextStyleBold.copyWith(fontSize: widget.width*0.047),
             ),
           ),
         ),

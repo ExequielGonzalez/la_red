@@ -29,11 +29,11 @@ class ScreenBanner extends StatelessWidget {
                 children: [
                   Text(
                     'LA RED',
-                    style: kTextStyleBold.copyWith(fontSize: 51, height: 1),
+                    style: kTextStyleBold.copyWith(fontSize: width*0.1, height: 1),
                   ),
                   Text(
                     'Liga de fútbol',
-                    style: kTextStyle.copyWith(fontSize: 23, height: 1),
+                    style: kTextStyle.copyWith(fontSize: width*0.045, height: 1),
                   ),
                   SizedBox(
                     height: 5,

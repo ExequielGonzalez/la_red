@@ -7,7 +7,10 @@ class ScreenTitle extends StatelessWidget {
   final double width;
   final String title;
 
+
   ScreenTitle({this.title, this.width, this.height});
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +39,7 @@ class ScreenTitle extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
                   title.toUpperCase(),
-                  style: kTextStyleBold.copyWith(fontSize: 47, height: 1),
+                  style: kTextStyleBold.copyWith(fontSize: width*0.10, height: 1),
                 ),
               ),
             ),

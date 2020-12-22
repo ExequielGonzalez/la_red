@@ -38,6 +38,7 @@ class _EquiposState extends State<Equipos> {
                   children: [
                     LeaguesTab(
                         text: 'libre',
+                        width: getWidth(1),
                         selected: _leagues == Leagues.libre,
                         onTap: () {
                           setState(() {
@@ -46,6 +47,7 @@ class _EquiposState extends State<Equipos> {
                         }),
                     LeaguesTab(
                       text: 'm30',
+                      width: getWidth(1),
                       selected: _leagues == Leagues.m30,
                       onTap: () {
                         setState(() {
@@ -55,6 +57,7 @@ class _EquiposState extends State<Equipos> {
                     ),
                     LeaguesTab(
                       text: 'm40',
+                      width: getWidth(1),
                       selected: _leagues == Leagues.m40,
                       onTap: () {
                         setState(() {
@@ -64,6 +67,7 @@ class _EquiposState extends State<Equipos> {
                     ),
                     LeaguesTab(
                       text: 'femenino',
+                      width: getWidth(1),
                       selected: _leagues == Leagues.femenino,
                       onTap: () {
                         setState(() {
