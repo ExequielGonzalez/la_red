@@ -53,7 +53,7 @@ class PositionListItem extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
                 '$posicion',
-                style: kTextStyle.copyWith(fontSize: 19),
+                style: kTextStyle.copyWith(fontSize: width * (scale * 0.8)),
               ),
             ),
             Container(

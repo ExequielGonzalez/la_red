@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:la_red/widgets/background.dart';
 import 'package:la_red/widgets/background_template.dart';
+import 'package:la_red/widgets/goleadores_list_item.dart';
 import 'package:la_red/widgets/leagues_tab.dart';
 import 'package:la_red/widgets/screen_banner.dart';
 import 'package:la_red/widgets/screen_title.dart';
@@ -18,6 +19,9 @@ class _GoleadoresState extends State<Goleadores> {
   double getWidth(double percent) =>
       MediaQuery.of(context).size.width * percent;
   Leagues _leagues = Leagues.libre;
+
+  double scale = 0.045;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,9 +97,37 @@ class _GoleadoresState extends State<Goleadores> {
                         padding:
                             EdgeInsets.symmetric(horizontal: getWidth(0.015)),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             //nombre y goles
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: getWidth(0.08)),
+                              child: Container(
+                                child: Center(
+                                  child: Text(
+                                    'NOMBRE',
+                                    style: kTextStyleBold.copyWith(
+                                        color: kBordo,
+                                        fontSize: getWidth(scale)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: getWidth(0.05)),
+                              child: Container(
+                                child: Center(
+                                  child: Text(
+                                    'GOLES',
+                                    style: kTextStyleBold.copyWith(
+                                        color: kBordo,
+                                        fontSize: getWidth(scale)),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -104,6 +136,97 @@ class _GoleadoresState extends State<Goleadores> {
                           padding: EdgeInsets.only(bottom: getHeight(0.01)),
                           children: [
                             //goleadores
+                            GoleadoresListItem(
+                              posicion: 1,
+                              name: 'Cristiano Ronaldo',
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              goles: 27,
+                            ),
+                            GoleadoresListItem(
+                              posicion: 2,
+                              name: 'Lionel Messi',
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              goles: 24,
+                            ),
+                            GoleadoresListItem(
+                              posicion: 30,
+                              name: 'Robert Lewandowski',
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              goles: 23,
+                            ),
+                            GoleadoresListItem(
+                              posicion: 30,
+                              name: 'Robert Lewandowski',
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              goles: 23,
+                            ),
+                            GoleadoresListItem(
+                              posicion: 30,
+                              name: 'Robert Lewandowski',
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              goles: 23,
+                            ),
+                            GoleadoresListItem(
+                              posicion: 30,
+                              name: 'Robert Lewandowski',
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              goles: 23,
+                            ),
+                            GoleadoresListItem(
+                              posicion: 30,
+                              name: 'Robert Lewandowski',
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              goles: 23,
+                            ),
+                            GoleadoresListItem(
+                              posicion: 30,
+                              name: 'Robert Lewandowski',
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              goles: 23,
+                            ),
+                            GoleadoresListItem(
+                              posicion: 30,
+                              name: 'Robert Lewandowski',
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              goles: 23,
+                            ),
+                            GoleadoresListItem(
+                              posicion: 30,
+                              name: 'Robert Lewandowski',
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              goles: 23,
+                            ),
+                            GoleadoresListItem(
+                              posicion: 30,
+                              name: 'Robert Lewandowski',
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              goles: 23,
+                            ),
+                            GoleadoresListItem(
+                              posicion: 30,
+                              name: 'Robert Lewandowski',
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              goles: 23,
+                            ),
+                            GoleadoresListItem(
+                              posicion: 30,
+                              name: 'Robert Lewandowski',
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              goles: 23,
+                            ),
                           ],
                         ),
                       ),
