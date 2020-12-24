@@ -25,48 +25,91 @@ class _GoleadoresState extends State<Goleadores> {
         height: getHeight(1),
         width: getWidth(1),
         title: 'goleadores',
-        child: Container(
-          height: getHeight(0.067),
-          child: Row(
+        child: Expanded(
+          child: Column(
             children: [
-              LeaguesTab(
-                  text: 'libre',
-                  width: getWidth(1),
-                  selected: _leagues == Leagues.libre,
-                  onTap: () {
-                    setState(() {
-                      _leagues = Leagues.libre;
-                    });
-                  }),
-              LeaguesTab(
-                text: 'm30',
-                width: getWidth(1),
-                selected: _leagues == Leagues.m30,
-                onTap: () {
-                  setState(() {
-                    _leagues = Leagues.m30;
-                  });
-                },
+              Container(
+                height: getHeight(0.067),
+                child: Row(
+                  children: [
+                    LeaguesTab(
+                        text: 'libre',
+                        width: getWidth(1),
+                        selected: _leagues == Leagues.libre,
+                        onTap: () {
+                          setState(() {
+                            _leagues = Leagues.libre;
+                          });
+                        }),
+                    LeaguesTab(
+                      text: 'm30',
+                      width: getWidth(1),
+                      selected: _leagues == Leagues.m30,
+                      onTap: () {
+                        setState(() {
+                          _leagues = Leagues.m30;
+                        });
+                      },
+                    ),
+                    LeaguesTab(
+                      text: 'm40',
+                      width: getWidth(1),
+                      selected: _leagues == Leagues.m40,
+                      onTap: () {
+                        setState(() {
+                          _leagues = Leagues.m40;
+                        });
+                      },
+                    ),
+                    LeaguesTab(
+                      text: 'femenino',
+                      width: getWidth(1),
+                      selected: _leagues == Leagues.femenino,
+                      onTap: () {
+                        setState(() {
+                          _leagues = Leagues.femenino;
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
-              LeaguesTab(
-                text: 'm40',
-                width: getWidth(1),
-                selected: _leagues == Leagues.m40,
-                onTap: () {
-                  setState(() {
-                    _leagues = Leagues.m40;
-                  });
-                },
-              ),
-              LeaguesTab(
-                text: 'femenino',
-                width: getWidth(1),
-                selected: _leagues == Leagues.femenino,
-                onTap: () {
-                  setState(() {
-                    _leagues = Leagues.femenino;
-                  });
-                },
+              Flexible(
+                fit: FlexFit.loose,
+                child: Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.only(top: getHeight(0.005)),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: getWidth(0.015)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            //nombre y goles
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView(
+                          padding: EdgeInsets.only(bottom: getHeight(0.01)),
+                          children: [
+                            //goleadores
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

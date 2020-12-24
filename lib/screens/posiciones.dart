@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:la_red/widgets/background.dart';
 import 'package:la_red/widgets/background_template.dart';
 import 'package:la_red/widgets/leagues_tab.dart';
+import 'package:la_red/widgets/position_list_item.dart';
 import 'package:la_red/widgets/screen_banner.dart';
 import 'package:la_red/widgets/screen_title.dart';
 
@@ -19,8 +20,9 @@ class _FixtureState extends State<Posiciones> {
       MediaQuery.of(context).size.width * percent;
   Leagues _leagues = Leagues.libre;
 
-  double scale = 0.05;
-  double gridPadding = 2.5;
+  double scale = 0.045;
+  double gridPadding = 1;
+  double gridWidth = 0.05;
 
   @override
   Widget build(BuildContext context) {
@@ -95,71 +97,113 @@ class _FixtureState extends State<Posiciones> {
                     children: [
                       Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: getWidth(0.05)),
+                            EdgeInsets.symmetric(horizontal: getWidth(0.015)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Padding(
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
-                              child: Text(
-                                'PTS',
-                                style: kTextStyleBold.copyWith(
-                                    color: kBordo, fontSize: getWidth(scale)),
+                              child: Container(
+                                width: getWidth(1.6 * gridWidth),
+                                child: Center(
+                                  child: Text(
+                                    'PTS',
+                                    style: kTextStyleBold.copyWith(
+                                        color: kBordo,
+                                        fontSize: getWidth(scale)),
+                                  ),
+                                ),
                               ),
                             ),
                             Padding(
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
-                              child: Text(
-                                'J',
-                                style: kTextStyleBold.copyWith(
-                                    color: kBordo, fontSize: getWidth(scale)),
+                              child: Container(
+                                width: getWidth(gridWidth),
+                                child: Center(
+                                  child: Text(
+                                    'J',
+                                    style: kTextStyleBold.copyWith(
+                                        color: kBordo,
+                                        fontSize: getWidth(scale)),
+                                  ),
+                                ),
                               ),
                             ),
                             Padding(
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
-                              child: Text(
-                                'G',
-                                style: kTextStyleBold.copyWith(
-                                    color: kBordo, fontSize: getWidth(scale)),
+                              child: Container(
+                                width: getWidth(gridWidth),
+                                child: Center(
+                                  child: Text(
+                                    'G',
+                                    style: kTextStyleBold.copyWith(
+                                        color: kBordo,
+                                        fontSize: getWidth(scale)),
+                                  ),
+                                ),
                               ),
                             ),
                             Padding(
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
-                              child: Text(
-                                'E',
-                                style: kTextStyleBold.copyWith(
-                                    color: kBordo, fontSize: getWidth(scale)),
+                              child: Container(
+                                width: getWidth(gridWidth),
+                                child: Center(
+                                  child: Text(
+                                    'E',
+                                    style: kTextStyleBold.copyWith(
+                                        color: kBordo,
+                                        fontSize: getWidth(scale)),
+                                  ),
+                                ),
                               ),
                             ),
                             Padding(
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
-                              child: Text(
-                                'P',
-                                style: kTextStyleBold.copyWith(
-                                    color: kBordo, fontSize: getWidth(scale)),
+                              child: Container(
+                                width: getWidth(gridWidth),
+                                child: Center(
+                                  child: Text(
+                                    'P',
+                                    style: kTextStyleBold.copyWith(
+                                        color: kBordo,
+                                        fontSize: getWidth(scale)),
+                                  ),
+                                ),
                               ),
                             ),
                             Padding(
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
-                              child: Text(
-                                'GF',
-                                style: kTextStyleBold.copyWith(
-                                    color: kBordo, fontSize: getWidth(scale)),
+                              child: Container(
+                                width: getWidth(1.4 * gridWidth),
+                                child: Center(
+                                  child: Text(
+                                    'GF',
+                                    style: kTextStyleBold.copyWith(
+                                        color: kBordo,
+                                        fontSize: getWidth(scale)),
+                                  ),
+                                ),
                               ),
                             ),
                             Padding(
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
-                              child: Text(
-                                'GE',
-                                style: kTextStyleBold.copyWith(
-                                    color: kBordo, fontSize: getWidth(scale)),
+                              child: Container(
+                                width: getWidth(1.4 * gridWidth),
+                                child: Center(
+                                  child: Text(
+                                    'GE',
+                                    style: kTextStyleBold.copyWith(
+                                        color: kBordo,
+                                        fontSize: getWidth(scale)),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -169,60 +213,187 @@ class _FixtureState extends State<Posiciones> {
                         child: ListView(
                           padding: EdgeInsets.only(bottom: getHeight(0.01)),
                           children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: getWidth(0.004),
-                                vertical: getHeight(0.001),
-                              ),
-                              child: Container(
-                                width: getWidth(0.08),
-                                height: getHeight(0.05),
-//
-                                decoration: BoxDecoration(
-                                  color: kBordo,
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 15),
-                                      child: Text(
-                                        '1',
-                                        style:
-                                            kTextStyle.copyWith(fontSize: 19),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: getWidth(0.08),
-                                      height: getWidth(0.08),
-//
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 4.0),
-                                        child: Image.asset(
-                                            "assets/images/fixture.png"),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8),
-                                      child: Expanded(
-                                        //Revisar!!!!
-                                        child: Text(
-                                          'Real Madrid C.F',
-                                          style:
-                                              kTextStyle.copyWith(fontSize: 14),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            PositionListItem(
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              posicion: 1,
+                              name: 'Real Madrid C.F',
+                              puntos: 16,
+                              partidosJugados: 7,
+                              partidosGanados: 5,
+                              partidosPerdidos: 1,
+                              partidosEmpates: 1,
+                              golesFavor: 28,
+                              golesContra: 25,
+                            ),
+                            PositionListItem(
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              posicion: 1,
+                              name: 'Real Madrid C.F.',
+                              puntos: 16,
+                              partidosJugados: 7,
+                              partidosGanados: 5,
+                              partidosPerdidos: 1,
+                              partidosEmpates: 1,
+                              golesFavor: 28,
+                              golesContra: 25,
+                            ),
+                            PositionListItem(
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              posicion: 1,
+                              name: 'Real Madrid C.F',
+                              puntos: 16,
+                              partidosJugados: 7,
+                              partidosGanados: 5,
+                              partidosPerdidos: 1,
+                              partidosEmpates: 1,
+                              golesFavor: 28,
+                              golesContra: 25,
+                            ),
+                            PositionListItem(
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              posicion: 1,
+                              name: 'Real Madrid C.F',
+                              puntos: 16,
+                              partidosJugados: 7,
+                              partidosGanados: 5,
+                              partidosPerdidos: 1,
+                              partidosEmpates: 1,
+                              golesFavor: 28,
+                              golesContra: 25,
+                            ),
+                            PositionListItem(
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              posicion: 1,
+                              name: 'Real Madrid C.F',
+                              puntos: 16,
+                              partidosJugados: 7,
+                              partidosGanados: 5,
+                              partidosPerdidos: 1,
+                              partidosEmpates: 1,
+                              golesFavor: 28,
+                              golesContra: 25,
+                            ),
+                            PositionListItem(
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              posicion: 1,
+                              name: 'Real Madrid C.F',
+                              puntos: 16,
+                              partidosJugados: 7,
+                              partidosGanados: 5,
+                              partidosPerdidos: 1,
+                              partidosEmpates: 1,
+                              golesFavor: 28,
+                              golesContra: 25,
+                            ),
+                            PositionListItem(
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              posicion: 1,
+                              name: 'Real Madrid C.F',
+                              puntos: 16,
+                              partidosJugados: 7,
+                              partidosGanados: 5,
+                              partidosPerdidos: 1,
+                              partidosEmpates: 1,
+                              golesFavor: 28,
+                              golesContra: 25,
+                            ),
+                            PositionListItem(
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              posicion: 1,
+                              name: 'Real Madrid C.F',
+                              puntos: 16,
+                              partidosJugados: 7,
+                              partidosGanados: 5,
+                              partidosPerdidos: 1,
+                              partidosEmpates: 1,
+                              golesFavor: 28,
+                              golesContra: 25,
+                            ),
+                            PositionListItem(
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              posicion: 1,
+                              name: 'Real Madrid C.F',
+                              puntos: 16,
+                              partidosJugados: 7,
+                              partidosGanados: 5,
+                              partidosPerdidos: 1,
+                              partidosEmpates: 1,
+                              golesFavor: 28,
+                              golesContra: 25,
+                            ),
+                            PositionListItem(
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              posicion: 1,
+                              name: 'Real Madrid C.F',
+                              puntos: 16,
+                              partidosJugados: 7,
+                              partidosGanados: 5,
+                              partidosPerdidos: 1,
+                              partidosEmpates: 1,
+                              golesFavor: 28,
+                              golesContra: 25,
+                            ),
+                            PositionListItem(
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              posicion: 1,
+                              name: 'Real Madrid C.F',
+                              puntos: 16,
+                              partidosJugados: 7,
+                              partidosGanados: 5,
+                              partidosPerdidos: 1,
+                              partidosEmpates: 1,
+                              golesFavor: 28,
+                              golesContra: 25,
+                            ),
+                            PositionListItem(
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              posicion: 1,
+                              name: 'Real Madrid C.F',
+                              puntos: 16,
+                              partidosJugados: 7,
+                              partidosGanados: 5,
+                              partidosPerdidos: 1,
+                              partidosEmpates: 1,
+                              golesFavor: 28,
+                              golesContra: 25,
+                            ),
+                            PositionListItem(
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              posicion: 1,
+                              name: 'Real Madrid C.F',
+                              puntos: 16,
+                              partidosJugados: 7,
+                              partidosGanados: 5,
+                              partidosPerdidos: 1,
+                              partidosEmpates: 1,
+                              golesFavor: 28,
+                              golesContra: 25,
+                            ),
+                            PositionListItem(
+                              width: getWidth(1),
+                              height: getHeight(1),
+                              posicion: 1,
+                              name: 'Real Madrid C.F',
+                              puntos: 16,
+                              partidosJugados: 7,
+                              partidosGanados: 5,
+                              partidosPerdidos: 1,
+                              partidosEmpates: 1,
+                              golesFavor: 28,
+                              golesContra: 25,
                             ),
                           ],
                         ),

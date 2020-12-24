@@ -10,9 +10,9 @@ class Equipo {
   int partidosJugados;
   int golesFavor;
   int golesContra;
-  int victorias;
-  int derrotas;
-  int empates;
+  int partidosGanados;
+  int partidosPerdidos;
+  int partidosEmpates;
   String nombre;
   int id;
 }
