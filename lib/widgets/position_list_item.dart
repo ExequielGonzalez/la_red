@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:la_red/constants.dart';
+import 'package:la_red/size_config.dart';
 
 class PositionListItem extends StatelessWidget {
   final double width;
@@ -34,6 +35,7 @@ class PositionListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: width * (0.004),
@@ -50,10 +52,13 @@ class PositionListItem extends StatelessWidget {
         child: Row(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.043),
-              child: Text(
-                '$posicion',
-                style: kTextStyle.copyWith(fontSize: width * (scale * 0.8)),
+              padding: EdgeInsets.symmetric(horizontal: width * 0.033),
+              child: Container(
+                width: width * 0.03,
+                child: Text(
+                  '$posicion',
+                  style: kTextStyle.copyWith(fontSize: kFontSize),
+                ),
               ),
             ),
             Container(
@@ -75,7 +80,7 @@ class PositionListItem extends StatelessWidget {
                 width: width * (0.336),
                 child: Text(
                   name,
-                  style: kTextStyle.copyWith(fontSize: 14),
+                  style: kTextStyle.copyWith(fontSize: kFontSize),
                 ),
               ),
             ),
@@ -87,7 +92,7 @@ class PositionListItem extends StatelessWidget {
                   child: Text(
                     '$puntos',
                     style: kTextStyle.copyWith(
-                        color: Colors.white, fontSize: width * (scale * 0.8)),
+                        color: Colors.white, fontSize: kFontSize),
                   ),
                 ),
               ),
@@ -100,7 +105,7 @@ class PositionListItem extends StatelessWidget {
                   child: Text(
                     '$partidosJugados',
                     style: kTextStyle.copyWith(
-                        color: Colors.white, fontSize: width * (scale * 0.8)),
+                        color: Colors.white, fontSize: kFontSize),
                   ),
                 ),
               ),
@@ -113,7 +118,7 @@ class PositionListItem extends StatelessWidget {
                   child: Text(
                     '$partidosGanados',
                     style: kTextStyle.copyWith(
-                        color: Colors.white, fontSize: width * (scale * 0.8)),
+                        color: Colors.white, fontSize: kFontSize),
                   ),
                 ),
               ),
@@ -126,7 +131,7 @@ class PositionListItem extends StatelessWidget {
                   child: Text(
                     '$partidosEmpates',
                     style: kTextStyle.copyWith(
-                        color: Colors.white, fontSize: width * (scale * 0.8)),
+                        color: Colors.white, fontSize: kFontSize),
                   ),
                 ),
               ),
@@ -139,7 +144,7 @@ class PositionListItem extends StatelessWidget {
                   child: Text(
                     '$partidosPerdidos',
                     style: kTextStyle.copyWith(
-                        color: Colors.white, fontSize: width * (scale * 0.8)),
+                        color: Colors.white, fontSize: kFontSize),
                   ),
                 ),
               ),
@@ -152,7 +157,7 @@ class PositionListItem extends StatelessWidget {
                   child: Text(
                     '$golesFavor',
                     style: kTextStyle.copyWith(
-                        color: Colors.white, fontSize: width * (scale * 0.8)),
+                        color: Colors.white, fontSize: kFontSize),
                   ),
                 ),
               ),
@@ -165,7 +170,7 @@ class PositionListItem extends StatelessWidget {
                   child: Text(
                     '$golesContra',
                     style: kTextStyle.copyWith(
-                        color: Colors.white, fontSize: width * (scale * 0.8)),
+                        color: Colors.white, fontSize: kFontSize),
                   ),
                 ),
               ),

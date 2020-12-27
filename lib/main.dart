@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:la_red/constants.dart';
 import 'package:la_red/screens/contacto.dart';
 import 'package:la_red/screens/equiposScreen.dart';
 import 'package:la_red/screens/fixture.dart';

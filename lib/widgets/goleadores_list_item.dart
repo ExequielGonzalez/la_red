@@ -12,8 +12,6 @@ class GoleadoresListItem extends StatelessWidget {
   GoleadoresListItem(
       {this.height, this.width, this.name, this.goles, this.posicion});
 
-  final double scale = 0.045;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -37,7 +35,7 @@ class GoleadoresListItem extends StatelessWidget {
                 width: width * 0.05,
                 child: Text(
                   '$posicion',
-                  style: kTextStyle.copyWith(fontSize: width * (scale * 0.8)),
+                  style: kTextStyle.copyWith(fontSize: kFontSize),
                 ),
               ),
             ),
@@ -46,7 +44,7 @@ class GoleadoresListItem extends StatelessWidget {
               child: Container(
                 child: Text(
                   name,
-                  style: kTextStyle.copyWith(fontSize: 14),
+                  style: kTextStyle.copyWith(fontSize: kFontSize),
                 ),
               ),
             ),
@@ -60,7 +58,7 @@ class GoleadoresListItem extends StatelessWidget {
                   child: Text(
                     '$goles',
                     style: kTextStyle.copyWith(
-                        color: Colors.white, fontSize: width * (scale * 0.8)),
+                        color: Colors.white, fontSize: kFontSize),
                   ),
                 ),
               ),

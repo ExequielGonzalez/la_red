@@ -91,21 +91,21 @@ class FixtureListItem extends StatelessWidget {
                   flex: 3,
                   child: Text(
                     equipo1,
-                    style: kTextStyle.copyWith(fontSize: width * scale),
+                    style: kTextStyle.copyWith(fontSize: kFontSize),
                   ),
                 ),
                 Flexible(
                   flex: 3,
                   child: Text(
                     'vs',
-                    style: kTextStyle.copyWith(fontSize: width * scale),
+                    style: kTextStyle.copyWith(fontSize: kFontSize),
                   ),
                 ),
                 Flexible(
                   flex: 3,
                   child: Text(
                     equipo2,
-                    style: kTextStyle.copyWith(fontSize: width * scale),
+                    style: kTextStyle.copyWith(fontSize: kFontSize),
                   ),
                 )
               ],
@@ -121,21 +121,24 @@ class FixtureListItem extends StatelessWidget {
                   flex: 2,
                   child: Text(
                     'CANCHA $numCancha',
-                    style: kTextStyle.copyWith(fontSize: width * scale),
+                    style: kTextStyle.copyWith(fontSize: kFontSize),
                   ),
                 ),
                 Flexible(
                   flex: 2,
-                  child: Text(
-                    fecha,
-                    style: kTextStyle.copyWith(fontSize: width * scale),
+                  child: Container(
+                    width: width * 0.3,
+                    child: Text(
+                      fecha,
+                      style: kTextStyle.copyWith(fontSize: kFontSize),
+                    ),
                   ),
                 ),
                 Flexible(
                   flex: 2,
                   child: Text(
                     '$hora HS',
-                    style: kTextStyle.copyWith(fontSize: width * scale),
+                    style: kTextStyle.copyWith(fontSize: kFontSize),
                   ),
                 )
               ],

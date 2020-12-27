@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:la_red/size_config.dart';
 import 'package:la_red/widgets/background_template.dart';
 import 'package:la_red/widgets/leagues_tab.dart';
 import 'package:la_red/widgets/position_list_item.dart';
@@ -23,6 +24,7 @@ class _FixtureState extends State<Posiciones> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       body: BackgroundTemplate(
         height: getHeight(1),
@@ -227,7 +229,7 @@ class _FixtureState extends State<Posiciones> {
                               width: getWidth(1),
                               height: getHeight(1),
                               posicion: 1,
-                              name: 'Real Madrid C.F.',
+                              name: 'Paris Saint Germain',
                               puntos: 16,
                               partidosJugados: 7,
                               partidosGanados: 5,

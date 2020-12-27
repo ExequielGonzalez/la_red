@@ -50,7 +50,7 @@ class EquiposListItem extends StatelessWidget {
             ),
             Text(
               nombre,
-              style: kTextStyle.copyWith(fontSize: width * 0.05),
+              style: kTextStyle.copyWith(fontSize: kFontSize),
             )
           ],
         ),

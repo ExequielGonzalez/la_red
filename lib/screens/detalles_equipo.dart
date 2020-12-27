@@ -143,8 +143,7 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                       child: Text(
                                         'PRÓXIMO PARTIDO',
                                         style: kTextStyleBold.copyWith(
-                                            color: kBordo,
-                                            fontSize: getWidth(scale)),
+                                            color: kBordo, fontSize: kFontSize),
                                       ),
                                     ),
                                     // SizedBox(
@@ -153,6 +152,7 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                     Center(
                                       child: Container(
                                         height: getHeight(0.1), //
+
                                         decoration: BoxDecoration(
                                           color: kBordo,
                                           borderRadius: BorderRadius.all(
@@ -163,7 +163,7 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                           width: getWidth(1),
                                           equipo1: 'Barcelona',
                                           equipo2: 'Real Madrid',
-                                          fecha: 'SABADO 28/11',
+                                          fecha: 'MIERCOLES 28/11',
                                           hora: '17:30',
                                           numCancha: 1,
                                         ),
@@ -193,8 +193,7 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                       child: Text(
                                         'ÚLTIMO PARTIDO',
                                         style: kTextStyleBold.copyWith(
-                                            color: kBordo,
-                                            fontSize: getWidth(scale)),
+                                            color: kBordo, fontSize: kFontSize),
                                       ),
                                     ),
                                     Center(
@@ -275,8 +274,7 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                                       style:
                                                           kTextStyle.copyWith(
                                                               fontSize:
-                                                                  getWidth(
-                                                                      scale)),
+                                                                  kFontSize),
                                                     ),
                                                   ),
                                                   SizedBox(
@@ -289,8 +287,7 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                                       style:
                                                           kTextStyle.copyWith(
                                                               fontSize:
-                                                                  getWidth(
-                                                                      scale)),
+                                                                  kFontSize),
                                                     ),
                                                   )
                                                 ],
@@ -306,15 +303,14 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Container(
-                                                    width: getWidth(0.08),
+                                                    width: getWidth(0.3),
                                                     child: Center(
                                                       child: Text(
                                                         '1',
                                                         style:
                                                             kTextStyle.copyWith(
                                                                 fontSize:
-                                                                    getWidth(
-                                                                        scale)),
+                                                                    kFontSize),
                                                       ),
                                                     ),
                                                   ),
@@ -322,15 +318,14 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                                     height: getHeight(0.015),
                                                   ),
                                                   Container(
-                                                    width: getWidth(0.08),
+                                                    width: getWidth(0.3),
                                                     child: Center(
                                                       child: Text(
                                                         '2',
                                                         style:
                                                             kTextStyle.copyWith(
                                                                 fontSize:
-                                                                    getWidth(
-                                                                        scale)),
+                                                                    kFontSize),
                                                       ),
                                                     ),
                                                   )

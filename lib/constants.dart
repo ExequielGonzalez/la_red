@@ -14,3 +14,5 @@ TextStyle kTextStyle = TextStyle(
   color: Colors.white,
   fontSize: 40,
 );
+
+double kFontSize;

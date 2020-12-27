@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:la_red/constants.dart';
+import 'package:la_red/size_config.dart';
 import 'package:la_red/widgets/background.dart';
 import 'package:la_red/widgets/home_button.dart';
 
@@ -14,6 +15,18 @@ class _HomeState extends State<Home> {
       MediaQuery.of(context).size.height * percent;
   double getWidth(double percent) =>
       MediaQuery.of(context).size.width * percent;
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      SizeConfig().init(context);
+      setState(() {
+        kFontSize = SizeConfig.safeBlockHorizontal * 0.045;
+      });
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
