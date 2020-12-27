@@ -102,7 +102,7 @@ class _GoleadoresState extends State<Goleadores> {
                             //nombre y goles
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: getWidth(0.08)),
+                                  horizontal: getWidth(0.11)),
                               child: Container(
                                 child: Center(
                                   child: Text(

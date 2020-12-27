@@ -50,7 +50,7 @@ class PositionListItem extends StatelessWidget {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.symmetric(horizontal: width * 0.043),
               child: Text(
                 '$posicion',
                 style: kTextStyle.copyWith(fontSize: width * (scale * 0.8)),

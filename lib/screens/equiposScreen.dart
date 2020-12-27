@@ -101,6 +101,13 @@ class _EquiposState extends State<Equipos> {
                         height: getHeight(1),
                         width: getWidth(1),
                         nombre: 'primero',
+                        onTap: () {
+                          print('hola');
+                          Navigator.pushNamed(context, '/detallesEquipo',
+                              arguments: {
+                                'equipo': 'primero',
+                              });
+                        },
                       ),
                       EquiposListItem(
                         height: getHeight(1),

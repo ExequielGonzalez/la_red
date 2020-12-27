@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:la_red/screens/contacto.dart';
+import 'package:la_red/screens/detalles_equipo.dart';
 import 'package:la_red/screens/fixture.dart';
 import 'package:la_red/screens/goleadores.dart';
 import 'package:la_red/screens/home.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/contacto': (context) => Contacto(),
         '/reglamento': (context) => Reglamento(),
         '/novedades': (context) => Novedades(),
+        '/detallesEquipo': (context) => DetallesEquipo(),
       },
     );
   }

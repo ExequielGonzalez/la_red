@@ -40,11 +40,13 @@ class _HomeState extends State<Home> {
                 ),
                 Text(
                   'LA RED',
-                  style: kTextStyleBold.copyWith(fontSize: getWidth(0.10), height: 1),
+                  style: kTextStyleBold.copyWith(
+                      fontSize: getWidth(0.10), height: 1),
                 ),
                 Text(
                   'Liga de fútbol',
-                  style: kTextStyleBold.copyWith(fontSize: getWidth(0.046), height: 1),
+                  style: kTextStyleBold.copyWith(
+                      fontSize: getWidth(0.046), height: 1),
                 ),
                 SizedBox(
                   height: 5,
@@ -151,7 +153,8 @@ class _HomeState extends State<Home> {
                                 height: getHeight(0.127),
                                 title: 'novedades',
                                 onTap: () {
-                                  Navigator.pushNamed(context, '/novedades');
+                                  Navigator.pushNamed(
+                                      context, '/detallesEquipo');
                                 },
                               ),
                             ],
