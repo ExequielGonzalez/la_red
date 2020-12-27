@@ -30,9 +30,9 @@ class GoleadoresListItem extends StatelessWidget {
         child: Row(
           children: [
             Padding(
-              padding: EdgeInsets.fromLTRB(width * 0.05, 0, width * 0.02, 0),
+              padding: EdgeInsets.fromLTRB(width * 0.04, 0, width * 0.02, 0),
               child: Container(
-                width: width * 0.05,
+                width: width * 0.06,
                 child: Text(
                   '$posicion',
                   style: kTextStyle.copyWith(fontSize: kFontSize),

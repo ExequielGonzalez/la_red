@@ -136,14 +136,18 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                   // crossAxisAlignment: CrossAxisAlignment.start,
                                   // mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
                                           horizontal: getWidth(0.05),
-                                          vertical: getHeight(0.007)),
-                                      child: Text(
-                                        'PRÓXIMO PARTIDO',
-                                        style: kTextStyleBold.copyWith(
-                                            color: kBordo, fontSize: kFontSize),
+                                        ),
+                                        child: Text(
+                                          'PRÓXIMO PARTIDO',
+                                          style: kTextStyleBold.copyWith(
+                                              color: kBordo,
+                                              fontSize: kFontSize),
+                                        ),
                                       ),
                                     ),
                                     // SizedBox(
@@ -186,14 +190,18 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                   // crossAxisAlignment: CrossAxisAlignment.start,
                                   // mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
                                           horizontal: getWidth(0.05),
-                                          vertical: getHeight(0.007)),
-                                      child: Text(
-                                        'ÚLTIMO PARTIDO',
-                                        style: kTextStyleBold.copyWith(
-                                            color: kBordo, fontSize: kFontSize),
+                                        ),
+                                        child: Text(
+                                          'ÚLTIMO PARTIDO',
+                                          style: kTextStyleBold.copyWith(
+                                              color: kBordo,
+                                              fontSize: kFontSize),
+                                        ),
                                       ),
                                     ),
                                     Center(

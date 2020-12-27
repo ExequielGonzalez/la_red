@@ -79,7 +79,7 @@ class PositionListItem extends StatelessWidget {
               child: Container(
                 width: width * (0.336),
                 child: Text(
-                  name,
+                  name.length < 16 ? name : name.substring(0, 15) + '...',
                   style: kTextStyle.copyWith(fontSize: kFontSize),
                 ),
               ),

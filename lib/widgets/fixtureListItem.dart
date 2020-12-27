@@ -112,7 +112,7 @@ class FixtureListItem extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: width * 0.04),
+            padding: EdgeInsets.symmetric(horizontal: width * 0.02),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,

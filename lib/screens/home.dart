@@ -21,7 +21,7 @@ class _HomeState extends State<Home> {
     Future.delayed(Duration.zero, () {
       SizeConfig().init(context);
       setState(() {
-        kFontSize = SizeConfig.safeBlockHorizontal * 0.045;
+        kFontSize = SizeConfig.safeBlockHorizontal * 0.04;
       });
     });
 
