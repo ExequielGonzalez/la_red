@@ -1,26 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:la_red/constants.dart';
 import 'package:la_red/widgets/background.dart';
-import 'package:la_red/widgets/equiposListItem.dart';
 import 'package:la_red/widgets/fixtureListItem.dart';
 import 'package:la_red/widgets/screen_banner.dart';
-import 'package:la_red/widgets/screen_title.dart';
+import 'package:la_red/model/equipo.dart';
 
 class DetallesEquipo extends StatefulWidget {
-  final String equipo;
+  final Equipo equipo;
 
-  DetallesEquipo({this.equipo = 'Real Madrid C.F.'});
+  DetallesEquipo(this.equipo);
 
   @override
   _DetallesEquipoState createState() => _DetallesEquipoState();
 }
 
 class _DetallesEquipoState extends State<DetallesEquipo> {
+  @override
+  void initState() {
+    super.initState();
+    updateUI(widget.equipo);
+  }
+
   double getHeight(double percent) =>
       MediaQuery.of(context).size.height * percent;
   double getWidth(double percent) =>
       MediaQuery.of(context).size.width * percent;
 
+  void updateUI(Equipo equipo) {
+    setState(() {
+      if (equipo == null)
+        title = 'nada';
+      else {
+        title = equipo.nombre;
+      }
+    });
+  }
+
+  String title;
   double scale = 0.045;
   @override
   Widget build(BuildContext context) {
@@ -90,7 +106,7 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                     height: getHeight(0.08),
                                     child: Center(
                                       child: Text(
-                                        widget.equipo,
+                                        title,
                                         style: kTextStyleBold.copyWith(
                                             fontSize: getWidth(0.07),
                                             height: 1),

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:la_red/widgets/background.dart';
 import 'package:la_red/widgets/background_template.dart';
 import 'package:la_red/widgets/leagues_tab.dart';
 import 'package:la_red/widgets/position_list_item.dart';
-import 'package:la_red/widgets/screen_banner.dart';
-import 'package:la_red/widgets/screen_title.dart';
 
 import '../constants.dart';
 

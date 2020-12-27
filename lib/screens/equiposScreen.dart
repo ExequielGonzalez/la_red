@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:la_red/widgets/background.dart';
+import 'package:la_red/model/equipo.dart';
+import 'package:la_red/screens/detalles_equipo.dart';
 import 'package:la_red/widgets/background_template.dart';
 import 'package:la_red/widgets/equiposListItem.dart';
 import 'package:la_red/widgets/leagues_tab.dart';
-import 'package:la_red/widgets/screen_banner.dart';
-import 'package:la_red/widgets/screen_title.dart';
 
 import '../constants.dart';
 
@@ -18,6 +17,11 @@ class _EquiposState extends State<Equipos> {
       MediaQuery.of(context).size.height * percent;
   double getWidth(double percent) =>
       MediaQuery.of(context).size.width * percent;
+
+  void detalleEquipo(Equipo equipo) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => DetallesEquipo(equipo)));
+  }
 
   Leagues _leagues = Leagues.libre;
 
@@ -103,10 +107,8 @@ class _EquiposState extends State<Equipos> {
                         nombre: 'primero',
                         onTap: () {
                           print('hola');
-                          Navigator.pushNamed(context, '/detallesEquipo',
-                              arguments: {
-                                'equipo': 'primero',
-                              });
+                          Equipo equipo = Equipo(nombre: 'Real Madrid asd');
+                          detalleEquipo(equipo);
                         },
                       ),
                       EquiposListItem(
