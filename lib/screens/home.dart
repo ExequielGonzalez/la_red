@@ -43,10 +43,13 @@ class _HomeState extends State<Home> {
                 SizedBox(
                   height: getHeight(0.053),
                 ),
-                Image.asset(
-                  "assets/images/logo_principal.png",
-                  width: getWidth(0.375),
-                  height: getWidth(0.375),
+                Padding(
+                  padding: EdgeInsets.all(getHeight(0.01)),
+                  child: Image.asset(
+                    "assets/images/logo_principal.png",
+                    width: getWidth(0.375),
+                    height: getWidth(0.375),
+                  ),
                 ),
                 SizedBox(
                   height: getHeight(0.016),
@@ -54,18 +57,18 @@ class _HomeState extends State<Home> {
                 Text(
                   'LA RED',
                   style: kTextStyleBold.copyWith(
-                      fontSize: getWidth(0.10), height: 1),
+                      fontSize: getWidth(0.10), height: getHeight(0.001)),
                 ),
                 Text(
                   'Liga de fútbol',
                   style: kTextStyleBold.copyWith(
-                      fontSize: getWidth(0.046), height: 1),
+                      fontSize: getWidth(0.046), height: getHeight(0.0015)),
                 ),
                 SizedBox(
-                  height: 5,
+                  height: getHeight(0.0065),
                 ),
                 SizedBox(
-                  height: 5,
+                  height: getHeight(0.0065),
                   width: getWidth(0.31),
                   child: Container(
                     color: Colors.white,
@@ -82,7 +85,7 @@ class _HomeState extends State<Home> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(11.0),
+                      padding: EdgeInsets.all(getHeight(0.005)),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

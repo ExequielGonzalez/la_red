@@ -29,14 +29,14 @@ class HomeButton extends StatelessWidget {
             //0.151 el icono
             children: [
               Container(
-                width: width * 0.40,
-                height: width * 0.40,
+                width: width * 0.36,
+                height: width * 0.36,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(width * 0.06),
                   child: Image.asset(
                     "assets/images/$title.png",
                     width: width * 0.37,
@@ -46,7 +46,7 @@ class HomeButton extends StatelessWidget {
               ),
               Text(
                 title.toUpperCase(),
-                style: kTextStyleBold.copyWith(fontSize: height*0.18),
+                style: kTextStyleBold.copyWith(fontSize: height * 0.18),
               )
             ],
           ),

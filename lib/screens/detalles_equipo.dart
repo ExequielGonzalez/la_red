@@ -224,8 +224,8 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                                     vertical: getHeight(0.002),
                                                   ),
                                                   child: Container(
-                                                    width: getWidth(0.08),
-                                                    height: getWidth(0.08),
+                                                    width: getWidth(0.07),
+                                                    height: getWidth(0.07),
 //
                                                     decoration: BoxDecoration(
                                                       color: Colors.white,
@@ -234,9 +234,9 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                                               15),
                                                     ),
                                                     child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 4.0),
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 4.0),
                                                       child: Image.asset(
                                                           "assets/images/fixture.png"),
                                                     ),
@@ -248,8 +248,8 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                                     vertical: getHeight(0.002),
                                                   ),
                                                   child: Container(
-                                                    width: getWidth(0.08),
-                                                    height: getWidth(0.08),
+                                                    width: getWidth(0.07),
+                                                    height: getWidth(0.07),
 //
                                                     decoration: BoxDecoration(
                                                       color: Colors.white,
@@ -286,7 +286,7 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                                     ),
                                                   ),
                                                   SizedBox(
-                                                    height: getHeight(0.015),
+                                                    height: getHeight(0.01),
                                                   ),
                                                   Flexible(
                                                     flex: 3,
@@ -311,7 +311,7 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Container(
-                                                    width: getWidth(0.3),
+                                                    width: getWidth(0.35),
                                                     child: Center(
                                                       child: Text(
                                                         '1',
@@ -323,10 +323,10 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                                     ),
                                                   ),
                                                   SizedBox(
-                                                    height: getHeight(0.015),
+                                                    height: getHeight(0.01),
                                                   ),
                                                   Container(
-                                                    width: getWidth(0.3),
+                                                    width: getWidth(0.35),
                                                     child: Center(
                                                       child: Text(
                                                         '2',

@@ -35,15 +35,15 @@ class EquiposListItem extends StatelessWidget {
                 vertical: height * (0.002),
               ),
               child: Container(
-                width: width * (0.114),
-                height: width * (0.114),
+                width: width * (0.1),
+                height: width * (0.1),
 //
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(4.0),
+                  padding: EdgeInsets.all(height * 0.009),
                   child: Image.asset("assets/images/fixture.png"),
                 ),
               ),

@@ -48,8 +48,8 @@ class FixtureListItem extends StatelessWidget {
                   vertical: height * (0.002),
                 ),
                 child: Container(
-                  width: width * (0.08),
-                  height: width * (0.08),
+                  width: width * (0.07),
+                  height: width * (0.07),
 //
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -67,8 +67,8 @@ class FixtureListItem extends StatelessWidget {
                   vertical: height * (0.002),
                 ),
                 child: Container(
-                  width: width * (0.08),
-                  height: width * (0.08),
+                  width: width * (0.07),
+                  height: width * (0.07),
 //
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -91,21 +91,21 @@ class FixtureListItem extends StatelessWidget {
                   flex: 3,
                   child: Text(
                     equipo1,
-                    style: kTextStyle.copyWith(fontSize: kFontSize),
+                    style: kTextStyle.copyWith(fontSize: kFontSize, height: 1),
                   ),
                 ),
                 Flexible(
                   flex: 3,
                   child: Text(
                     'vs',
-                    style: kTextStyle.copyWith(fontSize: kFontSize),
+                    style: kTextStyle.copyWith(fontSize: kFontSize, height: 1),
                   ),
                 ),
                 Flexible(
                   flex: 3,
                   child: Text(
                     equipo2,
-                    style: kTextStyle.copyWith(fontSize: kFontSize),
+                    style: kTextStyle.copyWith(fontSize: kFontSize, height: 1),
                   ),
                 )
               ],
@@ -121,16 +121,17 @@ class FixtureListItem extends StatelessWidget {
                   flex: 2,
                   child: Text(
                     'CANCHA $numCancha',
-                    style: kTextStyle.copyWith(fontSize: kFontSize),
+                    style: kTextStyle.copyWith(fontSize: kFontSize, height: 1),
                   ),
                 ),
                 Flexible(
                   flex: 2,
                   child: Container(
-                    width: width * 0.3,
+                    width: width * 0.35,
                     child: Text(
                       fecha,
-                      style: kTextStyle.copyWith(fontSize: kFontSize),
+                      style:
+                          kTextStyle.copyWith(fontSize: kFontSize, height: 1),
                     ),
                   ),
                 ),
@@ -138,7 +139,7 @@ class FixtureListItem extends StatelessWidget {
                   flex: 2,
                   child: Text(
                     '$hora HS',
-                    style: kTextStyle.copyWith(fontSize: kFontSize),
+                    style: kTextStyle.copyWith(fontSize: kFontSize, height: 1),
                   ),
                 )
               ],

@@ -52,7 +52,7 @@ class PositionListItem extends StatelessWidget {
         child: Row(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.033),
+              padding: EdgeInsets.symmetric(horizontal: width * 0.029),
               child: Container(
                 width: width * 0.03,
                 child: Text(
@@ -70,17 +70,19 @@ class PositionListItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.0),
+                padding: EdgeInsets.symmetric(horizontal: width * 0.01),
                 child: Image.asset("assets/images/fixture.png"),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2),
-              child: Container(
-                width: width * (0.336),
-                child: Text(
-                  name.length < 16 ? name : name.substring(0, 15) + '...',
-                  style: kTextStyle.copyWith(fontSize: kFontSize),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: gridPadding),
+                child: Container(
+                  // width: width * (0.336),
+                  child: Text(
+                    name.length < 16 ? name : name.substring(0, 15) + '...',
+                    style: kTextStyle.copyWith(fontSize: kFontSize),
+                  ),
                 ),
               ),
             ),
@@ -163,7 +165,7 @@ class PositionListItem extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: gridPadding),
+              padding: EdgeInsets.only(left: gridPadding, right: width * 0.015),
               child: Container(
                 width: width * (1.4 * gridWidth),
                 child: Center(
