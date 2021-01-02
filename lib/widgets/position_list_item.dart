@@ -52,12 +52,14 @@ class PositionListItem extends StatelessWidget {
         child: Row(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.029),
+              padding: EdgeInsets.symmetric(horizontal: width * 0.01),
               child: Container(
-                width: width * 0.03,
-                child: Text(
-                  '$posicion',
-                  style: kTextStyle.copyWith(fontSize: kFontSize),
+                width: width * 0.05,
+                child: Center(
+                  child: Text(
+                    '$posicion',
+                    style: kTextStyle.copyWith(fontSize: kFontSize),
+                  ),
                 ),
               ),
             ),
@@ -76,11 +78,12 @@ class PositionListItem extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: gridPadding),
-                child: Container(
+                padding: EdgeInsets.symmetric(horizontal: gridPadding * 3),
+                child: FittedBox(
                   // width: width * (0.336),
                   child: Text(
-                    name.length < 16 ? name : name.substring(0, 15) + '...',
+                    name.length < 18 ? name : name.substring(0, 17) + '...',
+                    // name,
                     style: kTextStyle.copyWith(fontSize: kFontSize),
                   ),
                 ),
@@ -89,7 +92,7 @@ class PositionListItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: gridPadding),
               child: Container(
-                width: width * (1.6 * gridWidth),
+                width: width * (2 * gridWidth),
                 child: Center(
                   child: Text(
                     '$puntos',

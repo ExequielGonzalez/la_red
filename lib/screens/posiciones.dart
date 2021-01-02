@@ -104,7 +104,7 @@ class _FixtureState extends State<Posiciones> {
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
                               child: Container(
-                                width: getWidth(1.6 * gridWidth),
+                                width: getWidth(2 * gridWidth),
                                 child: Center(
                                   child: Text(
                                     'PTS',
@@ -228,7 +228,7 @@ class _FixtureState extends State<Posiciones> {
                             PositionListItem(
                               width: getWidth(1),
                               height: getHeight(1),
-                              posicion: 1,
+                              posicion: 10,
                               name: 'Paris Saint Germain',
                               puntos: 16,
                               partidosJugados: 7,
@@ -241,7 +241,7 @@ class _FixtureState extends State<Posiciones> {
                             PositionListItem(
                               width: getWidth(1),
                               height: getHeight(1),
-                              posicion: 1,
+                              posicion: 23,
                               name: 'Real Madrid C.F',
                               puntos: 16,
                               partidosJugados: 7,

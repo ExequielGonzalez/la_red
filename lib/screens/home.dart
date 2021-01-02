@@ -169,8 +169,7 @@ class _HomeState extends State<Home> {
                                 height: getHeight(0.127),
                                 title: 'novedades',
                                 onTap: () {
-                                  Navigator.pushNamed(
-                                      context, '/detallesEquipo');
+                                  Navigator.pushNamed(context, '/novedades');
                                 },
                               ),
                             ],
