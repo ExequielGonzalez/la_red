@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:la_red/constants.dart';
 import 'package:la_red/screens/contacto.dart';
@@ -10,7 +12,20 @@ import 'package:la_red/screens/novedades.dart';
 import 'package:la_red/screens/posiciones.dart';
 import 'package:la_red/screens/reglamento.dart';
 
-void main() {
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
+
+import 'model/equipo.dart';
+import 'model/jugador.dart';
+import 'model/partido.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Directory directory = await pathProvider.getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
+  Hive.registerAdapter(PartidoAdapter());
+  Hive.registerAdapter(JugadorAdapter());
+  Hive.registerAdapter(EquipoAdapter());
   runApp(MyApp());
 }
 
