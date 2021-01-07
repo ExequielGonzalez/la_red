@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:la_red/model/equipo.dart';
+import 'package:la_red/size_config.dart';
 
 import '../constants.dart';
 
 class EquiposListItem extends StatelessWidget {
-  final double width;
-  final double height;
+  double width;
+  double height;
 
   final Function onTap;
 
-  final String nombre;
+  final Equipo equipo;
 
-  EquiposListItem({this.width, this.height, this.nombre, this.onTap});
+  EquiposListItem({this.equipo, this.onTap});
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    width = SizeConfig.safeBlockHorizontal;
+    height = SizeConfig.blockSizeVertical;
     return InkWell(
       onTap: onTap,
       child: Container(
         margin: EdgeInsets.only(
+            // left: width * (0.02),
             left: width * (0.02),
             right: width * (0.02),
             top: height * (0.01),
@@ -44,12 +50,12 @@ class EquiposListItem extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(height * 0.009),
-                  child: Image.asset("assets/images/fixture.png"),
+                  child: Image.asset(equipo.photoURL),
                 ),
               ),
             ),
             Text(
-              nombre,
+              equipo.nombre,
               style: kTextStyle.copyWith(fontSize: kFontSize),
             )
           ],

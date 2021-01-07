@@ -28,13 +28,14 @@ class EquipoAdapter extends TypeAdapter<Equipo> {
       jugadores: (fields[0] as List)?.cast<Jugador>(),
       nombre: fields[9] as String,
       partidosAnteriores: (fields[1] as List)?.cast<Partido>(),
+      photoURL: fields[11] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Equipo obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.jugadores)
       ..writeByte(1)
@@ -56,7 +57,9 @@ class EquipoAdapter extends TypeAdapter<Equipo> {
       ..writeByte(9)
       ..write(obj.nombre)
       ..writeByte(10)
-      ..write(obj.id);
+      ..write(obj.id)
+      ..writeByte(11)
+      ..write(obj.photoURL);
   }
 
   @override

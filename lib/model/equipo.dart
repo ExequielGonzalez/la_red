@@ -28,6 +28,10 @@ class Equipo {
   String nombre;
   @HiveField(10)
   int id;
+  @HiveField(11)
+  String photoURL;
+
+  static int counter = 0;
 
   Equipo({
     this.puntos,
@@ -41,7 +45,44 @@ class Equipo {
     this.jugadores,
     this.nombre,
     this.partidosAnteriores,
-  });
+    this.photoURL,
+  }) {
+    this.id = counter;
+    counter += 1;
+  }
+
+  // Equipo(){
+  //   counter+=1;
+  //   this.puntos=puntos;
+  //   this.golesContra=golesContra;
+  //   this.golesFavor=golesFavor;
+  //   this.partidosEmpates=partidosEmpates;
+  //   this.partidosGanados=partidosGanados;
+  //   this.partidosJugados=partidosJugados;
+  //   this.partidosPerdidos=partidosPerdidos;
+  //   this.id=counter;
+  //   this.jugadores=jugadores;
+  //   this.nombre=nombre;
+  //   this.partidosAnteriores=partidosAnteriores;
+  //   this.photoURL=photoURL;
+  // };
+
+  Equipo.auto() {
+    this.puntos = 16;
+    this.golesContra = 10;
+    this.golesFavor = 20;
+    this.partidosEmpates = 11;
+    this.partidosGanados = 12;
+    this.partidosJugados = 35;
+    this.partidosPerdidos = 12;
+    this.id = counter;
+    this.jugadores = null;
+    this.nombre = 'Paris Saint Germain';
+    this.partidosAnteriores = null;
+    this.photoURL = "assets/images/fixture.png";
+    print('Se creo el equipo: ${this.nombre}, con el ID: ${this.id}');
+    counter += 1;
+  }
 
   @override
   int get typeId => 1;
