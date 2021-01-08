@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:la_red/constants.dart';
+import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/size_config.dart';
 import 'package:la_red/widgets/background.dart';
 import 'package:la_red/widgets/home_button.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -30,6 +32,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<EquipoData>(context, listen: false).readTeams();
     return Scaffold(
       body: Stack(
         children: [

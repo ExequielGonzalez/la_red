@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:la_red/model/equipo.dart';
+import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/screens/detalles_equipo.dart';
 import 'package:la_red/widgets/background_template.dart';
 import 'package:la_red/widgets/equiposListItem.dart';
 import 'package:la_red/widgets/leagues_tab.dart';
+import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
@@ -25,51 +27,17 @@ class _EquiposState extends State<Equipos> {
   }
 
   Leagues _leagues = Leagues.libre;
-  List<Equipo> _equipos = [];
   List<EquiposListItem> _teamList = [];
 
-  void createTeam() async {
-    var box = await Hive.openBox('Equipos');
-
-    Equipo.counter = box.get('size', defaultValue: 0);
-    print(Equipo.counter);
-    box.put('eq${Equipo.counter}', Equipo.auto());
-    box.put('size', Equipo.counter);
-    box.put('eq${Equipo.counter}', Equipo.auto());
-    box.put('size', Equipo.counter);
-  }
-
-  void readTeams() async {
-    var box = await Hive.openBox('Equipos');
-    Equipo.counter = box.get('size', defaultValue: 0);
-    for (int i = 0; i < Equipo.counter; i++) {
-      var aux = await box.get('eq$i');
-      _equipos.add(aux);
-    }
-    _equipos.forEach((element) {
-      print(element.id);
-      print(element.nombre);
-    });
-    await Future.delayed(Duration(seconds: 1), () {
-      print("1 sec later");
-    });
-  }
-
-  void deleteTeams() async {
-    var box = await Hive.openBox('Equipos');
-    box.deleteFromDisk();
-  }
-
-  void closeDB() async {
-    var box = await Hive.openBox('Equipos');
-    box.put('size', Equipo.counter);
-  }
-
   List<Widget> createTeamList() {
+    print('entra aca');
+
+    final equipos = Provider.of<EquipoData>(context, listen: false).getEquipos;
+
     EquiposListItem listItem;
 
-    print(_equipos.length);
-    _equipos.forEach((element) {
+    print(equipos.length);
+    equipos.forEach((element) {
       print('creando un nuevo listItem con ${element.nombre} y ${element.id}');
       listItem = EquiposListItem(
         equipo: element,
@@ -77,9 +45,8 @@ class _EquiposState extends State<Equipos> {
           detalleEquipo(element);
         },
       );
-      setState(() {
-        _teamList.add(listItem);
-      });
+
+      _teamList.add(listItem);
     });
     _teamList.forEach((element) {
       print('listItem con ${element.equipo.nombre} y ${element.equipo.id}');
@@ -96,20 +63,14 @@ class _EquiposState extends State<Equipos> {
     super.initState();
     // createTeam();
     print(Equipo.counter);
-    readTeams();
+    // readTeams();
     // deleteTeams();
     // createTeamList();
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    closeDB();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    // Provider.of<EquipoData>(context, listen: false).readTeams();
     return Scaffold(
       body: BackgroundTemplate(
         height: getHeight(1),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 enum Leagues { libre, m30, m40, femenino }
 
+String kBoxName = "Equipos";
+
 Color kBordo = Color(0xFF601A24);
 
 TextStyle kTextStyleBold = TextStyle(

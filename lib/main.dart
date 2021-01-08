@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:la_red/constants.dart';
+import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/screens/contacto.dart';
 import 'package:la_red/screens/equiposScreen.dart';
 import 'package:la_red/screens/fixture.dart';
@@ -14,6 +15,7 @@ import 'package:la_red/screens/reglamento.dart';
 
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
+import 'package:provider/provider.dart';
 
 import 'model/equipo.dart';
 import 'model/jugador.dart';
@@ -26,28 +28,35 @@ Future<void> main() async {
   Hive.registerAdapter(PartidoAdapter());
   Hive.registerAdapter(JugadorAdapter());
   Hive.registerAdapter(EquipoAdapter());
-  runApp(MyApp());
+  final Box<dynamic> dbEquipo = await Hive.openBox(kBoxName);
+
+  runApp(MyApp(database: dbEquipo));
 }
 
 class MyApp extends StatelessWidget {
+  final Box<dynamic> database;
+  MyApp({this.database});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Poppins'),
-      title: 'La Red',
-      initialRoute: '/',
-      routes: {
-        '/': (context) => Home(),
-        '/equipos': (context) => Equipos(),
-        '/fixture': (context) => Fixture(),
-        '/posiciones': (context) => Posiciones(),
-        '/goleadores': (context) => Goleadores(),
-        '/instalaciones': (context) => Instalaciones(),
-        '/contacto': (context) => Contacto(),
-        '/reglamento': (context) => Reglamento(),
-        '/novedades': (context) => Novedades(),
-      },
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => EquipoData())],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(fontFamily: 'Poppins'),
+        title: 'La Red',
+        initialRoute: '/',
+        routes: {
+          '/': (context) => Home(),
+          '/equipos': (context) => Equipos(),
+          '/fixture': (context) => Fixture(),
+          '/posiciones': (context) => Posiciones(),
+          '/goleadores': (context) => Goleadores(),
+          '/instalaciones': (context) => Instalaciones(),
+          '/contacto': (context) => Contacto(),
+          '/reglamento': (context) => Reglamento(),
+          '/novedades': (context) => Novedades(),
+        },
+      ),
     );
   }
 }
