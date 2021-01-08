@@ -33,6 +33,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     Provider.of<EquipoData>(context, listen: false).readTeams();
+
+    // Provider.of<EquipoData>(context, listen: false).deleteTeams();
     return Scaffold(
       body: Stack(
         children: [

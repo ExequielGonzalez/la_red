@@ -1,9 +1,4 @@
 import 'package:flutter/foundation.dart';
-
-import 'package:la_red/model/equipo.dart';
-
-import 'package:hive/hive.dart';
-
 import '../constants.dart';
 
 class LeaguesProvider with ChangeNotifier {

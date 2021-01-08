@@ -28,24 +28,28 @@ class _EquiposState extends State<Equipos> {
 
   List<EquiposListItem> _teamList = [];
 
-  List<Widget> createTeamList() {
+  List<Widget> createTeamList(Leagues league) {
+    _teamList = [];
     print('entra aca');
-
+    // final league = Provider.of<LeaguesProvider>(context);
     final equipos = Provider.of<EquipoData>(context, listen: false).getEquipos;
 
     EquiposListItem listItem;
 
     print(equipos.length);
     equipos.forEach((element) {
-      print('creando un nuevo listItem con ${element.nombre} y ${element.id}');
-      listItem = EquiposListItem(
-        equipo: element,
-        onTap: () {
-          detalleEquipo(element);
-        },
-      );
+      if (element.liga == league.toString()) {
+        print(
+            'creando un nuevo listItem con ${element.nombre} y ${element.id}');
+        listItem = EquiposListItem(
+          equipo: element,
+          onTap: () {
+            detalleEquipo(element);
+          },
+        );
 
-      _teamList.add(listItem);
+        _teamList.add(listItem);
+      }
     });
     _teamList.forEach((element) {
       print('listItem con ${element.equipo.nombre} y ${element.equipo.id}');
@@ -60,12 +64,14 @@ class _EquiposState extends State<Equipos> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(Equipo.counter);
+    // Future.delayed(Duration.zero, () {
+    //   Provider.of<EquipoData>(context, listen: false).createTeam();
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    final league = Provider.of<LeaguesProvider>(context);
+    LeaguesProvider league = Provider.of<LeaguesProvider>(context);
     return Scaffold(
       body: BackgroundTemplate(
         height: getHeight(1),
@@ -116,24 +122,26 @@ class _EquiposState extends State<Equipos> {
               Flexible(
                 fit: FlexFit.loose,
                 child: Container(
-                    margin: EdgeInsets.only(
-                        left: getWidth(0.076),
-                        right: getWidth(0.076),
-                        top: getHeight(0.029),
-                        bottom: 0),
+                  margin: EdgeInsets.only(
+                      left: getWidth(0.076),
+                      right: getWidth(0.076),
+                      top: getHeight(0.029),
+                      bottom: 0),
 //
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20),
-                        topLeft: Radius.circular(20),
-                      ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20),
                     ),
-                    child: ListView(
-                      padding: EdgeInsets.only(bottom: getHeight(0.01)),
-                      children: createTeamList() ??
-                          [Center(child: CircularProgressIndicator())],
-                    )),
+                  ),
+
+                  child: ListView(
+                    padding: EdgeInsets.only(bottom: getHeight(0.01)),
+                    children: createTeamList(league.currentLeague) ??
+                        [Center(child: CircularProgressIndicator())],
+                  ),
+                ),
               ),
             ],
           ),

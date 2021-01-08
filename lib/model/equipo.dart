@@ -2,6 +2,8 @@ import 'package:la_red/model/jugador.dart';
 import 'package:la_red/model/partido.dart';
 import 'package:hive/hive.dart';
 
+import '../constants.dart';
+
 part 'equipo.g.dart';
 
 @HiveType(typeId: 1)
@@ -30,6 +32,8 @@ class Equipo {
   int id;
   @HiveField(11)
   String photoURL;
+  @HiveField(12)
+  String liga;
 
   static int counter = 0;
 
@@ -46,6 +50,7 @@ class Equipo {
     this.nombre,
     this.partidosAnteriores,
     this.photoURL,
+    this.liga,
   }) {
     this.id = counter;
     counter += 1;
@@ -77,9 +82,10 @@ class Equipo {
     this.partidosPerdidos = 12;
     this.id = counter;
     this.jugadores = null;
-    this.nombre = 'Paris Saint Germain';
+    this.nombre = 'Boca Juniors';
     this.partidosAnteriores = null;
-    this.photoURL = "assets/images/fixture.png";
+    this.photoURL = "assets/images/contacto.png";
+    this.liga = Leagues.femenino.toString();
     print('Se creo el equipo: ${this.nombre}, con el ID: ${this.id}');
     counter += 1;
   }

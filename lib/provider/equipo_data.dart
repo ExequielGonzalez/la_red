@@ -3,12 +3,14 @@ import 'package:flutter/foundation.dart';
 import 'package:la_red/model/equipo.dart';
 
 import 'package:hive/hive.dart';
+import 'package:la_red/provider/leagues_provider.dart';
 
 import '../constants.dart';
 
 class EquipoData with ChangeNotifier {
   List<Equipo> _equipos = [];
-  static bool _readed = false;
+  static bool _read = false;
+  static Leagues _lastLeagueRead = Leagues.libre;
 
   List<Equipo> get getEquipos => _equipos;
   Equipo getTeam(index) => _equipos.elementAt(index);
@@ -26,17 +28,55 @@ class EquipoData with ChangeNotifier {
     notifyListeners();
   }
 
+  void createTeamWithLeague(Leagues league) async {
+    var box = await Hive.openBox(kBoxName);
+
+    Equipo.counter = await box.get('size', defaultValue: 0);
+    print(Equipo.counter);
+    await box.put('${league}eq${Equipo.counter}', Equipo.auto());
+    await box.put('size', Equipo.counter);
+    notifyListeners();
+  }
+
   void readTeams() async {
     var box = await Hive.openBox(kBoxName);
     Equipo.counter = await box.get('size', defaultValue: 0);
 
     print('look at thisss ${Equipo.counter}');
-    if (!_readed) {
+    if (!_read) {
       for (int i = 0; i < Equipo.counter; i++) {
         var aux = await box.get('eq$i');
         _equipos.add(aux);
       }
-      _readed = true;
+      _read = true;
+    }
+    // Equipo.counter = box.get('size', defaultValue: 0);
+
+    notifyListeners();
+    // _equipos.forEach((element) {
+    //   print(element.id);
+    //   print(element.nombre);
+    // });
+  }
+
+  void readTeamsWithLeague(Leagues league) async {
+    var box = await Hive.openBox(kBoxName);
+    Equipo.counter = await box.get('size', defaultValue: 0);
+
+    print('look at thisss ${Equipo.counter}');
+    print(_read);
+    print(_lastLeagueRead);
+    print(league);
+    print(
+        'primera parte ${!_read} y segunda parte ${_lastLeagueRead != league}... deberia entrar? ${!_read || _lastLeagueRead != league}');
+    if (!_read || _lastLeagueRead != league) {
+      for (int i = 0; i < Equipo.counter; i++) {
+        var aux = await box.get('${league}eq$i');
+        _equipos.add(aux);
+      }
+      _read = true;
+      if (_lastLeagueRead != league) _read = false;
+      _lastLeagueRead = league;
     }
     // Equipo.counter = box.get('size', defaultValue: 0);
 

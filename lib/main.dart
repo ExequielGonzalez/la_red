@@ -26,9 +26,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Directory directory = await pathProvider.getApplicationDocumentsDirectory();
   Hive.init(directory.path);
+  Hive.registerAdapter(EquipoAdapter());
   Hive.registerAdapter(PartidoAdapter());
   Hive.registerAdapter(JugadorAdapter());
-  Hive.registerAdapter(EquipoAdapter());
+
   final Box<dynamic> dbEquipo = await Hive.openBox(kBoxName);
 
   runApp(MyApp(database: dbEquipo));
@@ -41,8 +42,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => EquipoData()),
         ChangeNotifierProvider(create: (_) => LeaguesProvider()),
+        ChangeNotifierProvider(create: (_) => EquipoData()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
