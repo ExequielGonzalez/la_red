@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:la_red/constants.dart';
 import 'package:la_red/provider/equipo_data.dart';
+import 'package:la_red/provider/leagues_provider.dart';
 import 'package:la_red/screens/contacto.dart';
 import 'package:la_red/screens/equiposScreen.dart';
 import 'package:la_red/screens/fixture.dart';
@@ -39,7 +40,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => EquipoData())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => EquipoData()),
+        ChangeNotifierProvider(create: (_) => LeaguesProvider()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: 'Poppins'),

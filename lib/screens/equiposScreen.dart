@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:la_red/model/equipo.dart';
 import 'package:la_red/provider/equipo_data.dart';
+import 'package:la_red/provider/leagues_provider.dart';
 import 'package:la_red/screens/detalles_equipo.dart';
 import 'package:la_red/widgets/background_template.dart';
 import 'package:la_red/widgets/equiposListItem.dart';
@@ -26,7 +26,6 @@ class _EquiposState extends State<Equipos> {
         MaterialPageRoute(builder: (context) => DetallesEquipo(equipo)));
   }
 
-  Leagues _leagues = Leagues.libre;
   List<EquiposListItem> _teamList = [];
 
   List<Widget> createTeamList() {
@@ -61,16 +60,12 @@ class _EquiposState extends State<Equipos> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // createTeam();
     print(Equipo.counter);
-    // readTeams();
-    // deleteTeams();
-    // createTeamList();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Provider.of<EquipoData>(context, listen: false).readTeams();
+    final league = Provider.of<LeaguesProvider>(context);
     return Scaffold(
       body: BackgroundTemplate(
         height: getHeight(1),
@@ -87,40 +82,32 @@ class _EquiposState extends State<Equipos> {
                     LeaguesTab(
                         text: 'libre',
                         width: getWidth(1),
-                        selected: _leagues == Leagues.libre,
+                        selected: league.currentLeague == Leagues.libre,
                         onTap: () {
-                          setState(() {
-                            _leagues = Leagues.libre;
-                          });
+                          league.setLeague(Leagues.libre);
                         }),
                     LeaguesTab(
                       text: 'm30',
                       width: getWidth(1),
-                      selected: _leagues == Leagues.m30,
+                      selected: league.currentLeague == Leagues.m30,
                       onTap: () {
-                        setState(() {
-                          _leagues = Leagues.m30;
-                        });
+                        league.setLeague(Leagues.m30);
                       },
                     ),
                     LeaguesTab(
                       text: 'm40',
                       width: getWidth(1),
-                      selected: _leagues == Leagues.m40,
+                      selected: league.currentLeague == Leagues.m40,
                       onTap: () {
-                        setState(() {
-                          _leagues = Leagues.m40;
-                        });
+                        league.setLeague(Leagues.m40);
                       },
                     ),
                     LeaguesTab(
                       text: 'femenino',
                       width: getWidth(1),
-                      selected: _leagues == Leagues.femenino,
+                      selected: league.currentLeague == Leagues.femenino,
                       onTap: () {
-                        setState(() {
-                          _leagues = Leagues.femenino;
-                        });
+                        league.setLeague(Leagues.femenino);
                       },
                     ),
                   ],
