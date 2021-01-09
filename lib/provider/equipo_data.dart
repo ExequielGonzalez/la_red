@@ -21,19 +21,21 @@ class EquipoData with ChangeNotifier {
 
     Equipo.counter = await box.get('size', defaultValue: 0);
     print(Equipo.counter);
-    await box.put('eq${Equipo.counter}', Equipo.auto());
-    await box.put('size', Equipo.counter);
-    await box.put('eq${Equipo.counter}', Equipo.auto());
-    await box.put('size', Equipo.counter);
-    notifyListeners();
-  }
+    await box.put('eq${Equipo.counter}',
+        Equipo.autoNameLeague('Real Madrid', Leagues.libre));
+    await box.put('eq${Equipo.counter}',
+        Equipo.autoNameLeague('Barcelona', Leagues.libre));
+    await box.put('eq${Equipo.counter}',
+        Equipo.autoNameLeague('Bayer Leverkusen', Leagues.libre));
+    await box.put('eq${Equipo.counter}',
+        Equipo.autoNameLeague('Schalke 04', Leagues.femenino));
+    await box.put('eq${Equipo.counter}',
+        Equipo.autoNameLeague('borussia mönchengladbach', Leagues.femenino));
+    await box.put('eq${Equipo.counter}',
+        Equipo.autoNameLeague('Boca Juniors', Leagues.m30));
+    await box.put('eq${Equipo.counter}',
+        Equipo.autoNameLeague('River Plate', Leagues.m30));
 
-  void createTeamWithLeague(Leagues league) async {
-    var box = await Hive.openBox(kBoxName);
-
-    Equipo.counter = await box.get('size', defaultValue: 0);
-    print(Equipo.counter);
-    await box.put('${league}eq${Equipo.counter}', Equipo.auto());
     await box.put('size', Equipo.counter);
     notifyListeners();
   }
@@ -49,34 +51,6 @@ class EquipoData with ChangeNotifier {
         _equipos.add(aux);
       }
       _read = true;
-    }
-    // Equipo.counter = box.get('size', defaultValue: 0);
-
-    notifyListeners();
-    // _equipos.forEach((element) {
-    //   print(element.id);
-    //   print(element.nombre);
-    // });
-  }
-
-  void readTeamsWithLeague(Leagues league) async {
-    var box = await Hive.openBox(kBoxName);
-    Equipo.counter = await box.get('size', defaultValue: 0);
-
-    print('look at thisss ${Equipo.counter}');
-    print(_read);
-    print(_lastLeagueRead);
-    print(league);
-    print(
-        'primera parte ${!_read} y segunda parte ${_lastLeagueRead != league}... deberia entrar? ${!_read || _lastLeagueRead != league}');
-    if (!_read || _lastLeagueRead != league) {
-      for (int i = 0; i < Equipo.counter; i++) {
-        var aux = await box.get('${league}eq$i');
-        _equipos.add(aux);
-      }
-      _read = true;
-      if (_lastLeagueRead != league) _read = false;
-      _lastLeagueRead = league;
     }
     // Equipo.counter = box.get('size', defaultValue: 0);
 

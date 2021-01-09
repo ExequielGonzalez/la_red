@@ -29,7 +29,7 @@ class _FixtureState extends State<Posiciones> {
   List<Widget> createPositionList(Leagues league) {
     _positionList = [];
     final equipos = Provider.of<EquipoData>(context, listen: false).getEquipos;
-
+    equipos.sort();
     PositionListItem _listItem;
 
     print(equipos.length);
@@ -44,6 +44,7 @@ class _FixtureState extends State<Posiciones> {
         _positionList.add(_listItem);
       }
     });
+
     return _positionList;
   }
 

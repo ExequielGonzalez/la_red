@@ -7,7 +7,7 @@ import '../constants.dart';
 part 'equipo.g.dart';
 
 @HiveType(typeId: 1)
-class Equipo {
+class Equipo extends Comparable {
   @HiveField(0)
   List<Jugador> jugadores;
   @HiveField(1)
@@ -94,6 +94,31 @@ class Equipo {
     counter += 1;
   }
 
+  Equipo.autoNameLeague(name, league) {
+    this.puntos = 16;
+    this.golesContra = 10;
+    this.golesFavor = 20;
+    this.partidosEmpates = 11;
+    this.partidosGanados = 12;
+    this.partidosJugados = 35;
+    this.partidosPerdidos = 12;
+    this.id = counter;
+    this.jugadores = null;
+    this.nombre = name;
+    this.partidosAnteriores = null;
+    this.photoURL = "assets/images/contacto.png";
+    this.liga = league.toString();
+    this.posicion = counter + 1;
+    print('Se creo el equipo: ${this.nombre}, con el ID: ${this.id}');
+    counter += 1;
+  }
+
   @override
   int get typeId => 1;
+
+  @override
+  int compareTo(other) {
+    // TODO: implement compareTo
+    return this.posicion.compareTo(other.posicion);
+  }
 }
