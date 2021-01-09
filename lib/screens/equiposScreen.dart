@@ -30,30 +30,28 @@ class _EquiposState extends State<Equipos> {
 
   List<Widget> createTeamList(Leagues league) {
     _teamList = [];
-    print('entra aca');
-    // final league = Provider.of<LeaguesProvider>(context);
     final equipos = Provider.of<EquipoData>(context, listen: false).getEquipos;
 
-    EquiposListItem listItem;
+    EquiposListItem _listItem;
 
     print(equipos.length);
     equipos.forEach((element) {
       if (element.liga == league.toString()) {
         print(
             'creando un nuevo listItem con ${element.nombre} y ${element.id}');
-        listItem = EquiposListItem(
+        _listItem = EquiposListItem(
           equipo: element,
           onTap: () {
             detalleEquipo(element);
           },
         );
 
-        _teamList.add(listItem);
+        _teamList.add(_listItem);
       }
     });
-    _teamList.forEach((element) {
-      print('listItem con ${element.equipo.nombre} y ${element.equipo.id}');
-    });
+    // _teamList.forEach((element) {
+    //   print('listItem con ${element.equipo.nombre} y ${element.equipo.id}');
+    // });
 
     // print(_teamListAux.length);
 

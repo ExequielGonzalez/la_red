@@ -34,6 +34,8 @@ class Equipo {
   String photoURL;
   @HiveField(12)
   String liga;
+  @HiveField(13)
+  int posicion;
 
   static int counter = 0;
 
@@ -51,6 +53,7 @@ class Equipo {
     this.partidosAnteriores,
     this.photoURL,
     this.liga,
+    this.posicion,
   }) {
     this.id = counter;
     counter += 1;
@@ -86,6 +89,7 @@ class Equipo {
     this.partidosAnteriores = null;
     this.photoURL = "assets/images/contacto.png";
     this.liga = Leagues.femenino.toString();
+    this.posicion = 23;
     print('Se creo el equipo: ${this.nombre}, con el ID: ${this.id}');
     counter += 1;
   }

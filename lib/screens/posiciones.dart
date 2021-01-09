@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:la_red/provider/equipo_data.dart';
+import 'package:la_red/provider/leagues_provider.dart';
 import 'package:la_red/size_config.dart';
 import 'package:la_red/widgets/background_template.dart';
 import 'package:la_red/widgets/leagues_tab.dart';
 import 'package:la_red/widgets/position_list_item.dart';
+import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
@@ -16,15 +19,38 @@ class _FixtureState extends State<Posiciones> {
       MediaQuery.of(context).size.height * percent;
   double getWidth(double percent) =>
       MediaQuery.of(context).size.width * percent;
-  Leagues _leagues = Leagues.libre;
+
+  List<PositionListItem> _positionList = [];
 
   double scale = 0.045;
   double gridPadding = 1;
   double gridWidth = 0.05;
 
+  List<Widget> createPositionList(Leagues league) {
+    _positionList = [];
+    final equipos = Provider.of<EquipoData>(context, listen: false).getEquipos;
+
+    PositionListItem _listItem;
+
+    print(equipos.length);
+    equipos.forEach((element) {
+      if (element.liga == league.toString()) {
+        print(
+            'creando un nuevo listItem con ${element.nombre} y ${element.id}');
+        _listItem = PositionListItem(
+          equipo: element,
+        );
+
+        _positionList.add(_listItem);
+      }
+    });
+    return _positionList;
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    LeaguesProvider league = Provider.of<LeaguesProvider>(context);
     return Scaffold(
       body: BackgroundTemplate(
         height: getHeight(1),
@@ -40,40 +66,32 @@ class _FixtureState extends State<Posiciones> {
                     LeaguesTab(
                         text: 'libre',
                         width: getWidth(1),
-                        selected: _leagues == Leagues.libre,
+                        selected: league.currentLeague == Leagues.libre,
                         onTap: () {
-                          setState(() {
-                            _leagues = Leagues.libre;
-                          });
+                          league.setLeague(Leagues.libre);
                         }),
                     LeaguesTab(
                       text: 'm30',
                       width: getWidth(1),
-                      selected: _leagues == Leagues.m30,
+                      selected: league.currentLeague == Leagues.m30,
                       onTap: () {
-                        setState(() {
-                          _leagues = Leagues.m30;
-                        });
+                        league.setLeague(Leagues.m30);
                       },
                     ),
                     LeaguesTab(
                       text: 'm40',
                       width: getWidth(1),
-                      selected: _leagues == Leagues.m40,
+                      selected: league.currentLeague == Leagues.m40,
                       onTap: () {
-                        setState(() {
-                          _leagues = Leagues.m40;
-                        });
+                        league.setLeague(Leagues.m40);
                       },
                     ),
                     LeaguesTab(
                       text: 'femenino',
                       width: getWidth(1),
-                      selected: _leagues == Leagues.femenino,
+                      selected: league.currentLeague == Leagues.femenino,
                       onTap: () {
-                        setState(() {
-                          _leagues = Leagues.femenino;
-                        });
+                        league.setLeague(Leagues.femenino);
                       },
                     ),
                   ],
@@ -119,7 +137,7 @@ class _FixtureState extends State<Posiciones> {
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
                               child: Container(
-                                width: getWidth(gridWidth),
+                                width: getWidth(1.2 * gridWidth),
                                 child: Center(
                                   child: Text(
                                     'J',
@@ -134,7 +152,7 @@ class _FixtureState extends State<Posiciones> {
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
                               child: Container(
-                                width: getWidth(gridWidth),
+                                width: getWidth(1.2 * gridWidth),
                                 child: Center(
                                   child: Text(
                                     'G',
@@ -149,7 +167,7 @@ class _FixtureState extends State<Posiciones> {
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
                               child: Container(
-                                width: getWidth(gridWidth),
+                                width: getWidth(1.2 * gridWidth),
                                 child: Center(
                                   child: Text(
                                     'E',
@@ -164,7 +182,7 @@ class _FixtureState extends State<Posiciones> {
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
                               child: Container(
-                                width: getWidth(gridWidth),
+                                width: getWidth(1.2 * gridWidth),
                                 child: Center(
                                   child: Text(
                                     'P',
@@ -179,7 +197,7 @@ class _FixtureState extends State<Posiciones> {
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
                               child: Container(
-                                width: getWidth(1.4 * gridWidth),
+                                width: getWidth(1.2 * gridWidth),
                                 child: Center(
                                   child: Text(
                                     'GF',
@@ -194,7 +212,7 @@ class _FixtureState extends State<Posiciones> {
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
                               child: Container(
-                                width: getWidth(1.4 * gridWidth),
+                                width: getWidth(1.2 * gridWidth),
                                 child: Center(
                                   child: Text(
                                     'GE',
@@ -211,190 +229,8 @@ class _FixtureState extends State<Posiciones> {
                       Expanded(
                         child: ListView(
                           padding: EdgeInsets.only(bottom: getHeight(0.01)),
-                          children: [
-                            PositionListItem(
-                              width: getWidth(1),
-                              height: getHeight(1),
-                              posicion: 1,
-                              name: 'Real Madrid C.F',
-                              puntos: 16,
-                              partidosJugados: 7,
-                              partidosGanados: 5,
-                              partidosPerdidos: 1,
-                              partidosEmpates: 1,
-                              golesFavor: 28,
-                              golesContra: 25,
-                            ),
-                            PositionListItem(
-                              width: getWidth(1),
-                              height: getHeight(1),
-                              posicion: 10,
-                              name: 'Paris Saint Germain',
-                              puntos: 16,
-                              partidosJugados: 7,
-                              partidosGanados: 5,
-                              partidosPerdidos: 1,
-                              partidosEmpates: 1,
-                              golesFavor: 28,
-                              golesContra: 25,
-                            ),
-                            PositionListItem(
-                              width: getWidth(1),
-                              height: getHeight(1),
-                              posicion: 23,
-                              name: 'Real Madrid C.F',
-                              puntos: 16,
-                              partidosJugados: 7,
-                              partidosGanados: 5,
-                              partidosPerdidos: 1,
-                              partidosEmpates: 1,
-                              golesFavor: 28,
-                              golesContra: 25,
-                            ),
-                            PositionListItem(
-                              width: getWidth(1),
-                              height: getHeight(1),
-                              posicion: 1,
-                              name: 'Real Madrid C.F',
-                              puntos: 16,
-                              partidosJugados: 7,
-                              partidosGanados: 5,
-                              partidosPerdidos: 1,
-                              partidosEmpates: 1,
-                              golesFavor: 28,
-                              golesContra: 25,
-                            ),
-                            PositionListItem(
-                              width: getWidth(1),
-                              height: getHeight(1),
-                              posicion: 1,
-                              name: 'Real Madrid C.F',
-                              puntos: 16,
-                              partidosJugados: 7,
-                              partidosGanados: 5,
-                              partidosPerdidos: 1,
-                              partidosEmpates: 1,
-                              golesFavor: 28,
-                              golesContra: 25,
-                            ),
-                            PositionListItem(
-                              width: getWidth(1),
-                              height: getHeight(1),
-                              posicion: 1,
-                              name: 'Real Madrid C.F',
-                              puntos: 16,
-                              partidosJugados: 7,
-                              partidosGanados: 5,
-                              partidosPerdidos: 1,
-                              partidosEmpates: 1,
-                              golesFavor: 28,
-                              golesContra: 25,
-                            ),
-                            PositionListItem(
-                              width: getWidth(1),
-                              height: getHeight(1),
-                              posicion: 1,
-                              name: 'Real Madrid C.F',
-                              puntos: 16,
-                              partidosJugados: 7,
-                              partidosGanados: 5,
-                              partidosPerdidos: 1,
-                              partidosEmpates: 1,
-                              golesFavor: 28,
-                              golesContra: 25,
-                            ),
-                            PositionListItem(
-                              width: getWidth(1),
-                              height: getHeight(1),
-                              posicion: 1,
-                              name: 'Real Madrid C.F',
-                              puntos: 16,
-                              partidosJugados: 7,
-                              partidosGanados: 5,
-                              partidosPerdidos: 1,
-                              partidosEmpates: 1,
-                              golesFavor: 28,
-                              golesContra: 25,
-                            ),
-                            PositionListItem(
-                              width: getWidth(1),
-                              height: getHeight(1),
-                              posicion: 1,
-                              name: 'Real Madrid C.F',
-                              puntos: 16,
-                              partidosJugados: 7,
-                              partidosGanados: 5,
-                              partidosPerdidos: 1,
-                              partidosEmpates: 1,
-                              golesFavor: 28,
-                              golesContra: 25,
-                            ),
-                            PositionListItem(
-                              width: getWidth(1),
-                              height: getHeight(1),
-                              posicion: 1,
-                              name: 'Real Madrid C.F',
-                              puntos: 16,
-                              partidosJugados: 7,
-                              partidosGanados: 5,
-                              partidosPerdidos: 1,
-                              partidosEmpates: 1,
-                              golesFavor: 28,
-                              golesContra: 25,
-                            ),
-                            PositionListItem(
-                              width: getWidth(1),
-                              height: getHeight(1),
-                              posicion: 1,
-                              name: 'Real Madrid C.F',
-                              puntos: 16,
-                              partidosJugados: 7,
-                              partidosGanados: 5,
-                              partidosPerdidos: 1,
-                              partidosEmpates: 1,
-                              golesFavor: 28,
-                              golesContra: 25,
-                            ),
-                            PositionListItem(
-                              width: getWidth(1),
-                              height: getHeight(1),
-                              posicion: 1,
-                              name: 'Real Madrid C.F',
-                              puntos: 16,
-                              partidosJugados: 7,
-                              partidosGanados: 5,
-                              partidosPerdidos: 1,
-                              partidosEmpates: 1,
-                              golesFavor: 28,
-                              golesContra: 25,
-                            ),
-                            PositionListItem(
-                              width: getWidth(1),
-                              height: getHeight(1),
-                              posicion: 1,
-                              name: 'Real Madrid C.F',
-                              puntos: 16,
-                              partidosJugados: 7,
-                              partidosGanados: 5,
-                              partidosPerdidos: 1,
-                              partidosEmpates: 1,
-                              golesFavor: 28,
-                              golesContra: 25,
-                            ),
-                            PositionListItem(
-                              width: getWidth(1),
-                              height: getHeight(1),
-                              posicion: 1,
-                              name: 'Real Madrid C.F',
-                              puntos: 16,
-                              partidosJugados: 7,
-                              partidosGanados: 5,
-                              partidosPerdidos: 1,
-                              partidosEmpates: 1,
-                              golesFavor: 28,
-                              golesContra: 25,
-                            ),
-                          ],
+                          children: createPositionList(league.currentLeague) ??
+                              [Center(child: CircularProgressIndicator())],
                         ),
                       ),
                     ],

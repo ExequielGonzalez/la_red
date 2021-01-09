@@ -1,33 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:la_red/constants.dart';
+import 'package:la_red/model/equipo.dart';
 import 'package:la_red/size_config.dart';
 
 class PositionListItem extends StatelessWidget {
-  final double width;
-  final double height;
+  double width;
+  double height;
 
-  final int posicion;
-  final String name;
-  final int puntos;
-  final int partidosJugados;
-  final int partidosGanados;
-  final int partidosPerdidos;
-  final int partidosEmpates;
-  final int golesFavor;
-  final int golesContra;
+  final Equipo equipo;
 
-  PositionListItem(
-      {this.width,
-      this.height,
-      this.posicion,
-      this.name,
-      this.puntos,
-      this.partidosJugados,
-      this.partidosEmpates,
-      this.partidosGanados,
-      this.partidosPerdidos,
-      this.golesContra,
-      this.golesFavor});
+  PositionListItem({
+    this.equipo,
+  });
 
   final double scale = 0.045;
   final double gridPadding = 1;
@@ -36,6 +20,8 @@ class PositionListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    width = SizeConfig.safeBlockHorizontal;
+    height = SizeConfig.blockSizeVertical;
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: width * (0.004),
@@ -57,7 +43,7 @@ class PositionListItem extends StatelessWidget {
                 width: width * 0.05,
                 child: Center(
                   child: Text(
-                    '$posicion',
+                    '${equipo.posicion ?? 0}',
                     style: kTextStyle.copyWith(fontSize: kFontSize),
                   ),
                 ),
@@ -73,18 +59,24 @@ class PositionListItem extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: width * 0.01),
-                child: Image.asset("assets/images/fixture.png"),
+                child: Image.asset(equipo.photoURL),
               ),
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: gridPadding * 3),
-                child: FittedBox(
-                  // width: width * (0.336),
-                  child: Text(
-                    name.length < 18 ? name : name.substring(0, 17) + '...',
-                    // name,
-                    style: kTextStyle.copyWith(fontSize: kFontSize),
+                padding: EdgeInsets.symmetric(horizontal: gridPadding * 6),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  height: height * 0.025,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      equipo.nombre.length < 18
+                          ? equipo.nombre
+                          : equipo.nombre.substring(0, 17) + '...',
+                      // name,
+                      style: kTextStyle.copyWith(fontSize: kFontSize),
+                    ),
                   ),
                 ),
               ),
@@ -95,7 +87,7 @@ class PositionListItem extends StatelessWidget {
                 width: width * (2 * gridWidth),
                 child: Center(
                   child: Text(
-                    '$puntos',
+                    '${equipo.puntos}',
                     style: kTextStyle.copyWith(
                         color: Colors.white, fontSize: kFontSize),
                   ),
@@ -105,10 +97,10 @@ class PositionListItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: gridPadding),
               child: Container(
-                width: width * (gridWidth),
+                width: width * (1.2 * gridWidth),
                 child: Center(
                   child: Text(
-                    '$partidosJugados',
+                    '${equipo.partidosJugados}',
                     style: kTextStyle.copyWith(
                         color: Colors.white, fontSize: kFontSize),
                   ),
@@ -118,10 +110,10 @@ class PositionListItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: gridPadding),
               child: Container(
-                width: width * (gridWidth),
+                width: width * (1.2 * gridWidth),
                 child: Center(
                   child: Text(
-                    '$partidosGanados',
+                    '${equipo.partidosGanados}',
                     style: kTextStyle.copyWith(
                         color: Colors.white, fontSize: kFontSize),
                   ),
@@ -131,10 +123,10 @@ class PositionListItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: gridPadding),
               child: Container(
-                width: width * (gridWidth),
+                width: width * (1.2 * gridWidth),
                 child: Center(
                   child: Text(
-                    '$partidosEmpates',
+                    '${equipo.partidosEmpates}',
                     style: kTextStyle.copyWith(
                         color: Colors.white, fontSize: kFontSize),
                   ),
@@ -144,10 +136,10 @@ class PositionListItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: gridPadding),
               child: Container(
-                width: width * (gridWidth),
+                width: width * (1.2 * gridWidth),
                 child: Center(
                   child: Text(
-                    '$partidosPerdidos',
+                    '${equipo.partidosPerdidos}',
                     style: kTextStyle.copyWith(
                         color: Colors.white, fontSize: kFontSize),
                   ),
@@ -157,10 +149,10 @@ class PositionListItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: gridPadding),
               child: Container(
-                width: width * (1.4 * gridWidth),
+                width: width * (1.2 * gridWidth),
                 child: Center(
                   child: Text(
-                    '$golesFavor',
+                    '${equipo.golesFavor}',
                     style: kTextStyle.copyWith(
                         color: Colors.white, fontSize: kFontSize),
                   ),
@@ -170,10 +162,10 @@ class PositionListItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: gridPadding, right: width * 0.015),
               child: Container(
-                width: width * (1.4 * gridWidth),
+                width: width * (1.2 * gridWidth),
                 child: Center(
                   child: Text(
-                    '$golesContra',
+                    '${equipo.golesContra}',
                     style: kTextStyle.copyWith(
                         color: Colors.white, fontSize: kFontSize),
                   ),
