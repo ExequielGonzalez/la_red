@@ -30,7 +30,7 @@ class _GoleadoresState extends State<Goleadores> {
     _goleadoresList = [];
     final goleadores =
         Provider.of<JugadorData>(context, listen: false).getJugadores;
-
+    goleadores.sort();
     GoleadoresListItem _listItem;
 
     print(goleadores.length);

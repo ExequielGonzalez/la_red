@@ -5,7 +5,7 @@ import '../constants.dart';
 part 'jugador.g.dart';
 
 @HiveType(typeId: 0)
-class Jugador {
+class Jugador extends Comparable {
   @HiveField(0)
   String nombre;
   @HiveField(1)
@@ -52,6 +52,12 @@ class Jugador {
 
     print('Se creo el jugador: ${this.nombre}, con el DNI: ${this.dni}');
     counter += 1;
+  }
+
+  @override
+  int compareTo(other) {
+    // TODO: implement compareTo
+    return -this.goles.compareTo(other.goles);
   }
 
   @override
