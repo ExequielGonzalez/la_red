@@ -9,6 +9,8 @@ import '../constants.dart';
 class EquipoData with ChangeNotifier {
   List<Equipo> _equipos = [];
   static bool _read = false;
+  final String _sizeDataBase = 'size';
+  final String _identifierDataBase = 'eq';
 
   List<Equipo> get getEquipos => _equipos;
   Equipo getTeam(index) => _equipos.elementAt(index);
@@ -17,30 +19,30 @@ class EquipoData with ChangeNotifier {
   void createTeam() async {
     var box = await Hive.openBox(kBoxName);
 
-    Equipo.counter = await box.get('size', defaultValue: 0);
+    Equipo.counter = await box.get(_sizeDataBase, defaultValue: 0);
     print(Equipo.counter);
-    await box.put('eq${Equipo.counter}',
+    await box.put('$_identifierDataBase${Equipo.counter}',
         Equipo.autoNameLeague('Real Madrid', Leagues.libre));
-    await box.put('eq${Equipo.counter}',
+    await box.put('$_identifierDataBase${Equipo.counter}',
         Equipo.autoNameLeague('Barcelona', Leagues.libre));
-    await box.put('eq${Equipo.counter}',
+    await box.put('$_identifierDataBase${Equipo.counter}',
         Equipo.autoNameLeague('Bayer Leverkusen', Leagues.libre));
-    await box.put('eq${Equipo.counter}',
+    await box.put('$_identifierDataBase${Equipo.counter}',
         Equipo.autoNameLeague('Schalke 04', Leagues.femenino));
-    await box.put('eq${Equipo.counter}',
+    await box.put('$_identifierDataBase${Equipo.counter}',
         Equipo.autoNameLeague('borussia mönchengladbach', Leagues.femenino));
-    await box.put('eq${Equipo.counter}',
+    await box.put('$_identifierDataBase${Equipo.counter}',
         Equipo.autoNameLeague('Boca Juniors', Leagues.m30));
-    await box.put('eq${Equipo.counter}',
+    await box.put('$_identifierDataBase${Equipo.counter}',
         Equipo.autoNameLeague('River Plate', Leagues.m30));
 
-    await box.put('size', Equipo.counter);
+    await box.put(_sizeDataBase, Equipo.counter);
     notifyListeners();
   }
 
   void readTeams() async {
     var box = await Hive.openBox(kBoxName);
-    Equipo.counter = await box.get('size', defaultValue: 0);
+    Equipo.counter = await box.get(_sizeDataBase, defaultValue: 0);
 
     print('look at thisss ${Equipo.counter}');
     if (!_read) {
@@ -54,7 +56,7 @@ class EquipoData with ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteTeams() async {
+  void deleteAll() async {
     var box = await Hive.openBox(kBoxName);
     box.deleteFromDisk();
     notifyListeners();
@@ -62,6 +64,6 @@ class EquipoData with ChangeNotifier {
 
   void closeDB() async {
     var box = await Hive.openBox(kBoxName);
-    box.put('size', Equipo.counter);
+    box.put(_sizeDataBase, Equipo.counter);
   }
 }

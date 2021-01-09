@@ -24,13 +24,15 @@ class JugadorAdapter extends TypeAdapter<Jugador> {
       amarillas: fields[4] as int,
       goles: fields[3] as int,
       rojas: fields[5] as int,
+      posicion: fields[7] as int,
+      liga: fields[8] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Jugador obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.nombre)
       ..writeByte(1)
@@ -44,7 +46,11 @@ class JugadorAdapter extends TypeAdapter<Jugador> {
       ..writeByte(5)
       ..write(obj.rojas)
       ..writeByte(6)
-      ..write(obj.dni);
+      ..write(obj.dni)
+      ..writeByte(7)
+      ..write(obj.posicion)
+      ..writeByte(8)
+      ..write(obj.liga);
   }
 
   @override

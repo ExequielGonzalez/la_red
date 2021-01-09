@@ -5,8 +5,8 @@ import 'package:la_red/size_config.dart';
 import '../constants.dart';
 
 class FixtureListItem extends StatelessWidget {
-  double width;
-  double height;
+  // double width;
+  // double height;
 
   final double scale = 0.043;
 
@@ -19,8 +19,8 @@ class FixtureListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    width = SizeConfig.safeBlockHorizontal;
-    height = SizeConfig.blockSizeVertical;
+    double width = SizeConfig.safeBlockHorizontal;
+    double height = SizeConfig.blockSizeVertical;
     return Container(
       margin: EdgeInsets.only(
           left: width * (0.01),

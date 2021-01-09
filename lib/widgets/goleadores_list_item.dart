@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:la_red/constants.dart';
+import 'package:la_red/model/jugador.dart';
+
+import '../size_config.dart';
 
 class GoleadoresListItem extends StatelessWidget {
-  final double width;
-  final double height;
+  double width;
+  double height;
 
-  final String name;
-  final int goles;
-  final int posicion;
+  final Jugador jugador;
 
-  GoleadoresListItem(
-      {this.height, this.width, this.name, this.goles, this.posicion});
+  GoleadoresListItem({this.jugador});
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    width = SizeConfig.safeBlockHorizontal;
+    height = SizeConfig.blockSizeVertical;
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: width * (0.004),
@@ -34,7 +37,7 @@ class GoleadoresListItem extends StatelessWidget {
               child: Container(
                 width: width * 0.06,
                 child: Text(
-                  '$posicion',
+                  '${jugador.posicion}',
                   style: kTextStyle.copyWith(fontSize: kFontSize),
                 ),
               ),
@@ -43,7 +46,7 @@ class GoleadoresListItem extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 2),
               child: Container(
                 child: Text(
-                  name,
+                  jugador.nombre,
                   style: kTextStyle.copyWith(fontSize: kFontSize),
                 ),
               ),
@@ -56,7 +59,7 @@ class GoleadoresListItem extends StatelessWidget {
               child: Container(
                 child: Center(
                   child: Text(
-                    '$goles',
+                    '${jugador.goles}',
                     style: kTextStyle.copyWith(
                         color: Colors.white, fontSize: kFontSize),
                   ),

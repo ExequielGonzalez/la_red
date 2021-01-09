@@ -22,7 +22,6 @@ class _FixtureState extends State<Fixture> {
       MediaQuery.of(context).size.height * percent;
   double getWidth(double percent) =>
       MediaQuery.of(context).size.width * percent;
-  Leagues _leagues = Leagues.libre;
 
   List<FixtureListItem> _fixtureList = [];
 

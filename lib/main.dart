@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:la_red/constants.dart';
 import 'package:la_red/provider/equipo_data.dart';
+import 'package:la_red/provider/jugador_data.dart';
 import 'package:la_red/provider/leagues_provider.dart';
 import 'package:la_red/provider/partido_data.dart';
 import 'package:la_red/screens/contacto.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LeaguesProvider()),
         ChangeNotifierProvider(create: (_) => EquipoData()),
         ChangeNotifierProvider(create: (_) => PartidoData()),
+        ChangeNotifierProvider(create: (_) => JugadorData()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:la_red/constants.dart';
 import 'package:la_red/provider/equipo_data.dart';
+import 'package:la_red/provider/jugador_data.dart';
 import 'package:la_red/provider/partido_data.dart';
 import 'package:la_red/size_config.dart';
 import 'package:la_red/widgets/background.dart';
@@ -35,6 +36,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     Provider.of<EquipoData>(context, listen: false).readTeams();
     Provider.of<PartidoData>(context, listen: false).readMatches();
+    Provider.of<JugadorData>(context, listen: false).readPLayers();
 
     // Provider.of<EquipoData>(context, listen: false).deleteTeams();
     return Scaffold(
