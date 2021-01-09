@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:la_red/provider/leagues_provider.dart';
+import 'package:la_red/provider/partido_data.dart';
 import 'package:la_red/widgets/background.dart';
 import 'package:la_red/widgets/background_template.dart';
 import 'package:la_red/widgets/equiposListItem.dart';
@@ -6,6 +8,7 @@ import 'package:la_red/widgets/fixtureListItem.dart';
 import 'package:la_red/widgets/leagues_tab.dart';
 import 'package:la_red/widgets/screen_banner.dart';
 import 'package:la_red/widgets/screen_title.dart';
+import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
@@ -20,8 +23,44 @@ class _FixtureState extends State<Fixture> {
   double getWidth(double percent) =>
       MediaQuery.of(context).size.width * percent;
   Leagues _leagues = Leagues.libre;
+
+  List<FixtureListItem> _fixtureList = [];
+
+  List<Widget> createFixtureList(Leagues league) {
+    _fixtureList = [];
+    final partidos =
+        Provider.of<PartidoData>(context, listen: false).getPartidos;
+
+    FixtureListItem _listItem;
+
+    print(partidos.length);
+    partidos.forEach((element) {
+      if (element.liga == league.toString()) {
+        print(
+            'creando un nuevo partido ${element.equipo1.nombre} vs ${element.equipo2.nombre}');
+        _listItem = FixtureListItem(
+          partido: element,
+        );
+
+        _fixtureList.add(_listItem);
+      }
+    });
+
+    return _fixtureList;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // Future.delayed(Duration.zero, () {
+    //   Provider.of<PartidoData>(context, listen: false).createMatchAuto();
+    // });
+  }
+
   @override
   Widget build(BuildContext context) {
+    LeaguesProvider league = Provider.of<LeaguesProvider>(context);
     return Scaffold(
       body: BackgroundTemplate(
         height: getHeight(1),
@@ -38,40 +77,32 @@ class _FixtureState extends State<Fixture> {
                     LeaguesTab(
                         text: 'libre',
                         width: getWidth(1),
-                        selected: _leagues == Leagues.libre,
+                        selected: league.currentLeague == Leagues.libre,
                         onTap: () {
-                          setState(() {
-                            _leagues = Leagues.libre;
-                          });
+                          league.setLeague(Leagues.libre);
                         }),
                     LeaguesTab(
                       text: 'm30',
                       width: getWidth(1),
-                      selected: _leagues == Leagues.m30,
+                      selected: league.currentLeague == Leagues.m30,
                       onTap: () {
-                        setState(() {
-                          _leagues = Leagues.m30;
-                        });
+                        league.setLeague(Leagues.m30);
                       },
                     ),
                     LeaguesTab(
                       text: 'm40',
                       width: getWidth(1),
-                      selected: _leagues == Leagues.m40,
+                      selected: league.currentLeague == Leagues.m40,
                       onTap: () {
-                        setState(() {
-                          _leagues = Leagues.m40;
-                        });
+                        league.setLeague(Leagues.m40);
                       },
                     ),
                     LeaguesTab(
                       text: 'femenino',
                       width: getWidth(1),
-                      selected: _leagues == Leagues.femenino,
+                      selected: league.currentLeague == Leagues.femenino,
                       onTap: () {
-                        setState(() {
-                          _leagues = Leagues.femenino;
-                        });
+                        league.setLeague(Leagues.femenino);
                       },
                     ),
                   ],
@@ -93,8 +124,8 @@ class _FixtureState extends State<Fixture> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding:  EdgeInsets.symmetric(
-                             horizontal: getWidth(0.05)),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: getWidth(0.05)),
                         child: Text(
                           'PARTIDOS',
                           style: kTextStyleBold.copyWith(
@@ -104,62 +135,8 @@ class _FixtureState extends State<Fixture> {
                       Expanded(
                         child: ListView(
                           padding: EdgeInsets.only(bottom: getHeight(0.01)),
-                          children: [
-                            FixtureListItem(
-                              height: getHeight(1),
-                              width: getWidth(1),
-                              equipo1: 'Barcelona',
-                              equipo2: 'Real Madrid',
-                              fecha: 'SABADO 28/11',
-                              hora: '17:30',
-                              numCancha: 1,
-                            ),
-                            FixtureListItem(
-                              height: getHeight(1),
-                              width: getWidth(1),
-                              equipo1: 'Chelsea',
-                              equipo2: 'Arsenal',
-                              fecha: 'SABADO 28/11',
-                              hora: '17:30',
-                              numCancha: 2,
-                            ),
-                            FixtureListItem(
-                              height: getHeight(1),
-                              width: getWidth(1),
-                              equipo1: 'Manchester United',
-                              equipo2: 'Liverpool',
-                              fecha: 'SABADO 28/11',
-                              hora: '17:30',
-                              numCancha: 3,
-                            ),
-                            FixtureListItem(
-                              height: getHeight(1),
-                              width: getWidth(1),
-                              equipo1: 'Paris Saint Germain',
-                              equipo2: 'Real Madrid',
-                              fecha: 'SABADO 28/11',
-                              hora: '17:30',
-                              numCancha: 4,
-                            ),
-                            FixtureListItem(
-                              height: getHeight(1),
-                              width: getWidth(1),
-                              equipo1: 'Barcelona',
-                              equipo2: 'Real Madrid',
-                              fecha: 'SABADO 28/11',
-                              hora: '17:30',
-                              numCancha: 1,
-                            ),
-                            FixtureListItem(
-                              height: getHeight(1),
-                              width: getWidth(1),
-                              equipo1: 'Barcelona',
-                              equipo2: 'Real Madrid',
-                              fecha: 'SABADO 28/11',
-                              hora: '17:30',
-                              numCancha: 1,
-                            ),
-                          ],
+                          children: createFixtureList(league.currentLeague) ??
+                              [Center(child: CircularProgressIndicator())],
                         ),
                       ),
                     ],

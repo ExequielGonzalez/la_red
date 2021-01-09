@@ -3,14 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:la_red/model/equipo.dart';
 
 import 'package:hive/hive.dart';
-import 'package:la_red/provider/leagues_provider.dart';
 
 import '../constants.dart';
 
 class EquipoData with ChangeNotifier {
   List<Equipo> _equipos = [];
   static bool _read = false;
-  static Leagues _lastLeagueRead = Leagues.libre;
 
   List<Equipo> get getEquipos => _equipos;
   Equipo getTeam(index) => _equipos.elementAt(index);
@@ -52,13 +50,8 @@ class EquipoData with ChangeNotifier {
       }
       _read = true;
     }
-    // Equipo.counter = box.get('size', defaultValue: 0);
 
     notifyListeners();
-    // _equipos.forEach((element) {
-    //   print(element.id);
-    //   print(element.nombre);
-    // });
   }
 
   void deleteTeams() async {

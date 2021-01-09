@@ -1,30 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:la_red/model/partido.dart';
+import 'package:la_red/size_config.dart';
 
 import '../constants.dart';
 
 class FixtureListItem extends StatelessWidget {
-  final double width;
-  final double height;
-
-  final String equipo1;
-  final String equipo2;
-  final int numCancha;
-  final String fecha;
-  final String hora;
+  double width;
+  double height;
 
   final double scale = 0.043;
 
-  FixtureListItem(
-      {this.width,
-      this.height,
-      this.equipo1,
-      this.equipo2,
-      this.fecha,
-      this.hora,
-      this.numCancha});
+  final Partido partido;
+
+  FixtureListItem({
+    this.partido,
+  });
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    width = SizeConfig.safeBlockHorizontal;
+    height = SizeConfig.blockSizeVertical;
     return Container(
       margin: EdgeInsets.only(
           left: width * (0.01),
@@ -57,7 +53,7 @@ class FixtureListItem extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: Image.asset("assets/images/fixture.png"),
+                    child: Image.asset(partido.equipo1.photoURL),
                   ),
                 ),
               ),
@@ -76,7 +72,7 @@ class FixtureListItem extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 4.0),
-                    child: Image.asset("assets/images/fixture.png"),
+                    child: Image.asset(partido.equipo2.photoURL),
                   ),
                 ),
               ),
@@ -90,7 +86,7 @@ class FixtureListItem extends StatelessWidget {
                 Flexible(
                   flex: 3,
                   child: Text(
-                    equipo1,
+                    partido.equipo1.nombre,
                     style: kTextStyle.copyWith(fontSize: kFontSize, height: 1),
                   ),
                 ),
@@ -104,7 +100,7 @@ class FixtureListItem extends StatelessWidget {
                 Flexible(
                   flex: 3,
                   child: Text(
-                    equipo2,
+                    partido.equipo2.nombre,
                     style: kTextStyle.copyWith(fontSize: kFontSize, height: 1),
                   ),
                 )
@@ -120,7 +116,7 @@ class FixtureListItem extends StatelessWidget {
                 Flexible(
                   flex: 2,
                   child: Text(
-                    'CANCHA $numCancha',
+                    'CANCHA ${partido.numCancha}',
                     style: kTextStyle.copyWith(fontSize: kFontSize, height: 1),
                   ),
                 ),
@@ -129,7 +125,7 @@ class FixtureListItem extends StatelessWidget {
                   child: Container(
                     width: width * 0.35,
                     child: Text(
-                      fecha,
+                      partido.fecha,
                       style:
                           kTextStyle.copyWith(fontSize: kFontSize, height: 1),
                     ),
@@ -138,7 +134,7 @@ class FixtureListItem extends StatelessWidget {
                 Flexible(
                   flex: 2,
                   child: Text(
-                    '$hora HS',
+                    '${partido.hora} HS',
                     style: kTextStyle.copyWith(fontSize: kFontSize, height: 1),
                   ),
                 )

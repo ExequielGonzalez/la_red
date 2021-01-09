@@ -59,22 +59,6 @@ class Equipo extends Comparable {
     counter += 1;
   }
 
-  // Equipo(){
-  //   counter+=1;
-  //   this.puntos=puntos;
-  //   this.golesContra=golesContra;
-  //   this.golesFavor=golesFavor;
-  //   this.partidosEmpates=partidosEmpates;
-  //   this.partidosGanados=partidosGanados;
-  //   this.partidosJugados=partidosJugados;
-  //   this.partidosPerdidos=partidosPerdidos;
-  //   this.id=counter;
-  //   this.jugadores=jugadores;
-  //   this.nombre=nombre;
-  //   this.partidosAnteriores=partidosAnteriores;
-  //   this.photoURL=photoURL;
-  // };
-
   Equipo.auto() {
     this.puntos = 16;
     this.golesContra = 10;
