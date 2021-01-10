@@ -33,13 +33,48 @@ Future<void> main() async {
   Hive.registerAdapter(JugadorAdapter());
 
   final Box<dynamic> dbEquipo = await Hive.openBox(kBoxName);
-
-  runApp(MyApp(database: dbEquipo));
+  if (!kAdmin)
+    runApp(MyApp(database: dbEquipo));
+  else
+    runApp(MyAppAdmin(database: dbEquipo));
 }
 
 class MyApp extends StatelessWidget {
   final Box<dynamic> database;
   MyApp({this.database});
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LeaguesProvider()),
+        ChangeNotifierProvider(create: (_) => EquipoData()),
+        ChangeNotifierProvider(create: (_) => PartidoData()),
+        ChangeNotifierProvider(create: (_) => JugadorData()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(fontFamily: 'Poppins'),
+        title: 'La Red',
+        initialRoute: '/',
+        routes: {
+          '/': (context) => Home(),
+          '/equipos': (context) => Equipos(),
+          '/fixture': (context) => Fixture(),
+          '/posiciones': (context) => Posiciones(),
+          '/goleadores': (context) => Goleadores(),
+          '/instalaciones': (context) => Instalaciones(),
+          '/contacto': (context) => Contacto(),
+          '/reglamento': (context) => Reglamento(),
+          '/novedades': (context) => Novedades(),
+        },
+      ),
+    );
+  }
+}
+
+class MyAppAdmin extends StatelessWidget {
+  final Box<dynamic> database;
+  MyAppAdmin({this.database});
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

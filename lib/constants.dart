@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+bool kAdmin = false;
+
 enum Leagues { libre, m30, m40, femenino }
 
 String kBoxName = "Equipos";
