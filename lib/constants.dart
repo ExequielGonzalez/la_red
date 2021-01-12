@@ -1,3 +1,5 @@
+// modificando el archivo de las constantes
+
 import 'package:flutter/material.dart';
 
 enum Leagues { libre, m30, m40, femenino }
