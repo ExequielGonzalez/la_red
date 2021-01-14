@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:la_red/provider/jugador_data.dart';
 import 'package:la_red/provider/leagues_provider.dart';
+import 'package:la_red/widgets/admin/admin_fab.dart';
 import 'package:la_red/widgets/background.dart';
 import 'package:la_red/widgets/background_template.dart';
 import 'package:la_red/widgets/goleadores_list_item.dart';
@@ -67,6 +68,7 @@ class _GoleadoresState extends State<Goleadores> {
   Widget build(BuildContext context) {
     LeaguesProvider league = Provider.of<LeaguesProvider>(context);
     return Scaffold(
+      floatingActionButton: kAdmin ? AdminFAB() : Container(),
       body: BackgroundTemplate(
         height: getHeight(1),
         width: getWidth(1),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/provider/leagues_provider.dart';
 import 'package:la_red/size_config.dart';
+import 'package:la_red/widgets/admin/admin_fab.dart';
 import 'package:la_red/widgets/background_template.dart';
 import 'package:la_red/widgets/leagues_tab.dart';
 import 'package:la_red/widgets/position_list_item.dart';
@@ -53,6 +54,7 @@ class _FixtureState extends State<Posiciones> {
     SizeConfig().init(context);
     LeaguesProvider league = Provider.of<LeaguesProvider>(context);
     return Scaffold(
+      floatingActionButton: kAdmin ? AdminFAB() : Container(),
       body: BackgroundTemplate(
         height: getHeight(1),
         width: getWidth(1),

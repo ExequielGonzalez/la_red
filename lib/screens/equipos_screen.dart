@@ -3,6 +3,7 @@ import 'package:la_red/model/equipo.dart';
 import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/provider/leagues_provider.dart';
 import 'package:la_red/screens/detalles_equipo.dart';
+import 'package:la_red/widgets/admin/admin_fab.dart';
 import 'package:la_red/widgets/background_template.dart';
 import 'package:la_red/widgets/equiposListItem.dart';
 import 'package:la_red/widgets/leagues_tab.dart';
@@ -71,6 +72,7 @@ class _EquiposState extends State<Equipos> {
   Widget build(BuildContext context) {
     LeaguesProvider league = Provider.of<LeaguesProvider>(context);
     return Scaffold(
+      floatingActionButton: kAdmin ? AdminFAB() : Container(),
       body: BackgroundTemplate(
         height: getHeight(1),
         width: getWidth(1),

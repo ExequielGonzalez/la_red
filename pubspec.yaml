@@ -14,7 +14,11 @@ dependencies:
   hive: ^1.4.4+1
   provider: ^4.3.2+3
   path_provider: ^1.6.24
+  fab_circular_menu: ^1.0.1
+  card_settings: ^1.16.2
 
+dependency_overrides:
+cupertino_icons: ^1.0.0
 
 
 dev_dependencies:

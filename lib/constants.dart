@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-bool kAdmin = false;
+bool kAdmin = true;
 
 enum Leagues { libre, m30, m40, femenino }
 

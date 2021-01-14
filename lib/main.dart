@@ -7,7 +7,7 @@ import 'package:la_red/provider/jugador_data.dart';
 import 'package:la_red/provider/leagues_provider.dart';
 import 'package:la_red/provider/partido_data.dart';
 import 'package:la_red/screens/contacto.dart';
-import 'package:la_red/screens/equiposScreen.dart';
+import 'package:la_red/screens/equipos_screen.dart';
 import 'package:la_red/screens/fixture.dart';
 import 'package:la_red/screens/goleadores.dart';
 import 'package:la_red/screens/home.dart';
@@ -33,48 +33,13 @@ Future<void> main() async {
   Hive.registerAdapter(JugadorAdapter());
 
   final Box<dynamic> dbEquipo = await Hive.openBox(kBoxName);
-  if (!kAdmin)
-    runApp(MyApp(database: dbEquipo));
-  else
-    runApp(MyAppAdmin(database: dbEquipo));
+
+  runApp(MyApp(database: dbEquipo));
 }
 
 class MyApp extends StatelessWidget {
   final Box<dynamic> database;
   MyApp({this.database});
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => LeaguesProvider()),
-        ChangeNotifierProvider(create: (_) => EquipoData()),
-        ChangeNotifierProvider(create: (_) => PartidoData()),
-        ChangeNotifierProvider(create: (_) => JugadorData()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(fontFamily: 'Poppins'),
-        title: 'La Red',
-        initialRoute: '/',
-        routes: {
-          '/': (context) => Home(),
-          '/equipos': (context) => Equipos(),
-          '/fixture': (context) => Fixture(),
-          '/posiciones': (context) => Posiciones(),
-          '/goleadores': (context) => Goleadores(),
-          '/instalaciones': (context) => Instalaciones(),
-          '/contacto': (context) => Contacto(),
-          '/reglamento': (context) => Reglamento(),
-          '/novedades': (context) => Novedades(),
-        },
-      ),
-    );
-  }
-}
-
-class MyAppAdmin extends StatelessWidget {
-  final Box<dynamic> database;
-  MyAppAdmin({this.database});
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
