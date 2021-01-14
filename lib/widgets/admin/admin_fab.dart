@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:la_red/constants.dart';
-import 'package:la_red/widgets/admin/admin_jugadores.dart';
+import 'package:la_red/screens/admin/admin_equipos.dart';
+import 'package:la_red/screens/admin/admin_jugadores.dart';
 
 import '../../size_config.dart';
 
@@ -44,6 +45,10 @@ class AdminFAB extends StatelessWidget {
         RawMaterialButton(
             onPressed: () {
               print("Abriendo Menú para editar Equipos");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AdminEquipos()),
+              );
             },
             shape: CircleBorder(),
             padding: const EdgeInsets.all(24.0),
@@ -62,7 +67,10 @@ class AdminFAB extends StatelessWidget {
         RawMaterialButton(
           onPressed: () {
             print("Abriendo Menú para editar Jugadores");
-            AdminJugadores();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AdminJugadores()),
+            );
           },
           shape: CircleBorder(),
           padding: const EdgeInsets.all(24.0),

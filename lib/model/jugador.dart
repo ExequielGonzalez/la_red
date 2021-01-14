@@ -25,6 +25,7 @@ class Jugador extends Comparable {
   @HiveField(8)
   String liga;
 
+  //TODO: Añadir que cada jugador pertenezca a un equipo
   static int counter = 0;
 
   Jugador({

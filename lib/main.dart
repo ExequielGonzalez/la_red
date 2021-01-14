@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+
 import 'package:la_red/constants.dart';
 import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/provider/jugador_data.dart';
