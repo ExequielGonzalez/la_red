@@ -24,6 +24,8 @@ class Jugador extends Comparable {
   int posicion;
   @HiveField(8)
   String liga;
+  @HiveField(9)
+  int id;
 
   //TODO: Añadir que cada jugador pertenezca a un equipo
   static int counter = 0;
@@ -38,7 +40,11 @@ class Jugador extends Comparable {
     this.rojas,
     this.posicion,
     this.liga,
-  });
+    this.id,
+  }) {
+    counter += 1;
+    this.id = counter; //id tiene que arrancar en 1
+  }
 
   Jugador.auto(String name, Leagues league) {
     this.nombre = name;
@@ -59,6 +65,14 @@ class Jugador extends Comparable {
   int compareTo(other) {
     // TODO: implement compareTo
     return -this.goles.compareTo(other.goles);
+  }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    print(
+        'El jugador ${this.nombre} ${this.apellido}, con DNI: ${this.dni}, que juega en la liga ${this.liga}');
+    return super.toString();
   }
 
   @override

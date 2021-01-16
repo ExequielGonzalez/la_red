@@ -37,9 +37,11 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     Provider.of<EquipoData>(context, listen: false).readTeams();
     Provider.of<PartidoData>(context, listen: false).readMatches();
-    Provider.of<JugadorData>(context, listen: false).readPLayers();
+    Provider.of<JugadorData>(context, listen: false).readPlayers();
+    //
+    // Provider.of<EquipoData>(context, listen: false).deleteAll();
+    if (kRestart) Provider.of<EquipoData>(context, listen: false).deleteAll();
 
-    // Provider.of<EquipoData>(context, listen: false).deleteTeams();
     return Scaffold(
       body: Stack(
         children: [

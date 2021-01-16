@@ -3,6 +3,7 @@ import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:la_red/constants.dart';
 import 'package:la_red/screens/admin/admin_equipos.dart';
 import 'package:la_red/screens/admin/admin_jugadores.dart';
+import 'package:la_red/widgets/admin/admin_dialog_jugadores.dart';
 
 import '../../size_config.dart';
 
@@ -67,10 +68,15 @@ class AdminFAB extends StatelessWidget {
         RawMaterialButton(
           onPressed: () {
             print("Abriendo Menú para editar Jugadores");
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AdminJugadores()),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => AdminJugadores()),
+            // );
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AdminDialogJugadores();
+                });
           },
           shape: CircleBorder(),
           padding: const EdgeInsets.all(24.0),

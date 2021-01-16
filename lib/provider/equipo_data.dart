@@ -44,10 +44,10 @@ class EquipoData with ChangeNotifier {
     var box = await Hive.openBox(kBoxName);
     Equipo.counter = await box.get(_sizeDataBase, defaultValue: 0);
 
-    print('look at thisss ${Equipo.counter}');
+    print('Hay ${Equipo.counter} equipos');
     if (!_read) {
       for (int i = 0; i < Equipo.counter; i++) {
-        var aux = await box.get('eq$i');
+        var aux = await box.get('$_identifierDataBase$i');
         _equipos.add(aux);
       }
       _read = true;

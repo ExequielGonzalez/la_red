@@ -34,8 +34,10 @@ class _GoleadoresState extends State<Goleadores> {
     goleadores.sort();
     GoleadoresListItem _listItem;
 
-    print(goleadores.length);
+    print(goleadores.toString());
     goleadores.forEach((element) {
+      print(element.nombre);
+      print(element.liga);
       if (element.liga == league.toString()) {
         print(
             'creando un nuevo listItem con ${element.nombre} y dni: ${element.dni}');
