@@ -75,7 +75,7 @@ class Jugador extends HiveObject {
   @override
   String toString() {
     // TODO: implement toString
-    return 'id: ${this.id}  - counter: $counter -> El jugador ${this.nombre} ${this.apellido}, con DNI: ${this.dni}, que juega en la liga ${this.liga} y ha hecho ${this.goles} goles';
+    return 'id: ${this.id}  - counter: $counter - key: ${this.key}-> El jugador ${this.nombre} ${this.apellido}, con DNI: ${this.dni}, que juega en la liga ${this.liga} y ha hecho ${this.goles} goles';
     return super.toString();
   }
 
