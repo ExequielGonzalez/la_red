@@ -59,7 +59,7 @@ class PositionListItem extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: width * 0.01),
-                child: Image.asset(equipo.photoURL),
+                child: Image.memory(equipo.photoURL),
               ),
             ),
             Expanded(

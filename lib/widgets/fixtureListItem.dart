@@ -53,7 +53,7 @@ class FixtureListItem extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: Image.asset(partido.equipo1.photoURL),
+                    child: Image.asset(partido.equipo1.photoURL.toString()),
                   ),
                 ),
               ),
@@ -72,7 +72,7 @@ class FixtureListItem extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 4.0),
-                    child: Image.asset(partido.equipo2.photoURL),
+                    child: Image.asset(partido.equipo2.photoURL.toString()),
                   ),
                 ),
               ),

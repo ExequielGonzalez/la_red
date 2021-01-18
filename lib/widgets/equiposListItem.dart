@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:la_red/model/equipo.dart';
 import 'package:la_red/size_config.dart';
@@ -5,6 +8,10 @@ import 'package:la_red/size_config.dart';
 import '../constants.dart';
 
 class EquiposListItem extends StatelessWidget {
+  String _base64String(Uint8List data) {
+    return base64Encode(data);
+  }
+
   double width;
   double height;
 
@@ -50,7 +57,7 @@ class EquiposListItem extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(height * 0.009),
-                  child: Image.asset(equipo.photoURL),
+                  child: Image.memory(equipo.photoURL),
                 ),
               ),
             ),

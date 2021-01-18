@@ -17,7 +17,7 @@ class AdminJugadores extends StatefulWidget {
 
 class _AdminJugadoresState extends State<AdminJugadores> {
   bool error = false;
-
+  AutovalidateMode _autoValidateMode = AutovalidateMode.always;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String nombre = '';
@@ -80,6 +80,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                   else
                     return null;
                 },
+                autovalidateMode: _autoValidateMode,
                 onSaved: (value) => nombre = value,
                 onChanged: (value) {
                   setState(() {
@@ -99,6 +100,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                   else
                     return null;
                 },
+                autovalidateMode: _autoValidateMode,
                 onSaved: (value) => apellido = value,
                 onChanged: (value) {
                   setState(() {
@@ -109,12 +111,14 @@ class _AdminJugadoresState extends State<AdminJugadores> {
               CardSettingsInt(
                 label: 'DNI',
                 initialValue: dni,
+                inputAction: TextInputAction.next,
                 validator: (value) {
                   if (value != null) {
                     if (value < 0) return 'El valor debe de ser mayor que 0';
                   }
                   return null;
                 },
+                autovalidateMode: _autoValidateMode,
                 onSaved: (value) => dni = value,
                 onChanged: (value) {
                   setState(() {
@@ -125,12 +129,14 @@ class _AdminJugadoresState extends State<AdminJugadores> {
               CardSettingsInt(
                 label: 'Goles',
                 initialValue: goles,
+                inputAction: TextInputAction.next,
                 validator: (value) {
                   if (value != null) {
                     if (value < 0) return 'El valor debe de ser mayor que 0';
                   }
                   return null;
                 },
+                autovalidateMode: _autoValidateMode,
                 onSaved: (value) => goles = value,
                 onChanged: (value) {
                   setState(() {
@@ -141,12 +147,14 @@ class _AdminJugadoresState extends State<AdminJugadores> {
               CardSettingsInt(
                 label: 'Amarillas',
                 initialValue: amarillas,
+                inputAction: TextInputAction.next,
                 validator: (value) {
                   if (value != null) {
                     if (value < 0) return 'El valor debe de ser mayor que 0';
                   }
                   return null;
                 },
+                autovalidateMode: _autoValidateMode,
                 onSaved: (value) => amarillas = value,
                 onChanged: (value) {
                   setState(() {
@@ -157,12 +165,14 @@ class _AdminJugadoresState extends State<AdminJugadores> {
               CardSettingsInt(
                 label: 'Rojas',
                 initialValue: rojas,
+                inputAction: TextInputAction.next,
                 validator: (value) {
                   if (value != null) {
                     if (value < 0) return 'El valor debe de ser mayor que 0';
                   }
                   return null;
                 },
+                autovalidateMode: _autoValidateMode,
                 onSaved: (value) => rojas = value,
                 onChanged: (value) {
                   setState(() {
@@ -182,6 +192,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                     return null;
                   }
                 },
+                autovalidateMode: _autoValidateMode,
                 onSaved: (value) => liga = value,
                 values: [
                   Leagues.libre.toString(),

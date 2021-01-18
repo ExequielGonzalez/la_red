@@ -91,7 +91,7 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(4.0),
-                                  child: Image.asset(widget.equipo.photoURL),
+                                  child: Image.memory(widget.equipo.photoURL),
                                 ),
                               ),
                             ),

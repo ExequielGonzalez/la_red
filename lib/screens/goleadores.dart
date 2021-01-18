@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:la_red/model/jugador.dart';
 import 'package:la_red/provider/jugador_data.dart';
 import 'package:la_red/provider/leagues_provider.dart';
@@ -36,7 +38,7 @@ class _GoleadoresState extends State<Goleadores> {
     final goleadores =
         Provider.of<JugadorData>(context, listen: false).getJugadores;
 
-    Comparator<Jugador> sortByGoles = (a, b) => a.goles.compareTo(b.goles);
+    Comparator<Jugador> sortByGoles = (b, a) => a.goles.compareTo(b.goles);
     goleadores.sort(sortByGoles);
     GoleadoresListItem _listItem;
 
@@ -169,11 +171,20 @@ class _GoleadoresState extends State<Goleadores> {
                         ),
                       ),
                       Expanded(
-                        child: ListView(
-                          padding: EdgeInsets.only(bottom: getHeight(0.01)),
-                          children: createPlayerList(league.currentLeague) ??
-                              [Center(child: CircularProgressIndicator())],
-                        ),
+                        child: ValueListenableBuilder(
+                            valueListenable:
+                                Hive.box(kBoxJugadores).listenable(),
+                            builder: (context, _, widget) {
+                              return ListView(
+                                padding:
+                                    EdgeInsets.only(bottom: getHeight(0.01)),
+                                children: createPlayerList(
+                                        league.currentLeague) ??
+                                    [
+                                      Center(child: CircularProgressIndicator())
+                                    ],
+                              );
+                            }),
                       ),
                     ],
                   ),

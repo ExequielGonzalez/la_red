@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:la_red/model/jugador.dart';
 import 'package:la_red/model/partido.dart';
 import 'package:hive/hive.dart';
@@ -7,7 +9,7 @@ import '../constants.dart';
 part 'equipo.g.dart';
 
 @HiveType(typeId: 1)
-class Equipo extends Comparable {
+class Equipo extends HiveObject {
   @HiveField(0)
   List<Jugador> jugadores;
   @HiveField(1)
@@ -31,7 +33,7 @@ class Equipo extends Comparable {
   @HiveField(10)
   int id;
   @HiveField(11)
-  String photoURL;
+  Uint8List photoURL;
   @HiveField(12)
   String liga;
   @HiveField(13)
@@ -57,6 +59,8 @@ class Equipo extends Comparable {
   }) {
     this.id = counter;
     counter += 1;
+    print(
+        'Constructor de Equipo: Creando equipo ${this.nombre} con id: ${this.id}. El counter vale $counter. key: ${this.key}');
   }
 
   Equipo.auto() {
@@ -71,7 +75,7 @@ class Equipo extends Comparable {
     this.jugadores = null;
     this.nombre = 'Boca Juniors';
     this.partidosAnteriores = null;
-    this.photoURL = "assets/images/contacto.png";
+    // this.photoURL = "assets/images/contacto.png";
     this.liga = Leagues.femenino.toString();
     this.posicion = 23;
     print('Se creo el equipo: ${this.nombre}, con el ID: ${this.id}');
@@ -90,11 +94,17 @@ class Equipo extends Comparable {
     this.jugadores = null;
     this.nombre = name;
     this.partidosAnteriores = null;
-    this.photoURL = "assets/images/contacto.png";
+    // this.photoURL = "assets/images/contacto.png";
     this.liga = league.toString();
     this.posicion = counter + 1;
     print('Se creo el equipo: ${this.nombre}, con el ID: ${this.id}');
     counter += 1;
+  }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return 'id: ${this.id}  - counter: $counter - key: ${this.key}-> El equipo ${this.nombre} , que juega en la liga ${this.liga} y tiene ${this.puntos} puntos';
   }
 
   @override

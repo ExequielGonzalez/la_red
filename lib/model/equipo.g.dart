@@ -28,7 +28,7 @@ class EquipoAdapter extends TypeAdapter<Equipo> {
       jugadores: (fields[0] as List)?.cast<Jugador>(),
       nombre: fields[9] as String,
       partidosAnteriores: (fields[1] as List)?.cast<Partido>(),
-      photoURL: fields[11] as String,
+      photoURL: fields[11] as Uint8List,
       liga: fields[12] as String,
       posicion: fields[13] as int,
     );
