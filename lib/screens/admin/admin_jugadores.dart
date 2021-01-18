@@ -10,20 +10,42 @@ import '../../provider/leagues_provider.dart';
 class AdminJugadores extends StatefulWidget {
   Jugador jugador;
   AdminJugadores({this.jugador});
+
   @override
   _AdminJugadoresState createState() => _AdminJugadoresState();
 }
 
 class _AdminJugadoresState extends State<AdminJugadores> {
-  String nombre = "Exequiel";
-  String apellido = "Gonzalez";
-  int rojas = 0;
+  bool error = false;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String nombre = '';
+  String apellido = '';
   int amarillas = 0;
   int dni = 0;
-  int goles = 0;
+  int edad = 0;
+  int goles = 69;
+  int posicion = 0;
+  int rojas = 0;
+  String liga = Leagues.libre.toString();
 
-  bool error = false;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    print('init state de admin_jugadors: ${widget.jugador}');
+    if (widget.jugador != null) {
+      nombre = widget.jugador.nombre;
+      apellido = widget.jugador.apellido;
+      liga = widget.jugador.liga;
+      amarillas = widget.jugador.amarillas;
+      dni = widget.jugador.dni;
+      edad = widget.jugador.edad;
+      goles = widget.jugador.goles;
+      posicion = widget.jugador.posicion;
+      rojas = widget.jugador.rojas;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +70,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
             children: <CardSettingsWidget>[
               CardSettingsText(
                 label: 'Nombre',
-                initialValue: widget.jugador.nombre ?? '',
+                initialValue: nombre ?? '',
                 requiredIndicator:
                     Text('*', style: TextStyle(color: Colors.red)),
                 inputAction: TextInputAction.next,
@@ -58,16 +80,16 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                   else
                     return null;
                 },
-                onSaved: (value) => widget.jugador.nombre = value,
+                onSaved: (value) => nombre = value,
                 onChanged: (value) {
                   setState(() {
-                    widget.jugador.nombre = value;
+                    nombre = value;
                   });
                 },
               ),
               CardSettingsText(
                 label: 'Apellido',
-                initialValue: widget.jugador.apellido,
+                initialValue: apellido,
                 requiredIndicator:
                     Text('*', style: TextStyle(color: Colors.red)),
                 inputAction: TextInputAction.next,
@@ -77,80 +99,80 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                   else
                     return null;
                 },
-                onSaved: (value) => widget.jugador.apellido = value,
+                onSaved: (value) => apellido = value,
                 onChanged: (value) {
                   setState(() {
-                    widget.jugador.apellido = value;
+                    apellido = value;
                   });
                 },
               ),
               CardSettingsInt(
                 label: 'DNI',
-                initialValue: widget.jugador.dni,
+                initialValue: dni,
                 validator: (value) {
                   if (value != null) {
                     if (value < 0) return 'El valor debe de ser mayor que 0';
                   }
                   return null;
                 },
-                onSaved: (value) => widget.jugador.dni = value,
+                onSaved: (value) => dni = value,
                 onChanged: (value) {
                   setState(() {
-                    widget.jugador.dni = value;
+                    dni = value;
                   });
                 },
               ),
               CardSettingsInt(
                 label: 'Goles',
-                initialValue: widget.jugador.goles,
+                initialValue: goles,
                 validator: (value) {
                   if (value != null) {
                     if (value < 0) return 'El valor debe de ser mayor que 0';
                   }
                   return null;
                 },
-                onSaved: (value) => widget.jugador.goles = value,
+                onSaved: (value) => goles = value,
                 onChanged: (value) {
                   setState(() {
-                    widget.jugador.goles = value;
+                    goles = value;
                   });
                 },
               ),
               CardSettingsInt(
                 label: 'Amarillas',
-                initialValue: widget.jugador.amarillas,
+                initialValue: amarillas,
                 validator: (value) {
                   if (value != null) {
                     if (value < 0) return 'El valor debe de ser mayor que 0';
                   }
                   return null;
                 },
-                onSaved: (value) => widget.jugador.amarillas = value,
+                onSaved: (value) => amarillas = value,
                 onChanged: (value) {
                   setState(() {
-                    widget.jugador.amarillas = value;
+                    amarillas = value;
                   });
                 },
               ),
               CardSettingsInt(
                 label: 'Rojas',
-                initialValue: widget.jugador.rojas,
+                initialValue: rojas,
                 validator: (value) {
                   if (value != null) {
                     if (value < 0) return 'El valor debe de ser mayor que 0';
                   }
                   return null;
                 },
-                onSaved: (value) => widget.jugador.rojas = value,
+                onSaved: (value) => rojas = value,
                 onChanged: (value) {
                   setState(() {
-                    widget.jugador.rojas = value;
+                    rojas = value;
                   });
                 },
               ),
               CardSettingsListPicker(
                 label: 'Liga',
-                initialValue: widget.jugador.liga,
+                initialValue: liga,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     error = true;
@@ -160,7 +182,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                     return null;
                   }
                 },
-                onSaved: (value) => widget.jugador.liga = value,
+                onSaved: (value) => liga = value,
                 values: [
                   Leagues.libre.toString(),
                   Leagues.m30.toString(),
@@ -176,7 +198,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                 enabled: true,
                 onChanged: (value) {
                   setState(() {
-                    widget.jugador.liga = value;
+                    liga = value;
                   });
                 },
               ),
@@ -191,10 +213,26 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                   print('Aca se supone que se guarda todo');
 
                   if (!error) {
-                    print('guardando el jugador: ${widget.jugador.toString()}');
-                    Provider.of<JugadorData>(context, listen: false)
-                        .editPlayer(widget.jugador);
-                    Navigator.of(context).pop();
+                    final jugadores =
+                        Provider.of<JugadorData>(context, listen: false);
+                    if (widget.jugador != null) {
+                      jugadores.deletePlayer(widget.jugador);
+                    }
+                    var aux = Jugador(
+                      nombre: nombre,
+                      apellido: apellido,
+                      amarillas: amarillas,
+                      dni: dni,
+                      edad: edad,
+                      goles: goles,
+                      liga: liga,
+                      posicion: posicion,
+                      rojas: rojas,
+                    );
+                    jugadores.createPlayer(aux);
+                    print('guardando el jugador: ${aux.toString()}');
+
+                    Navigator.of(context).pop(true);
                   }
                 },
               ),

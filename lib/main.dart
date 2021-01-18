@@ -24,15 +24,36 @@ import 'model/equipo.dart';
 import 'model/jugador.dart';
 import 'model/partido.dart';
 
-Future<void> main() async {
+import 'dart:developer' as dev;
+
+List<Box> boxList = [];
+Future<List<Box>> _openBox() async {
+  Directory directory = await pathProvider.getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
+  var box_jugadores = await Hive.openBox("box_jugadores");
+  var box_equipos = await Hive.openBox("box_equipos");
+  var box_partidos = await Hive.openBox("box_partidos");
+  // boxList.add(box_session);
+  // boxList.add(box_comment);
+  Hive.registerAdapter(EquipoAdapter());
+  Hive.registerAdapter(PartidoAdapter());
+  Hive.registerAdapter(JugadorAdapter());
+  return boxList;
+}
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Directory directory = await pathProvider.getApplicationDocumentsDirectory();
   Hive.init(directory.path);
+
   Hive.registerAdapter(EquipoAdapter());
   Hive.registerAdapter(PartidoAdapter());
   Hive.registerAdapter(JugadorAdapter());
 
-  final Box<dynamic> dbEquipo = await Hive.openBox(kBoxName);
+  final Box<dynamic> dbEquipo = await Hive.openBox(kBoxName,
+      compactionStrategy: (entries, deletedEntries) {
+    return deletedEntries > 10;
+  });
 
   runApp(MyApp(database: dbEquipo));
 }

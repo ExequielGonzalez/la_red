@@ -66,12 +66,8 @@ class AdminFAB extends StatelessWidget {
           height: 1,
         ),
         RawMaterialButton(
-          onPressed: () {
+          onPressed: () async {
             print("Abriendo Menú para editar Jugadores");
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => AdminJugadores()),
-            // );
             showDialog(
                 context: context,
                 builder: (BuildContext context) {

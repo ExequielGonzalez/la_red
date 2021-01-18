@@ -7,16 +7,19 @@ import '../size_config.dart';
 class GoleadoresListItem extends StatelessWidget {
   double width;
   double height;
+  String _nombre;
 
   final Jugador jugador;
+  final int posicion;
 
-  GoleadoresListItem({this.jugador});
+  GoleadoresListItem({this.jugador, this.posicion});
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     width = SizeConfig.safeBlockHorizontal;
     height = SizeConfig.blockSizeVertical;
+    _nombre = jugador.nombre + ' ' + jugador.apellido;
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: width * (0.004),
@@ -37,7 +40,7 @@ class GoleadoresListItem extends StatelessWidget {
               child: Container(
                 width: width * 0.06,
                 child: Text(
-                  '${jugador.posicion}',
+                  '$posicion',
                   style: kTextStyle.copyWith(fontSize: kFontSize),
                 ),
               ),
@@ -46,7 +49,9 @@ class GoleadoresListItem extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 2),
               child: Container(
                 child: Text(
-                  jugador.nombre,
+                  _nombre.length < 22
+                      ? _nombre
+                      : _nombre.substring(0, 21) + '...',
                   style: kTextStyle.copyWith(fontSize: kFontSize),
                 ),
               ),
