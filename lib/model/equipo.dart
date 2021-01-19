@@ -110,23 +110,48 @@ class Equipo extends HiveObject {
   @override
   int get typeId => 1;
 
-  @override
-  int compareTo(other) {
+  static int sortTeams(b, a) {
     // TODO: implement compareTo
     // return this.puntos.compareTo(other.puntos);
-    if (this.puntos < other.puntos) {
-      return -1;
-    } else if (this.puntos > other.puntos) {
-      return 1;
-    } else {
-      if (this.golesFavor < other.golesFavor) {
-        return -1;
-      } else if (this.golesFavor > other.golesFavor) {
-        return 1;
-      } else {
-        //TODO: Implementar que va primero el que haya ganado el partido entre ellos
-        return 0;
-      }
-    }
+    var sortByPuntos = a.puntos.compareTo(b.puntos);
+    if (sortByPuntos != 0)
+      return sortByPuntos;
+    else
+      return a.golesFavor.compareTo(b.golesFavor);
   }
+
+  // if (this.puntos < other.puntos) {
+  //   return -1;
+  // } else if (this.puntos > other.puntos) {
+  //   return 1;
+  // } else {
+  //   if (this.golesFavor < other.golesFavor) {
+  //     return -1;
+  //   } else if (this.golesFavor > other.golesFavor) {
+  //     return 1;
+  //   } else {
+  //     //TODO: Implementar que va primero el que haya ganado el partido entre ellos
+  //     return 0;
+  //   }
+  // }
+
+  // @override
+  // int compareTo(other) {
+  //   // TODO: implement compareTo
+  //   // return this.puntos.compareTo(other.puntos);
+  //   if (this.puntos < other.puntos) {
+  //     return -1;
+  //   } else if (this.puntos > other.puntos) {
+  //     return 1;
+  //   } else {
+  //     if (this.golesFavor < other.golesFavor) {
+  //       return -1;
+  //     } else if (this.golesFavor > other.golesFavor) {
+  //       return 1;
+  //     } else {
+  //       //TODO: Implementar que va primero el que haya ganado el partido entre ellos
+  //       return 0;
+  //     }
+  //   }
+  // }
 }
