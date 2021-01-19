@@ -30,6 +30,11 @@ Future<List<Box>> _openBox() async {
   List<Box> boxList = [];
   Directory directory = await pathProvider.getApplicationDocumentsDirectory();
   Hive.init(directory.path);
+
+  Hive.registerAdapter(EquipoAdapter());
+  Hive.registerAdapter(PartidoAdapter());
+  Hive.registerAdapter(JugadorAdapter());
+
   var box_jugadores = await Hive.openBox(kBoxJugadores,
       compactionStrategy: (entries, deletedEntries) {
     return deletedEntries > 10;
@@ -42,13 +47,17 @@ Future<List<Box>> _openBox() async {
       compactionStrategy: (entries, deletedEntries) {
     return deletedEntries > 10;
   });
+
+  if (kRestart) {
+    box_jugadores.clear();
+    box_equipos.clear();
+    box_partidos.clear();
+  }
+
   boxList.add(box_jugadores);
   boxList.add(box_partidos);
   boxList.add(box_equipos);
 
-  // Hive.registerAdapter(EquipoAdapter());
-  // Hive.registerAdapter(PartidoAdapter());
-  // Hive.registerAdapter(JugadorAdapter());
   return boxList;
 }
 
@@ -56,10 +65,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Directory directory = await pathProvider.getApplicationDocumentsDirectory();
   // Hive.init(directory.path);
-  //
-  Hive.registerAdapter(EquipoAdapter());
-  Hive.registerAdapter(PartidoAdapter());
-  Hive.registerAdapter(JugadorAdapter());
+  // //
+  // Hive.registerAdapter(EquipoAdapter());
+  // Hive.registerAdapter(PartidoAdapter());
+  // Hive.registerAdapter(JugadorAdapter());
   List<Box> boxList = [];
   boxList = await _openBox();
 

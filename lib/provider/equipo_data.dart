@@ -97,8 +97,10 @@ class EquipoData with ChangeNotifier {
   }
 
   void deleteAll() async {
-    var box = await Hive.openBox(kBoxName);
+    var box = await Hive.openBox(kBoxJugadores);
     box.deleteFromDisk();
+    var box2 = await Hive.openBox(kBoxEquipos);
+    box2.deleteFromDisk();
     notifyListeners();
   }
 

@@ -21,7 +21,7 @@ class Jugador extends HiveObject {
   @HiveField(6)
   int dni;
   @HiveField(7)
-  int posicion;
+  bool hasTeam;
   @HiveField(8)
   String liga;
   @HiveField(9)
@@ -40,11 +40,12 @@ class Jugador extends HiveObject {
     this.amarillas,
     this.goles,
     this.rojas,
-    this.posicion,
+    this.hasTeam,
     this.liga,
     this.id,
     this.keyDataBase,
   }) {
+    this.hasTeam = false;
     this.id = counter; //id tiene que arrancar en 1
     // dev.debugger();
     counter += 1;
@@ -60,7 +61,7 @@ class Jugador extends HiveObject {
     this.amarillas = 1;
     this.goles = counter * 5;
     this.rojas = 0;
-    this.posicion = counter + 1;
+
     this.liga = league.toString();
 
     print('Se creo el jugador: ${this.nombre}, con el DNI: ${this.dni}');

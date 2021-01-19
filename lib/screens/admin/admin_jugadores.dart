@@ -41,7 +41,6 @@ class _AdminJugadoresState extends State<AdminJugadores> {
       dni = widget.jugador.dni;
       edad = widget.jugador.edad;
       goles = widget.jugador.goles;
-      posicion = widget.jugador.posicion;
       rojas = widget.jugador.rojas;
     }
     super.initState();
@@ -237,7 +236,6 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                       edad: edad,
                       goles: goles,
                       liga: liga,
-                      posicion: posicion,
                       rojas: rojas,
                     );
                     jugadores.createPlayer(aux);

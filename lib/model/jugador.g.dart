@@ -24,7 +24,7 @@ class JugadorAdapter extends TypeAdapter<Jugador> {
       amarillas: fields[4] as int,
       goles: fields[3] as int,
       rojas: fields[5] as int,
-      posicion: fields[7] as int,
+      hasTeam: fields[7] as bool,
       liga: fields[8] as String,
       id: fields[9] as int,
       keyDataBase: fields[10] as String,
@@ -50,7 +50,7 @@ class JugadorAdapter extends TypeAdapter<Jugador> {
       ..writeByte(6)
       ..write(obj.dni)
       ..writeByte(7)
-      ..write(obj.posicion)
+      ..write(obj.hasTeam)
       ..writeByte(8)
       ..write(obj.liga)
       ..writeByte(9)

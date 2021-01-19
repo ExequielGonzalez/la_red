@@ -40,7 +40,6 @@ class _HomeState extends State<Home> {
     Provider.of<JugadorData>(context, listen: false).readPlayers();
     //
     // Provider.of<EquipoData>(context, listen: false).deleteAll();
-    if (kRestart) Provider.of<EquipoData>(context, listen: false).deleteAll();
 
     return Scaffold(
       body: Stack(
