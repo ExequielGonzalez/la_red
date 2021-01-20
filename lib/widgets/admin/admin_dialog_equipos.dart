@@ -34,12 +34,12 @@ class _AdminDialogEquiposState extends State<AdminDialogEquipos> {
           return AlertDialog(
             title: Text('Lista de equipos'),
             content: Container(
-              height: 300.0, // Change as per your requirement
-              width: 300.0, // Change as per your requirement
+              height: getHeight(0.9), // Change as per your requirement
+              width: getWidth(0.9), // Change as per your requirement
               child: Column(
                 children: [
                   Container(
-                    color: Colors.lightBlue,
+                    color: kBordo,
                     height: getHeight(0.04),
                     child: Row(
                       children: [
@@ -88,7 +88,10 @@ class _AdminDialogEquiposState extends State<AdminDialogEquipos> {
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text("Crear Nuevo Equipo"),
+                child: Text(
+                  "Crear Nuevo Equipo",
+                  style: TextStyle(color: kBordo),
+                ),
                 onPressed: () async {
                   //Creando un nuevo jugador
                   print('Creando un nuevo equipo');
@@ -106,7 +109,10 @@ class _AdminDialogEquiposState extends State<AdminDialogEquipos> {
                 },
               ),
               FlatButton(
-                child: Text("Salir"),
+                child: Text(
+                  "Salir",
+                  style: TextStyle(color: kBordo),
+                ),
                 onPressed: () {
 //Put your code here which you want to execute on Cancel button click.
 

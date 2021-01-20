@@ -11,7 +11,7 @@ part 'equipo.g.dart';
 @HiveType(typeId: 1)
 class Equipo extends HiveObject {
   @HiveField(0)
-  List<Jugador> jugadores;
+  HiveList jugadores;
   @HiveField(1)
   List<Partido> partidosAnteriores;
   @HiveField(2)
@@ -60,7 +60,7 @@ class Equipo extends HiveObject {
     this.id = counter;
     counter += 1;
     print(
-        'Constructor de Equipo: Creando equipo ${this.nombre} con id: ${this.id}. El counter vale $counter. key: ${this.key}');
+        'Constructor de Equipo: Creando equipo ${this.nombre} con id: ${this.id}. El counter vale $counter. key: ${this.key}. Los jugadores del equipo son: ${jugadores.toString()}');
   }
 
   Equipo.auto() {

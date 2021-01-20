@@ -43,10 +43,12 @@ class EquipoData with ChangeNotifier {
   void createTeam(Equipo equipo) async {
     // _size += 1;
     // equipo.keyDataBase = '$_identifierDataBase$_size';
+
     _equipos.add(equipo);
     var box = await Hive.openBox(kBoxEquipos);
 
-    print('creando equipo ${equipo.nombre} con el id: ${equipo.id} ');
+    print(
+        'creando equipo ${equipo.nombre} con el id: ${equipo.id} y con jugadores ${equipo.jugadores} ');
 
     // box.put(jugador.keyDataBase, jugador);
     box.add(equipo);
@@ -84,7 +86,7 @@ class EquipoData with ChangeNotifier {
   }
 
   void deleteTeam(Equipo equipo) async {
-    print('eliminando el jugador ${equipo.toString()}');
+    print('eliminando el equipo ${equipo.toString()}');
     // dev.debugger();
     var box = await Hive.openBox(kBoxEquipos);
 

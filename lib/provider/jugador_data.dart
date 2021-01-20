@@ -14,6 +14,14 @@ class JugadorData with ChangeNotifier {
   final String _sizeDataBase = 'nPlayers';
   final String _identifierDataBase = 'player';
 
+  List<Jugador> getJugadoresSinEquipo() {
+    List<Jugador> _aux = [];
+    _jugadores.forEach((element) {
+      if (!element.hasTeam) _aux.add(element);
+    });
+    return _aux;
+  }
+
   int _size = -1;
 
   List<Jugador> get getJugadores => _jugadores;

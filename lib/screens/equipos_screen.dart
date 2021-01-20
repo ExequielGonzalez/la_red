@@ -39,7 +39,7 @@ class _EquiposState extends State<Equipos> {
     equipos.forEach((element) {
       if (element.liga == league.toString()) {
         print(
-            'creando un nuevo listItem con ${element.nombre} y ${element.id}');
+            'creando un nuevo listItem con ${element.nombre}, ${element.id} y con jugadores: ${element.jugadores.toString()}');
         _listItem = EquiposListItem(
           equipo: element,
           onTap: () {

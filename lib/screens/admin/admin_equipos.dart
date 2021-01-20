@@ -6,7 +6,9 @@ import 'package:card_settings/card_settings.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:la_red/model/equipo.dart';
+import 'package:la_red/model/jugador.dart';
 import 'package:la_red/provider/equipo_data.dart';
+import 'package:la_red/provider/jugadores_equipo_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -28,6 +30,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool error = false;
+  bool init = false;
 
   String nombre = '';
   String liga = '';
@@ -39,6 +42,8 @@ class _AdminEquiposState extends State<AdminEquipos> {
   int partidosPerdidos = 0;
   int puntos = 0;
   int partidosJugados = 0;
+
+  List<Jugador> jugadoresEquipo = [];
 
   Uint8List foto;
 
@@ -63,6 +68,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
       puntos = widget.equipo.puntos;
       partidosJugados = widget.equipo.partidosJugados;
       foto = widget.equipo.photoURL;
+      jugadoresEquipo = widget.equipo.jugadores.cast<Jugador>();
     } else
       initPhoto();
 
@@ -72,6 +78,9 @@ class _AdminEquiposState extends State<AdminEquipos> {
   @override
   Widget build(BuildContext context) {
     final equipos = Provider.of<EquipoData>(context, listen: false).getEquipos;
+    // if (widget.equipo == null)
+    final jugadoresEquipo = Provider.of<JugadoresEquipo>(context).jugadorEquipo;
+    final jugadores = Provider.of<JugadorData>(context).getJugadoresSinEquipo();
     LeaguesProvider league = Provider.of<LeaguesProvider>(context);
     return Scaffold(
       body: Form(
@@ -179,34 +188,46 @@ class _AdminEquiposState extends State<AdminEquipos> {
                 },
               ),
 
-              CardSettingsCheckboxPicker(
-                label: 'Jugadores',
-                //TODO: Aqui mostrar los jugadores del equipo
-                initialValues: ['uno', 'dos'],
-                validator: (List<String> value) {
-                  if (value == null || value.isEmpty)
-                    return 'Hay que elegir una liga';
-                  return null;
-                },
-                autovalidateMode: _autoValidateMode,
-                onSaved: (value) => league.setLeagueString(value.first),
-                //TODO: Mostrar los jugadores sin equipo
-                options: equipos.map((value) => value.nombre).toList(),
-                //TODO: Revisar
-                enabled: true,
-                onChanged: (value) {
-                  setState(() {
-                    league.setLeagueString(value.first);
-                  });
-                },
-              ), //jugadores
+              // CardSettingsCheckboxPicker(
+              //   label: 'Jugadores',
+              //   //TODO: Aqui mostrar los jugadores del equipo
+              //   initialValues: [],
+              //   validator: (List<String> value) {
+              //     if (value == null || value.isEmpty)
+              //       return 'Este equipo no tiene jugadores';
+              //     return null;
+              //   },
+              //   autovalidateMode: _autoValidateMode,
+              //   onSaved: (value) => league.setLeagueString(value.first),
+              //   //TODO: Mostrar los jugadores sin equipo
+              //   // options: jugadores
+              //   //     .map((value) => value.hasTeam ? value.nombre : null)
+              //   //     .toList(),
+              //   options: jugadoresSinEquipo
+              //       .map((element) => element.nombre + ' ' + element.apellido)
+              //       .toList(),
+              //   //TODO: Revisar
+              //   enabled: true,
+              //   onChanged: (value) {
+              //     jugadoresSinEquipo.forEach((element) {});
+              //     setState(() {
+              //       print('jugador seleccionado: $value');
+              //       print('${value.length}');
+              //     });
+              //   },
+              // ), //jugadores
+              CardJugadores(
+                // jugadoresSinEquipo: jugadoresSinEquipo,
+                visible: true,
+                // jugadoresDelEquipo: jugadoresEquipo,
+              ),
               CardSettingsButton(
                 label: 'Guardar',
                 isDestructive: false,
                 backgroundColor: kBordo,
                 textColor: Colors.white,
                 bottomSpacing: 4,
-                onPressed: () {
+                onPressed: () async {
                   //TODO: Guardar toda la informaciíon en hive
                   print('Aca se supone que se guarda todo');
 
@@ -216,6 +237,10 @@ class _AdminEquiposState extends State<AdminEquipos> {
                     if (widget.equipo != null) {
                       equipos.deleteTeam(widget.equipo);
                     }
+                    var players = await Hive.openBox<Jugador>(kBoxJugadores);
+
+                    // players.addAll(jugadoresEquipo);
+                    print('\ncreando equipo con jugadores: $jugadoresEquipo');
                     var aux = Equipo(
                       nombre: nombre,
                       liga: liga,
@@ -228,25 +253,30 @@ class _AdminEquiposState extends State<AdminEquipos> {
                       golesContra: golesContra,
                       partidosJugados: partidosJugados,
                       photoURL: foto,
+                      // jugadores: HiveList(players),
                     );
                     equipos.createTeam(aux);
                     print('guardando el jugador: ${aux.toString()}');
+                    players.addAll(jugadoresEquipo
+                        .where((element) => jugadores.contains(element.key)));
+                    aux.jugadores = HiveList(players);
+                    equipos.editTeam(aux);
 
                     Navigator.of(context).pop(true);
                   }
                 },
               ),
-              CardSettingsButton(
-                label: 'Añadir jugador al equipo',
-                isDestructive: false,
-                backgroundColor: kBordo,
-                textColor: Colors.white,
-                bottomSpacing: 4,
-                onPressed: () {
-                  //TODO: abrir un dialog y seleccionar de los jugadores disponibles
-                  print('prueba');
-                },
-              ),
+              // CardSettingsButton(
+              //   label: 'Añadir jugador al equipo',
+              //   isDestructive: false,
+              //   backgroundColor: kBordo,
+              //   textColor: Colors.white,
+              //   bottomSpacing: 4,
+              //   onPressed: () {
+              //     //TODO: abrir un dialog y seleccionar de los jugadores disponibles
+              //     print('prueba');
+              //   },
+              // ),
               CardSettingsInt(
                 enabled: true,
                 label: 'Puntos',
@@ -403,6 +433,176 @@ class _AdminEquiposState extends State<AdminEquipos> {
           ),
         ]),
       ),
+    );
+  }
+}
+
+class CardJugadores extends StatefulWidget implements CardSettingsWidget {
+  @override
+  // List<Jugador> jugadoresSinEquipo = [];
+  // List<Jugador> jugadoresDelEquipo;
+
+  CardJugadores({
+    // this.jugadoresSinEquipo,
+    // this.jugadoresDelEquipo,
+    visible = true,
+  });
+
+  _CardJugadoresState createState() => _CardJugadoresState();
+
+  @override
+  // TODO: implement showMaterialonIOS
+  bool get showMaterialonIOS => throw UnimplementedError();
+
+  @override
+  // TODO: implement visible
+  bool get visible => true;
+}
+
+class _CardJugadoresState extends State<CardJugadores> {
+  double getHeight(double percent) =>
+      MediaQuery.of(context).size.height * percent;
+  double getWidth(double percent) =>
+      MediaQuery.of(context).size.width * percent;
+
+  @override
+  Widget build(BuildContext context) {
+    final jugadores = Provider.of<JugadorData>(context).getJugadoresSinEquipo();
+    final jugadoresEquipo = Provider.of<JugadoresEquipo>(context).jugadorEquipo;
+    // TODO: implement build
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Container(
+          height: getHeight(0.02),
+          child: FlatButton(
+            child: Icon(Icons.add),
+            onPressed: () async {
+              List<Jugador> aux = await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return DialogJugadores(
+                      jugadores: jugadores,
+                    );
+                  });
+              print(aux);
+              setState(() {
+                // widget.jugadoresDelEquipo = aux ?? widget.jugadoresDelEquipo;
+                aux == null ? null : jugadoresEquipo.addAll(aux);
+              });
+            },
+          ),
+        ),
+        Container(
+          constraints: BoxConstraints(
+            maxHeight: getHeight(0.2),
+            minHeight: 0,
+          ),
+          child: ListView.builder(
+              // itemExtent: getHeight(0.05),
+              // itemCount: widget.jugadoresDelEquipo.length,
+              itemCount: jugadoresEquipo.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(top: 10, left: 5),
+                  child: Container(
+                    color: Colors.grey.shade50,
+                    child: InkWell(
+                      child: Text(
+                        // '${widget.jugadoresDelEquipo[index].nombre} ${widget.jugadoresDelEquipo[index].apellido}',
+                        '${jugadoresEquipo[index].nombre} ${jugadoresEquipo[index].apellido}',
+                        style: kTextStyle.copyWith(
+                            color: Colors.black, fontSize: 14),
+                      ),
+                      onLongPress: () {
+                        setState(() {
+                          // widget.jugadoresDelEquipo[index].hasTeam = false;
+                          // widget.jugadoresDelEquipo
+                          //     .remove(widget.jugadoresDelEquipo[index]);
+                          jugadoresEquipo[index].hasTeam = false;
+                          jugadoresEquipo.remove(jugadoresEquipo[index]);
+                        });
+                      },
+                    ),
+                  ),
+                );
+              }),
+        ),
+      ],
+    );
+  }
+}
+
+class DialogJugadores extends StatefulWidget {
+  @override
+  List<Jugador> jugadores = [];
+  DialogJugadores({this.jugadores});
+  _DialogJugadoresState createState() => _DialogJugadoresState();
+}
+
+class _DialogJugadoresState extends State<DialogJugadores> {
+  double getHeight(double percent) =>
+      MediaQuery.of(context).size.height * percent;
+  double getWidth(double percent) =>
+      MediaQuery.of(context).size.width * percent;
+
+  List<Jugador> _aux = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Lista de jugadores'),
+      content: Container(
+        height: getHeight(0.9), // Change as per your requirement
+        width: getWidth(0.9), // Change as per your requirement
+        child: Column(
+          children: [
+            Container(
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: widget.jugadores.length ?? 0,
+                  itemBuilder: (context, index) {
+                    return CheckboxListTile(
+                      value: widget.jugadores[index].hasTeam,
+                      onChanged: (bool value) => setState(() {
+                        widget.jugadores[index].hasTeam = value;
+                      }),
+                      title: Text(
+                          '${widget.jugadores[index].nombre} ${widget.jugadores[index].apellido}'),
+                    );
+                  }),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        FlatButton(
+          child: Text(
+            "Añadir",
+            style: TextStyle(color: kBordo),
+          ),
+          onPressed: () async {
+//Añadiendo jugador al equipo
+
+            widget.jugadores.forEach((element) {
+              if (element.hasTeam) _aux.add(element);
+            });
+
+            Navigator.of(context).pop(_aux);
+          },
+        ),
+        FlatButton(
+          child: Text(
+            "Salir",
+            style: TextStyle(color: kBordo),
+          ),
+          onPressed: () {
+//Put your code here which you want to execute on Cancel button click.
+
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
     );
   }
 }

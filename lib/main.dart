@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:la_red/constants.dart';
 import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/provider/jugador_data.dart';
+import 'package:la_red/provider/jugadores_equipo_provider.dart';
 import 'package:la_red/provider/leagues_provider.dart';
 import 'package:la_red/provider/partido_data.dart';
 import 'package:la_red/screens/contacto.dart';
@@ -35,23 +36,23 @@ Future<List<Box>> _openBox() async {
   Hive.registerAdapter(PartidoAdapter());
   Hive.registerAdapter(JugadorAdapter());
 
-  var box_jugadores = await Hive.openBox(kBoxJugadores,
+  var box_jugadores = await Hive.openBox<Jugador>(kBoxJugadores,
       compactionStrategy: (entries, deletedEntries) {
     return deletedEntries > 10;
   });
-  var box_equipos = await Hive.openBox(kBoxEquipos,
+  var box_equipos = await Hive.openBox<Equipo>(kBoxEquipos,
       compactionStrategy: (entries, deletedEntries) {
     return deletedEntries > 10;
   });
-  var box_partidos = await Hive.openBox(kBoxPartidos,
+  var box_partidos = await Hive.openBox<Partido>(kBoxPartidos,
       compactionStrategy: (entries, deletedEntries) {
     return deletedEntries > 10;
   });
 
   if (kRestart) {
-    box_jugadores.clear();
+    // box_jugadores.clear();
     box_equipos.clear();
-    box_partidos.clear();
+    // box_partidos.clear();
   }
 
   boxList.add(box_jugadores);
@@ -94,6 +95,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => EquipoData()),
         ChangeNotifierProvider(create: (_) => PartidoData()),
         ChangeNotifierProvider(create: (_) => JugadorData()),
+        ChangeNotifierProvider(create: (_) => JugadoresEquipo())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

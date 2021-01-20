@@ -25,7 +25,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
   int amarillas = 0;
   int dni = 0;
   int edad = 0;
-  int goles = 69;
+  int goles = 0;
   int posicion = 0;
   int rojas = 0;
   String liga = Leagues.libre.toString();

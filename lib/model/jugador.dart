@@ -61,7 +61,6 @@ class Jugador extends HiveObject {
     this.amarillas = 1;
     this.goles = counter * 5;
     this.rojas = 0;
-
     this.liga = league.toString();
 
     print('Se creo el jugador: ${this.nombre}, con el DNI: ${this.dni}');
