@@ -51,7 +51,7 @@ Future<List<Box>> _openBox() async {
 
   if (kRestart) {
     // box_jugadores.clear();
-    box_equipos.clear();
+    // box_equipos.clear();
     // box_partidos.clear();
   }
 

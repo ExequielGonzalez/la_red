@@ -238,7 +238,7 @@ class _FixtureState extends State<Posiciones> {
                       ),
                       Expanded(
                         child: ValueListenableBuilder(
-                            valueListenable: Hive.box(kBoxEquipos).listenable(),
+                            valueListenable: Hive.box<Equipo>(kBoxEquipos).listenable(),
                             builder: (context, _, widget) {
                               return ListView(
                                 padding:

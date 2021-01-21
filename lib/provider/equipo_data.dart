@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:la_red/model/equipo.dart';
 
 import 'package:hive/hive.dart';
+import 'package:la_red/model/jugador.dart';
 
 import '../constants.dart';
 
@@ -45,14 +46,14 @@ class EquipoData with ChangeNotifier {
     // equipo.keyDataBase = '$_identifierDataBase$_size';
 
     _equipos.add(equipo);
-    var box = await Hive.openBox(kBoxEquipos);
+    var box = await Hive.openBox<Equipo>(kBoxEquipos);
 
     print(
         'creando equipo ${equipo.nombre} con el id: ${equipo.id} y con jugadores ${equipo.jugadores} ');
 
     // box.put(jugador.keyDataBase, jugador);
     box.add(equipo);
-
+    // equipo.save();
     // box.put(_sizeDataBase, _size);
     notifyListeners();
   }
@@ -60,13 +61,13 @@ class EquipoData with ChangeNotifier {
   void editTeam(Equipo equipo) async {
     print('editando el equipo: ${equipo.toString()}');
     print('editando el equipo: ${equipo.nombre} con el id: ${equipo.id}');
-    var box = await Hive.openBox(kBoxEquipos);
+    var box = await Hive.openBox<Equipo>(kBoxEquipos);
     equipo.save();
     notifyListeners();
   }
 
   void readTeams({bool force = false}) async {
-    var box = await Hive.openBox(kBoxEquipos);
+    var box = await Hive.openBox<Equipo>(kBoxEquipos);
     // Equipo.counter = await box.get(_sizeDataBase, defaultValue: 0);
 
     // print('Hay ${Equipo.counter} equipos');
@@ -88,7 +89,7 @@ class EquipoData with ChangeNotifier {
   void deleteTeam(Equipo equipo) async {
     print('eliminando el equipo ${equipo.toString()}');
     // dev.debugger();
-    var box = await Hive.openBox(kBoxEquipos);
+    var box = await Hive.openBox<Equipo>(kBoxEquipos);
 
     equipo.delete();
 
@@ -99,15 +100,15 @@ class EquipoData with ChangeNotifier {
   }
 
   void deleteAll() async {
-    var box = await Hive.openBox(kBoxJugadores);
+    var box = await Hive.openBox<Jugador>(kBoxJugadores);
     box.deleteFromDisk();
-    var box2 = await Hive.openBox(kBoxEquipos);
+    var box2 = await Hive.openBox<Equipo>(kBoxEquipos);
     box2.deleteFromDisk();
     notifyListeners();
   }
 
-  void closeDB() async {
-    var box = await Hive.openBox(kBoxEquipos);
-    box.put(_sizeDataBase, Equipo.counter);
-  }
+  // void closeDB() async {
+  //   var box = await Hive.openBox<Equipo>(kBoxEquipos);
+  //   box.put(_sizeDataBase, Equipo.counter);
+  // }
 }

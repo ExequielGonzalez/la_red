@@ -17,6 +17,8 @@ import '../../provider/jugador_data.dart';
 import '../../provider/leagues_provider.dart';
 import 'package:file_picker/file_picker.dart';
 
+import 'dart:developer' as dev;
+
 class AdminEquipos extends StatefulWidget {
   Equipo equipo;
   AdminEquipos({this.equipo});
@@ -238,8 +240,12 @@ class _AdminEquiposState extends State<AdminEquipos> {
                       equipos.deleteTeam(widget.equipo);
                     }
                     var players = await Hive.openBox<Jugador>(kBoxJugadores);
-
+                    var teamEdited = await Hive.openBox<Equipo>(kBoxEquipos);
+                    dev.debugger();
+                    players.addAll(jugadoresEquipo
+                        .where((element) => jugadores.contains(element.key)));
                     // players.addAll(jugadoresEquipo);
+                    // aux.jugadores = HiveList(players);
                     print('\ncreando equipo con jugadores: $jugadoresEquipo');
                     var aux = Equipo(
                       nombre: nombre,
@@ -253,13 +259,16 @@ class _AdminEquiposState extends State<AdminEquipos> {
                       golesContra: golesContra,
                       partidosJugados: partidosJugados,
                       photoURL: foto,
-                      // jugadores: HiveList(players),
+                      jugadores: HiveList(players),
                     );
+                    // await teamEdited.add(aux);
+
                     equipos.createTeam(aux);
                     print('guardando el jugador: ${aux.toString()}');
-                    players.addAll(jugadoresEquipo
+                    aux.jugadores.addAll(jugadoresEquipo
                         .where((element) => jugadores.contains(element.key)));
-                    aux.jugadores = HiveList(players);
+                    print('estos jugadores del orto deberian entrar: ${aux.jugadores}');
+                    // await aux.save();
                     equipos.editTeam(aux);
 
                     Navigator.of(context).pop(true);

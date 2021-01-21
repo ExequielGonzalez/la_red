@@ -173,7 +173,7 @@ class _GoleadoresState extends State<Goleadores> {
                       Expanded(
                         child: ValueListenableBuilder(
                             valueListenable:
-                                Hive.box(kBoxJugadores).listenable(),
+                                Hive.box<Jugador>(kBoxJugadores).listenable(),
                             builder: (context, _, widget) {
                               return ListView(
                                 padding:

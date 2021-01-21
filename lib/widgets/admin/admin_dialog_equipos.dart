@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:la_red/constants.dart';
+import 'package:la_red/model/equipo.dart';
 import 'package:la_red/provider/equipo_data.dart';
 
 import 'package:la_red/provider/jugador_data.dart';
@@ -29,7 +30,7 @@ class _AdminDialogEquiposState extends State<AdminDialogEquipos> {
     // final equipos = Provider.of<JugadorData>(context, listen: false);
     LeaguesProvider league = Provider.of<LeaguesProvider>(context);
     return ValueListenableBuilder(
-        valueListenable: Hive.box(kBoxEquipos).listenable(),
+        valueListenable: Hive.box<Equipo>(kBoxEquipos).listenable(),
         builder: (context, _, widget) {
           return AlertDialog(
             title: Text('Lista de equipos'),
@@ -144,7 +145,7 @@ List<Widget> _createTeamList(context, Leagues league) {
             color: Colors.grey.shade50,
             child: Text(
               '${element.nombre} ',
-              style: kTextStyle.copyWith(color: Colors.black, fontSize: 14),
+              style: kTextStyle.copyWith(color: Colors.black, fontSize: 18),
             ),
           ),
         ),

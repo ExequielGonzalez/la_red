@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:la_red/constants.dart';
+import 'package:la_red/model/jugador.dart';
 
 import 'package:la_red/provider/jugador_data.dart';
 import 'package:la_red/provider/leagues_provider.dart';
@@ -30,7 +31,7 @@ class _AdminDialogJugadoresState extends State<AdminDialogJugadores> {
     final jugadores = Provider.of<JugadorData>(context, listen: false);
     LeaguesProvider league = Provider.of<LeaguesProvider>(context);
     return ValueListenableBuilder(
-        valueListenable: Hive.box(kBoxJugadores).listenable(),
+        valueListenable: Hive.box<Jugador>(kBoxJugadores).listenable(),
         builder: (context, _, widget) {
           return AlertDialog(
             title: Text('Lista de jugadores'),
