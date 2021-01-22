@@ -60,7 +60,8 @@ class EquipoData with ChangeNotifier {
 
   void editTeam(Equipo equipo) async {
     print('editando el equipo: ${equipo.toString()}');
-    print('editando el equipo: ${equipo.nombre} con el id: ${equipo.id}');
+    print(
+        'editando el equipo: ${equipo.nombre} con el id: ${equipo.id} y con los jugadores ${equipo.jugadores}');
     var box = await Hive.openBox<Equipo>(kBoxEquipos);
     equipo.save();
     notifyListeners();

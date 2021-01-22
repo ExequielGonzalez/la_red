@@ -175,6 +175,10 @@ List<Widget> _createTeamList(context, Leagues league) {
                 FlatButton(
                   child: Text("Yes"),
                   onPressed: () async {
+                    element.jugadores.forEach((element) {
+                      element.hasTeam = false;
+                      element.save();
+                    });
                     equiposProvider.deleteTeam(element);
                     Navigator.of(context).pop();
                   },

@@ -28,6 +28,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
   int goles = 0;
   int posicion = 0;
   int rojas = 0;
+  bool hasTeam = false;
   String liga = Leagues.libre.toString();
 
   @override
@@ -42,13 +43,14 @@ class _AdminJugadoresState extends State<AdminJugadores> {
       edad = widget.jugador.edad;
       goles = widget.jugador.goles;
       rojas = widget.jugador.rojas;
+      hasTeam = widget.jugador.hasTeam;
     }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    LeaguesProvider league = Provider.of<LeaguesProvider>(context);
+    // LeaguesProvider league = Provider.of<LeaguesProvider>(context);
     return Scaffold(
       body: Form(
         key: _formKey,
@@ -225,9 +227,9 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                   if (!error) {
                     final jugadores =
                         Provider.of<JugadorData>(context, listen: false);
-                    if (widget.jugador != null) {
-                      jugadores.deletePlayer(widget.jugador);
-                    }
+                    // if (widget.jugador != null) {
+                    //   jugadores.deletePlayer(widget.jugador);
+                    // }
                     var aux = Jugador(
                       nombre: nombre,
                       apellido: apellido,
@@ -237,8 +239,22 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                       goles: goles,
                       liga: liga,
                       rojas: rojas,
+                      hasTeam: hasTeam,
                     );
-                    jugadores.createPlayer(aux);
+                    if (widget.jugador != null) {
+                      widget.jugador.nombre = nombre;
+                      widget.jugador.apellido = apellido;
+                      widget.jugador.liga = liga;
+                      widget.jugador.amarillas = amarillas;
+                      widget.jugador.dni = dni;
+                      widget.jugador.edad = edad;
+                      widget.jugador.goles = goles;
+                      widget.jugador.rojas = rojas;
+                      widget.jugador.hasTeam = hasTeam;
+
+                      widget.jugador.save();
+                    } else
+                      jugadores.createPlayer(aux);
                     print('guardando el jugador: ${aux.toString()}');
 
                     Navigator.of(context).pop(true);

@@ -11,7 +11,7 @@ part 'equipo.g.dart';
 @HiveType(typeId: 1)
 class Equipo extends HiveObject {
   @HiveField(0)
-  HiveList jugadores;
+  HiveList<Jugador> jugadores;
   @HiveField(1)
   List<Partido> partidosAnteriores;
   @HiveField(2)

@@ -15,4 +15,15 @@ class JugadoresEquipo with ChangeNotifier {
     _jugadorEquipo.addAll(jugadores);
     notifyListeners();
   }
+
+  void deleteJugador(Jugador jugador) {
+    jugador.hasTeam = false;
+    jugador.save();
+    _jugadorEquipo.removeWhere((element) => element.id == jugador.id);
+    notifyListeners();
+  }
+
+  void clearList() {
+    _jugadorEquipo.clear();
+  }
 }

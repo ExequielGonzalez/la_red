@@ -9,6 +9,7 @@ import 'package:la_red/model/equipo.dart';
 import 'package:la_red/model/jugador.dart';
 import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/provider/jugadores_equipo_provider.dart';
+import 'package:la_red/size_config.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -58,6 +59,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
   @override
   void initState() {
     print('init state de admin_equipos: ${widget.equipo}');
+    // dev.debugger();
     if (widget.equipo != null) {
       nombre = widget.equipo.nombre;
       liga = widget.equipo.liga;
@@ -70,9 +72,23 @@ class _AdminEquiposState extends State<AdminEquipos> {
       puntos = widget.equipo.puntos;
       partidosJugados = widget.equipo.partidosJugados;
       foto = widget.equipo.photoURL;
-      jugadoresEquipo = widget.equipo.jugadores.cast<Jugador>();
+      print(
+          'Estos jugadores estan en el initState de la clase admin_equipos: ${widget.equipo.jugadores}');
+      // jugadoresEquipo = widget.equipo.jugadores.cast<Jugador>();
+      widget.equipo.jugadores.forEach((element) {
+        jugadoresEquipo.add(element);
+        print(
+            'Y ahora estos jugadores estan en el initState de la clase admin_equipos: ${jugadoresEquipo}');
+      });
     } else
       initPhoto();
+    Future.delayed(Duration.zero, () {
+      final jugadoresProvider =
+          Provider.of<JugadoresEquipo>(context, listen: false);
+      jugadoresProvider.clearList();
+
+      jugadoresProvider.addJugadores(jugadoresEquipo);
+    });
 
     super.initState();
   }
@@ -80,9 +96,10 @@ class _AdminEquiposState extends State<AdminEquipos> {
   @override
   Widget build(BuildContext context) {
     final equipos = Provider.of<EquipoData>(context, listen: false).getEquipos;
-    // if (widget.equipo == null)
-    final jugadoresEquipo = Provider.of<JugadoresEquipo>(context).jugadorEquipo;
-    final jugadores = Provider.of<JugadorData>(context).getJugadoresSinEquipo();
+    final jugadoresProvider =
+        Provider.of<JugadoresEquipo>(context, listen: false);
+
+    // final jugadores = Provider.of<JugadorData>(context).getJugadoresSinEquipo();
     LeaguesProvider league = Provider.of<LeaguesProvider>(context);
     return Scaffold(
       body: Form(
@@ -190,34 +207,6 @@ class _AdminEquiposState extends State<AdminEquipos> {
                 },
               ),
 
-              // CardSettingsCheckboxPicker(
-              //   label: 'Jugadores',
-              //   //TODO: Aqui mostrar los jugadores del equipo
-              //   initialValues: [],
-              //   validator: (List<String> value) {
-              //     if (value == null || value.isEmpty)
-              //       return 'Este equipo no tiene jugadores';
-              //     return null;
-              //   },
-              //   autovalidateMode: _autoValidateMode,
-              //   onSaved: (value) => league.setLeagueString(value.first),
-              //   //TODO: Mostrar los jugadores sin equipo
-              //   // options: jugadores
-              //   //     .map((value) => value.hasTeam ? value.nombre : null)
-              //   //     .toList(),
-              //   options: jugadoresSinEquipo
-              //       .map((element) => element.nombre + ' ' + element.apellido)
-              //       .toList(),
-              //   //TODO: Revisar
-              //   enabled: true,
-              //   onChanged: (value) {
-              //     jugadoresSinEquipo.forEach((element) {});
-              //     setState(() {
-              //       print('jugador seleccionado: $value');
-              //       print('${value.length}');
-              //     });
-              //   },
-              // ), //jugadores
               CardJugadores(
                 // jugadoresSinEquipo: jugadoresSinEquipo,
                 visible: true,
@@ -234,58 +223,141 @@ class _AdminEquiposState extends State<AdminEquipos> {
                   print('Aca se supone que se guarda todo');
 
                   if (!error) {
+                    dev.debugger();
                     final equipos =
                         Provider.of<EquipoData>(context, listen: false);
+                    final jugadoresEdit =
+                        Provider.of<JugadorData>(context, listen: false);
+                    // Provider.of<EquipoData>(context, listen: false);
+                    jugadoresEquipo = jugadoresProvider.jugadorEquipo;
+
                     if (widget.equipo != null) {
-                      equipos.deleteTeam(widget.equipo);
+                      //TODO: Esta comparación falla. No detecta si son iguales, pero si son iguales, funciona.
+                      bool equals = true;
+                      List<Jugador> _temporaryList = [];
+                      jugadoresEquipo.forEach((element) {
+                        if (!widget.equipo.jugadores.contains(element)) {
+                          _temporaryList.add(element);
+                          equals = false;
+                        }
+                      });
+
+                      print(equals);
+                      if (!equals) {
+                        jugadoresEquipo = _temporaryList;
+                        equipos.deleteTeam(widget.equipo);
+
+                        print(
+                            '--------------->>>>>>>>>>>>>son distintas<<<<<<<<<--------------------');
+                        var players =
+                            await Hive.openBox<Jugador>(kBoxJugadores);
+                        jugadoresEquipo = jugadoresProvider.jugadorEquipo;
+                        print(
+                            'Aprete el boton de save: ${jugadoresProvider.jugadorEquipo}');
+
+                        print(
+                            '\ncreando equipo con jugadores: $jugadoresEquipo');
+                        var aux = Equipo(
+                          nombre: nombre,
+                          liga: liga,
+                          posicion: posicion,
+                          puntos: puntos,
+                          partidosPerdidos: partidosPerdidos,
+                          partidosEmpates: partidosEmpatados,
+                          partidosGanados: partidosGanados,
+                          golesFavor: golesFavor,
+                          golesContra: golesContra,
+                          partidosJugados: partidosJugados,
+                          photoURL: foto,
+                          jugadores:
+                              HiveList(players, objects: jugadoresEquipo),
+                        );
+
+                        equipos.createTeam(aux);
+                        print('guardando el equipo: ${aux.toString()}');
+
+                        aux.jugadores.forEach((element) {
+                          element.hasTeam = true;
+                          jugadoresEdit.editPlayer(element);
+                        });
+                        equipos.editTeam(aux);
+                      } else {
+                        print(
+                            '----------------------->Se supone que son iguales<------------------');
+
+                        if (widget.equipo != null)
+                          equipos.deleteTeam(widget.equipo);
+
+                        var players =
+                            await Hive.openBox<Jugador>(kBoxJugadores);
+
+                        dev.debugger();
+                        print(
+                            '\ncreando equipo con jugadores: $jugadoresEquipo');
+                        var aux = Equipo(
+                          nombre: nombre,
+                          liga: liga,
+                          posicion: posicion,
+                          puntos: puntos,
+                          partidosPerdidos: partidosPerdidos,
+                          partidosEmpates: partidosEmpatados,
+                          partidosGanados: partidosGanados,
+                          golesFavor: golesFavor,
+                          golesContra: golesContra,
+                          partidosJugados: partidosJugados,
+                          photoURL: foto,
+                          jugadores:
+                              HiveList(players, objects: jugadoresEquipo),
+                        );
+                        equipos.createTeam(aux);
+                        print('guardando el equipo: ${aux.toString()}');
+
+                        aux.jugadores.forEach((element) {
+                          element.hasTeam = true;
+                          jugadoresEdit.editPlayer(element);
+                        });
+                        equipos.editTeam(aux);
+                      }
+                    } else {
+                      print(
+                          '--------------->>>>>>>>>>>>>Es nuevito el team<<<<<<<<<--------------------');
+                      var players = await Hive.openBox<Jugador>(kBoxJugadores);
+                      jugadoresEquipo = jugadoresProvider.jugadorEquipo;
+                      print(
+                          'Aprete el boton de save: ${jugadoresProvider.jugadorEquipo}');
+
+                      print('\ncreando equipo con jugadores: $jugadoresEquipo');
+                      var aux = Equipo(
+                        nombre: nombre,
+                        liga: liga,
+                        posicion: posicion,
+                        puntos: puntos,
+                        partidosPerdidos: partidosPerdidos,
+                        partidosEmpates: partidosEmpatados,
+                        partidosGanados: partidosGanados,
+                        golesFavor: golesFavor,
+                        golesContra: golesContra,
+                        partidosJugados: partidosJugados,
+                        photoURL: foto,
+                        jugadores: HiveList(players, objects: jugadoresEquipo),
+                      );
+
+                      equipos.createTeam(aux);
+                      print('guardando el equipo: ${aux.toString()}');
+
+                      aux.jugadores.forEach((element) {
+                        element.hasTeam = true;
+
+                        jugadoresEdit.editPlayer(element);
+                      });
+                      equipos.editTeam(aux);
                     }
-                    var players = await Hive.openBox<Jugador>(kBoxJugadores);
-                    var teamEdited = await Hive.openBox<Equipo>(kBoxEquipos);
-                    dev.debugger();
-                    players.addAll(jugadoresEquipo
-                        .where((element) => jugadores.contains(element.key)));
-                    // players.addAll(jugadoresEquipo);
-                    // aux.jugadores = HiveList(players);
-                    print('\ncreando equipo con jugadores: $jugadoresEquipo');
-                    var aux = Equipo(
-                      nombre: nombre,
-                      liga: liga,
-                      posicion: posicion,
-                      puntos: puntos,
-                      partidosPerdidos: partidosPerdidos,
-                      partidosEmpates: partidosEmpatados,
-                      partidosGanados: partidosGanados,
-                      golesFavor: golesFavor,
-                      golesContra: golesContra,
-                      partidosJugados: partidosJugados,
-                      photoURL: foto,
-                      jugadores: HiveList(players),
-                    );
-                    // await teamEdited.add(aux);
-
-                    equipos.createTeam(aux);
-                    print('guardando el jugador: ${aux.toString()}');
-                    aux.jugadores.addAll(jugadoresEquipo
-                        .where((element) => jugadores.contains(element.key)));
-                    print('estos jugadores del orto deberian entrar: ${aux.jugadores}');
-                    // await aux.save();
-                    equipos.editTeam(aux);
-
+                    jugadoresProvider.clearList();
                     Navigator.of(context).pop(true);
                   }
                 },
               ),
-              // CardSettingsButton(
-              //   label: 'Añadir jugador al equipo',
-              //   isDestructive: false,
-              //   backgroundColor: kBordo,
-              //   textColor: Colors.white,
-              //   bottomSpacing: 4,
-              //   onPressed: () {
-              //     //TODO: abrir un dialog y seleccionar de los jugadores disponibles
-              //     print('prueba');
-              //   },
-              // ),
+
               CardSettingsInt(
                 enabled: true,
                 label: 'Puntos',
@@ -446,44 +518,31 @@ class _AdminEquiposState extends State<AdminEquipos> {
   }
 }
 
-class CardJugadores extends StatefulWidget implements CardSettingsWidget {
-  @override
-  // List<Jugador> jugadoresSinEquipo = [];
-  // List<Jugador> jugadoresDelEquipo;
-
+class CardJugadores extends StatelessWidget implements CardSettingsWidget {
   CardJugadores({
     // this.jugadoresSinEquipo,
-    // this.jugadoresDelEquipo,
+    // this.jugadoresEquipo,
     visible = true,
   });
 
-  _CardJugadoresState createState() => _CardJugadoresState();
-
-  @override
-  // TODO: implement showMaterialonIOS
-  bool get showMaterialonIOS => throw UnimplementedError();
-
-  @override
-  // TODO: implement visible
-  bool get visible => true;
-}
-
-class _CardJugadoresState extends State<CardJugadores> {
-  double getHeight(double percent) =>
-      MediaQuery.of(context).size.height * percent;
-  double getWidth(double percent) =>
-      MediaQuery.of(context).size.width * percent;
+  double width;
+  double height;
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    width = SizeConfig.safeBlockHorizontal;
+    height = SizeConfig.blockSizeVertical;
+
     final jugadores = Provider.of<JugadorData>(context).getJugadoresSinEquipo();
-    final jugadoresEquipo = Provider.of<JugadoresEquipo>(context).jugadorEquipo;
-    // TODO: implement build
+    final jugadoresProvider = Provider.of<JugadoresEquipo>(context);
+    var jugadoresEquipo = jugadoresProvider.jugadorEquipo;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Container(
-          height: getHeight(0.02),
+          height: height * 0.04,
           child: FlatButton(
             child: Icon(Icons.add),
             onPressed: () async {
@@ -495,16 +554,15 @@ class _CardJugadoresState extends State<CardJugadores> {
                     );
                   });
               print(aux);
-              setState(() {
-                // widget.jugadoresDelEquipo = aux ?? widget.jugadoresDelEquipo;
-                aux == null ? null : jugadoresEquipo.addAll(aux);
-              });
+
+              // widget.jugadoresDelEquipo = aux ?? widget.jugadoresDelEquipo;
+              if (aux != null) jugadoresProvider.addJugadores(aux);
             },
           ),
         ),
         Container(
           constraints: BoxConstraints(
-            maxHeight: getHeight(0.2),
+            maxHeight: height * 0.15,
             minHeight: 0,
           ),
           child: ListView.builder(
@@ -524,13 +582,12 @@ class _CardJugadoresState extends State<CardJugadores> {
                             color: Colors.black, fontSize: 14),
                       ),
                       onLongPress: () {
-                        setState(() {
-                          // widget.jugadoresDelEquipo[index].hasTeam = false;
-                          // widget.jugadoresDelEquipo
-                          //     .remove(widget.jugadoresDelEquipo[index]);
-                          jugadoresEquipo[index].hasTeam = false;
-                          jugadoresEquipo.remove(jugadoresEquipo[index]);
-                        });
+                        // widget.jugadoresDelEquipo[index].hasTeam = false;
+                        // widget.jugadoresDelEquipo
+                        //     .remove(widget.jugadoresDelEquipo[index]);
+                        jugadoresProvider.deleteJugador(jugadoresEquipo[index]);
+                        // jugadoresEquipo[index].hasTeam = false;
+                        // jugadoresEquipo.remove(jugadoresEquipo[index]);
                       },
                     ),
                   ),
@@ -540,6 +597,14 @@ class _CardJugadoresState extends State<CardJugadores> {
       ],
     );
   }
+
+  @override
+  // TODO: implement showMaterialonIOS
+  bool get showMaterialonIOS => throw UnimplementedError();
+
+  @override
+  // TODO: implement visible
+  bool get visible => true;
 }
 
 class DialogJugadores extends StatefulWidget {

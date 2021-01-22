@@ -45,12 +45,12 @@ class Jugador extends HiveObject {
     this.id,
     this.keyDataBase,
   }) {
-    this.hasTeam = false;
+    // this.hasTeam = false;
     this.id = counter; //id tiene que arrancar en 1
     // dev.debugger();
     counter += 1;
     print(
-        'Constructor de Jugador: Creando jugador ${this.nombre} ${this.apellido} con id: ${this.id}. El counter vale $counter. key: ${this.key}');
+        'Constructor de Jugador: Creando jugador ${this.nombre} ${this.apellido} con id: ${this.id}. El counter vale $counter. key: ${this.key}. El jugador tiene equipo: ${this.hasTeam}');
   }
 
   Jugador.auto(String name, Leagues league) {
