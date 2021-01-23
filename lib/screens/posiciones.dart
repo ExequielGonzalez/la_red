@@ -226,10 +226,10 @@ class _FixtureState extends State<Posiciones> {
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
                               child: Container(
-                                width: getWidth(1.2 * gridWidth),
+                                width: getWidth(1.43 * gridWidth),
                                 child: Center(
                                   child: Text(
-                                    'GE',
+                                    'GC',
                                     style: kTextStyleBold.copyWith(
                                         color: kBordo,
                                         fontSize: getWidth(scale)),

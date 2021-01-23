@@ -52,7 +52,7 @@ class FixtureListItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: Image.memory(partido.equipo1.first.photoURL),
                   ),
                 ),
@@ -71,7 +71,7 @@ class FixtureListItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                    padding: EdgeInsets.all(4.0),
                     child: Image.memory(partido.equipo2.first.photoURL),
                   ),
                 ),

@@ -60,8 +60,10 @@ class PositionListItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: width * 0.01),
-                child: Image.memory(equipo.photoURL),
+                padding: EdgeInsets.all(width * 0.01),
+                child: Image.memory(
+                  equipo.photoURL,
+                ),
               ),
             ),
             Expanded(
@@ -164,7 +166,7 @@ class PositionListItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: gridPadding, right: width * 0.015),
               child: Container(
-                width: width * (1.2 * gridWidth),
+                width: width * (1.43 * gridWidth),
                 child: Center(
                   child: Text(
                     '${equipo.golesContra}',

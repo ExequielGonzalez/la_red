@@ -231,9 +231,9 @@ class _AdminEquiposState extends State<AdminEquipos> {
                         Provider.of<JugadorData>(context, listen: false);
                     // Provider.of<EquipoData>(context, listen: false);
                     jugadoresEquipo = jugadoresProvider.jugadorEquipo;
+                    dev.debugger();
 
                     if (widget.equipo != null) {
-                      //TODO: Esta comparación falla. No detecta si son iguales, pero si son iguales, funciona.
                       bool equals = true;
                       List<Jugador> _temporaryList = [];
                       jugadoresEquipo.forEach((element) {
@@ -245,9 +245,8 @@ class _AdminEquiposState extends State<AdminEquipos> {
 
                       print(equals);
                       if (!equals) {
-                        jugadoresEquipo = _temporaryList;
-                        equipos.deleteTeam(widget.equipo);
-
+                        // jugadoresEquipo = _temporaryList;
+                        // equipos.deleteTeam(widget.equipo);
                         print(
                             '--------------->>>>>>>>>>>>>son distintas<<<<<<<<<--------------------');
                         var players =
@@ -258,36 +257,53 @@ class _AdminEquiposState extends State<AdminEquipos> {
 
                         print(
                             '\ncreando equipo con jugadores: $jugadoresEquipo');
-                        var aux = Equipo(
-                          nombre: nombre,
-                          liga: liga,
-                          posicion: posicion,
-                          puntos: puntos,
-                          partidosPerdidos: partidosPerdidos,
-                          partidosEmpates: partidosEmpatados,
-                          partidosGanados: partidosGanados,
-                          golesFavor: golesFavor,
-                          golesContra: golesContra,
-                          partidosJugados: partidosJugados,
-                          photoURL: foto,
-                          jugadores:
-                              HiveList(players, objects: jugadoresEquipo),
-                        );
 
-                        equipos.createTeam(aux);
-                        print('guardando el equipo: ${aux.toString()}');
+                        widget.equipo.nombre = nombre;
+                        widget.equipo.liga = liga;
+                        widget.equipo.posicion = posicion;
+                        widget.equipo.puntos = puntos;
+                        widget.equipo.partidosPerdidos = partidosPerdidos;
+                        widget.equipo.partidosEmpates = partidosEmpatados;
+                        widget.equipo.partidosGanados = partidosGanados;
+                        widget.equipo.golesFavor = golesFavor;
+                        widget.equipo.golesContra = golesContra;
+                        widget.equipo.photoURL = foto;
+                        widget.equipo.jugadores =
+                            HiveList(players, objects: jugadoresEquipo);
+                        widget.equipo.partidosJugados = partidosJugados;
 
-                        aux.jugadores.forEach((element) {
+                        // var aux = Equipo(
+                        //   nombre: nombre,
+                        //   liga: liga,
+                        //   posicion: posicion,
+                        //   puntos: puntos,
+                        //   partidosPerdidos: partidosPerdidos,
+                        //   partidosEmpates: partidosEmpatados,
+                        //   partidosGanados: partidosGanados,
+                        //   golesFavor: golesFavor,
+                        //   golesContra: golesContra,
+                        //   partidosJugados: partidosJugados,
+                        //   photoURL: foto,
+                        //   jugadores:
+                        //       HiveList(players, objects: jugadoresEquipo),
+                        // );
+
+                        // equipos.createTeam(aux);
+                        equipos.editTeam(widget.equipo);
+                        print(
+                            'guardando el equipo: ${widget.equipo.toString()}');
+
+                        widget.equipo.jugadores.forEach((element) {
                           element.hasTeam = true;
                           jugadoresEdit.editPlayer(element);
                         });
-                        equipos.editTeam(aux);
+                        equipos.editTeam(widget.equipo);
                       } else {
                         print(
                             '----------------------->Se supone que son iguales<------------------');
 
-                        if (widget.equipo != null)
-                          equipos.deleteTeam(widget.equipo);
+                        // if (widget.equipo != null)
+                        // equipos.deleteTeam(widget.equipo);
 
                         var players =
                             await Hive.openBox<Jugador>(kBoxJugadores);
@@ -295,29 +311,45 @@ class _AdminEquiposState extends State<AdminEquipos> {
                         // dev.debugger();
                         print(
                             '\ncreando equipo con jugadores: $jugadoresEquipo');
-                        var aux = Equipo(
-                          nombre: nombre,
-                          liga: liga,
-                          posicion: posicion,
-                          puntos: puntos,
-                          partidosPerdidos: partidosPerdidos,
-                          partidosEmpates: partidosEmpatados,
-                          partidosGanados: partidosGanados,
-                          golesFavor: golesFavor,
-                          golesContra: golesContra,
-                          partidosJugados: partidosJugados,
-                          photoURL: foto,
-                          jugadores:
-                              HiveList(players, objects: jugadoresEquipo),
-                        );
-                        equipos.createTeam(aux);
-                        print('guardando el equipo: ${aux.toString()}');
+                        widget.equipo.nombre = nombre;
+                        widget.equipo.liga = liga;
+                        widget.equipo.posicion = posicion;
+                        widget.equipo.puntos = puntos;
+                        widget.equipo.partidosPerdidos = partidosPerdidos;
+                        widget.equipo.partidosEmpates = partidosEmpatados;
+                        widget.equipo.partidosGanados = partidosGanados;
+                        widget.equipo.golesFavor = golesFavor;
+                        widget.equipo.golesContra = golesContra;
+                        widget.equipo.photoURL = foto;
+                        widget.equipo.jugadores =
+                            HiveList(players, objects: jugadoresEquipo);
+                        widget.equipo.partidosJugados = partidosJugados;
 
-                        aux.jugadores.forEach((element) {
+                        // var aux = Equipo(
+                        //   nombre: nombre,
+                        //   liga: liga,
+                        //   posicion: posicion,
+                        //   puntos: puntos,
+                        //   partidosPerdidos: partidosPerdidos,
+                        //   partidosEmpates: partidosEmpatados,
+                        //   partidosGanados: partidosGanados,
+                        //   golesFavor: golesFavor,
+                        //   golesContra: golesContra,
+                        //   partidosJugados: partidosJugados,
+                        //   photoURL: foto,
+                        //   jugadores:
+                        //       HiveList(players, objects: jugadoresEquipo),
+                        // );
+                        equipos.editTeam(widget.equipo);
+                        // equipos.createTeam(aux);
+                        print(
+                            'guardando el equipo: ${widget.equipo.toString()}');
+
+                        widget.equipo.jugadores.forEach((element) {
                           element.hasTeam = true;
                           jugadoresEdit.editPlayer(element);
                         });
-                        equipos.editTeam(aux);
+                        equipos.editTeam(widget.equipo);
                       }
                     } else {
                       print(
@@ -360,7 +392,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
               ),
 
               CardSettingsInt(
-                enabled: true,
+                enabled: false,
                 label: 'Puntos',
                 initialValue: puntos,
                 contentAlign: TextAlign.right,

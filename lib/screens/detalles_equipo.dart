@@ -51,13 +51,17 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
 
   Partido getLastGame() {
     Partido lastGame;
-    if (widget.equipo.partidosAnteriores != null) {
-      if (widget.equipo.partidosAnteriores.length > 1 ||
-          widget.equipo.partidosAnteriores.last.isFinished) {
-        lastGame = widget.equipo.partidosAnteriores.lastWhere(
-            (element) => element.isFinished,
-            orElse: lastGame = null);
+    try {
+      if (widget.equipo.partidosAnteriores != null) {
+        if (widget.equipo.partidosAnteriores.length > 1 ||
+            widget.equipo.partidosAnteriores.last.isFinished) {
+          lastGame = widget.equipo.partidosAnteriores.lastWhere(
+              (element) => element.isFinished,
+              orElse: lastGame = null);
+        }
       }
+    } catch (e) {
+      print(e);
     }
 
     return lastGame;

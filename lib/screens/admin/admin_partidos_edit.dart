@@ -69,9 +69,10 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
             jugadores: equipo.jugadores,
           );
         });
-    if (aux == null) aux.amarillas += 0;
-    aux.amarillas += 1;
-    aux.save();
+    if (aux != null) {
+      aux.amarillas += 1;
+      aux.save();
+    }
   }
 
   void addRoja(context, Equipo equipo) async {
@@ -82,9 +83,10 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
             jugadores: equipo.jugadores,
           );
         });
-    if (aux == null) aux.rojas += 0;
-    aux.rojas += 1;
-    aux.save();
+    if (aux != null) {
+      aux.rojas += 1;
+      aux.save();
+    }
   }
 
   void actualizarEstadisticas() {
@@ -288,7 +290,7 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
                         color: Colors.white,
                       ),
                       onPressed: () {
-                        addAmarilla(context, equipo1);
+                        addAmarilla(context, equipo2);
                       },
                     ),
                     Container(

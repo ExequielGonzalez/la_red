@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:la_red/model/equipo.dart';
+
 import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/provider/leagues_provider.dart';
 import 'package:la_red/screens/detalles_equipo.dart';
@@ -135,12 +139,16 @@ class _EquiposState extends State<Equipos> {
                       topLeft: Radius.circular(20),
                     ),
                   ),
-
-                  child: ListView(
-                    padding: EdgeInsets.only(bottom: getHeight(0.01)),
-                    children: createTeamList(league.currentLeague) ??
-                        [Center(child: CircularProgressIndicator())],
-                  ),
+                  child: ValueListenableBuilder(
+                      valueListenable:
+                          Hive.box<Equipo>(kBoxEquipos).listenable(),
+                      builder: (context, _, widget) {
+                        return ListView(
+                          padding: EdgeInsets.only(bottom: getHeight(0.01)),
+                          children: createTeamList(league.currentLeague) ??
+                              [Center(child: CircularProgressIndicator())],
+                        );
+                      }),
                 ),
               ),
             ],

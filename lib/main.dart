@@ -31,6 +31,7 @@ Future<List<Box>> _openBox() async {
   List<Box> boxList = [];
   Directory directory = await pathProvider.getApplicationDocumentsDirectory();
   Hive.init(directory.path);
+  print(directory.path);
 
   Hive.registerAdapter(EquipoAdapter());
   Hive.registerAdapter(PartidoAdapter());
