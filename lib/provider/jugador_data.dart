@@ -4,6 +4,8 @@ import 'package:la_red/model/jugador.dart';
 
 import 'package:hive/hive.dart';
 
+import 'dart:developer' as dev;
+
 import '../constants.dart';
 
 class JugadorData with ChangeNotifier {
@@ -12,41 +14,53 @@ class JugadorData with ChangeNotifier {
   final String _sizeDataBase = 'nPlayers';
   final String _identifierDataBase = 'player';
 
+  List<Jugador> getJugadoresSinEquipo() {
+    List<Jugador> _aux = [];
+    _jugadores.forEach((element) {
+      if (!element.hasTeam) _aux.add(element);
+    });
+    return _aux;
+  }
+
+  int _size = -1;
+
   List<Jugador> get getJugadores => _jugadores;
-  Jugador getTeam(index) => _jugadores.elementAt(index);
+  Jugador getPlayer(index) => _jugadores.elementAt(index);
   int get playerLength => _jugadores.length;
 
-  void createPlayer() async {
-    var box = await Hive.openBox(kBoxName);
+  void createPlayer(Jugador jugador) async {
+    _size += 1;
+    jugador.keyDataBase = '$_identifierDataBase$_size';
+    _jugadores.add(jugador);
+    var box = await Hive.openBox<Jugador>(kBoxJugadores);
 
-    Jugador.counter = await box.get(_sizeDataBase, defaultValue: 0);
-    print(Jugador.counter);
+    // print(
+    //     'creando jugador ${jugador.nombre} con el id: ${jugador.id} y n: ${_size}}');
 
-    await box.put('$_identifierDataBase${Jugador.counter}',
-        Jugador.auto('Cristiano Ronaldo', Leagues.libre));
-    await box.put('$_identifierDataBase${Jugador.counter}',
-        Jugador.auto('Lionel Messi', Leagues.libre));
-    await box.put('$_identifierDataBase${Jugador.counter}',
-        Jugador.auto('Robert Lewandowski', Leagues.libre));
-    await box.put('$_identifierDataBase${Jugador.counter}',
-        Jugador.auto('Zlatan Ibrahimovic', Leagues.m30));
-    await box.put('$_identifierDataBase${Jugador.counter}',
-        Jugador.auto('Neymar JR', Leagues.m30));
+    box.add(jugador);
 
-    await box.put(_sizeDataBase, Jugador.counter);
     notifyListeners();
   }
 
-  void readPLayers() async {
-    var box = await Hive.openBox(kBoxName);
-    Jugador.counter = await box.get(_sizeDataBase, defaultValue: 0);
+  void editPlayer(Jugador jugador) async {
+    // print('editando el jugador: ${jugador.toString()}');
+    // print('editando el jugador: ${jugador.nombre} con el id: ${jugador.id}');
+    var box = await Hive.openBox<Jugador>(kBoxJugadores);
+    jugador.save();
+    notifyListeners();
+  }
 
-    print('look at thisss ${Jugador.counter}');
-    if (!_read) {
-      for (int i = 0; i < Jugador.counter; i++) {
-        var aux = await box.get('$_identifierDataBase$i');
-        _jugadores.add(aux);
-      }
+  void readPlayers({bool force = false}) async {
+    var box = await Hive.openBox<Jugador>(kBoxJugadores);
+
+    // print('box values jugador: ${box.values}');
+
+    if (!_read || force) {
+      box.values.forEach((element) {
+        print('el jugador ${element.nombre} es creado');
+        _jugadores.add(element);
+      });
+
       _read = true;
     }
 
@@ -54,9 +68,15 @@ class JugadorData with ChangeNotifier {
   }
 
   //TODO: Revisar esta función. Ahora esta eliminando el archivo de la lista, pero no de la base de datos
-  void deletePlayer(int id) async {
-    var box = await Hive.openBox(kBoxName);
-    _jugadores.removeWhere((element) => element.dni == id);
+  void deletePlayer(Jugador jugador) async {
+    print('eliminando el jugador ${jugador.toString()}');
+    // dev.debugger();
+    var box = await Hive.openBox<Jugador>(kBoxJugadores);
+
+    jugador.delete();
+
+    _jugadores.removeWhere((element) => element.id == jugador.id);
+    _size -= 1;
 
     notifyListeners();
   }

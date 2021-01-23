@@ -5,6 +5,7 @@ import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/provider/jugador_data.dart';
 import 'package:la_red/provider/partido_data.dart';
 import 'package:la_red/size_config.dart';
+import 'package:la_red/widgets/admin/admin_fab.dart';
 import 'package:la_red/widgets/background.dart';
 import 'package:la_red/widgets/home_button.dart';
 import 'package:provider/provider.dart';
@@ -36,9 +37,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     Provider.of<EquipoData>(context, listen: false).readTeams();
     Provider.of<PartidoData>(context, listen: false).readMatches();
-    Provider.of<JugadorData>(context, listen: false).readPLayers();
+    Provider.of<JugadorData>(context, listen: false).readPlayers();
+    //
+    // Provider.of<EquipoData>(context, listen: false).deleteAll();
 
-    // Provider.of<EquipoData>(context, listen: false).deleteTeams();
     return Scaffold(
       body: Stack(
         children: [

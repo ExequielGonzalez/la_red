@@ -52,8 +52,8 @@ class FixtureListItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: Image.asset(partido.equipo1.photoURL),
+                    padding: const EdgeInsets.all(4.0),
+                    child: Image.memory(partido.equipo1.first.photoURL),
                   ),
                 ),
               ),
@@ -71,8 +71,8 @@ class FixtureListItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4.0),
-                    child: Image.asset(partido.equipo2.photoURL),
+                    padding: EdgeInsets.all(4.0),
+                    child: Image.memory(partido.equipo2.first.photoURL),
                   ),
                 ),
               ),
@@ -86,7 +86,7 @@ class FixtureListItem extends StatelessWidget {
                 Flexible(
                   flex: 3,
                   child: Text(
-                    partido.equipo1.nombre,
+                    partido.equipo1.first.nombre,
                     style: kTextStyle.copyWith(fontSize: kFontSize, height: 1),
                   ),
                 ),
@@ -100,7 +100,7 @@ class FixtureListItem extends StatelessWidget {
                 Flexible(
                   flex: 3,
                   child: Text(
-                    partido.equipo2.nombre,
+                    partido.equipo2.first.nombre,
                     style: kTextStyle.copyWith(fontSize: kFontSize, height: 1),
                   ),
                 )
@@ -125,7 +125,8 @@ class FixtureListItem extends StatelessWidget {
                   child: Container(
                     width: width * 0.35,
                     child: Text(
-                      partido.fecha,
+                      // partido.fecha,
+                      "${partido.fecha.day.toString().padLeft(2, '0')}-${partido.fecha.month.toString().padLeft(2, '0')}-${partido.fecha.year.toString()}",
                       style:
                           kTextStyle.copyWith(fontSize: kFontSize, height: 1),
                     ),
@@ -134,7 +135,7 @@ class FixtureListItem extends StatelessWidget {
                 Flexible(
                   flex: 2,
                   child: Text(
-                    '${partido.hora} HS',
+                    '${partido.fecha.hour.toString().padLeft(2, '0')}:${partido.fecha.minute.toString().padLeft(2, '0')} HS',
                     style: kTextStyle.copyWith(fontSize: kFontSize, height: 1),
                   ),
                 )

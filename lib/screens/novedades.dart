@@ -18,6 +18,15 @@ class _NovedadesState extends State<Novedades> {
         height: getHeight(1),
         width: getWidth(1),
         title: 'novedades',
+        child: Expanded(
+          child: Center(
+            child: Container(
+              width: 100,
+              height: 100,
+              color: Colors.blue,
+            ),
+          ),
+        ),
       ),
     );
   }

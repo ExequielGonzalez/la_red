@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:la_red/model/jugador.dart';
 import 'package:la_red/provider/jugador_data.dart';
 import 'package:la_red/provider/leagues_provider.dart';
-import 'package:la_red/widgets/background.dart';
+import 'package:la_red/widgets/admin/admin_fab.dart';
+
 import 'package:la_red/widgets/background_template.dart';
 import 'package:la_red/widgets/goleadores_list_item.dart';
 import 'package:la_red/widgets/leagues_tab.dart';
-import 'package:la_red/widgets/screen_banner.dart';
-import 'package:la_red/widgets/screen_title.dart';
+
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
+
+import 'dart:developer' as dev;
 
 class Goleadores extends StatefulWidget {
   @override
@@ -17,6 +22,7 @@ class Goleadores extends StatefulWidget {
 }
 
 class _GoleadoresState extends State<Goleadores> {
+  //TODO: El problema de que la id me cambie esta en esta clase
   double getHeight(double percent) =>
       MediaQuery.of(context).size.height * percent;
   double getWidth(double percent) =>
@@ -27,30 +33,28 @@ class _GoleadoresState extends State<Goleadores> {
   List<GoleadoresListItem> _goleadoresList = [];
 
   List<Widget> createPlayerList(Leagues league) {
+    int _posicion = 1;
     _goleadoresList = [];
     final goleadores =
         Provider.of<JugadorData>(context, listen: false).getJugadores;
-    goleadores.sort();
+
+    Comparator<Jugador> sortByGoles = (b, a) => a.goles.compareTo(b.goles);
+    goleadores.sort(sortByGoles);
     GoleadoresListItem _listItem;
 
-    print(goleadores.length);
     goleadores.forEach((element) {
+      print(
+          'Goleadores tab:creando un nuevo listItem con ${element.nombre} y dni: ${element.dni} y la id ${element.id}');
       if (element.liga == league.toString()) {
-        print(
-            'creando un nuevo listItem con ${element.nombre} y dni: ${element.dni}');
         _listItem = GoleadoresListItem(
           jugador: element,
+          posicion: _posicion,
         );
 
         _goleadoresList.add(_listItem);
+        _posicion += 1;
       }
     });
-    // _teamList.forEach((element) {
-    //   print('listItem con ${element.equipo.nombre} y ${element.equipo.id}');
-    // });
-
-    // print(_teamListAux.length);
-
     return _goleadoresList;
   }
 
@@ -67,6 +71,7 @@ class _GoleadoresState extends State<Goleadores> {
   Widget build(BuildContext context) {
     LeaguesProvider league = Provider.of<LeaguesProvider>(context);
     return Scaffold(
+      floatingActionButton: kAdmin ? AdminFAB() : Container(),
       body: BackgroundTemplate(
         height: getHeight(1),
         width: getWidth(1),
@@ -166,11 +171,20 @@ class _GoleadoresState extends State<Goleadores> {
                         ),
                       ),
                       Expanded(
-                        child: ListView(
-                          padding: EdgeInsets.only(bottom: getHeight(0.01)),
-                          children: createPlayerList(league.currentLeague) ??
-                              [Center(child: CircularProgressIndicator())],
-                        ),
+                        child: ValueListenableBuilder(
+                            valueListenable:
+                                Hive.box<Jugador>(kBoxJugadores).listenable(),
+                            builder: (context, _, widget) {
+                              return ListView(
+                                padding:
+                                    EdgeInsets.only(bottom: getHeight(0.01)),
+                                children: createPlayerList(
+                                        league.currentLeague) ??
+                                    [
+                                      Center(child: CircularProgressIndicator())
+                                    ],
+                              );
+                            }),
                       ),
                     ],
                   ),

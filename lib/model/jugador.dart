@@ -1,11 +1,11 @@
 import 'package:hive/hive.dart';
 
 import '../constants.dart';
-
+import 'dart:developer' as dev;
 part 'jugador.g.dart';
 
 @HiveType(typeId: 0)
-class Jugador extends Comparable {
+class Jugador extends HiveObject {
   @HiveField(0)
   String nombre;
   @HiveField(1)
@@ -21,11 +21,16 @@ class Jugador extends Comparable {
   @HiveField(6)
   int dni;
   @HiveField(7)
-  int posicion;
+  bool hasTeam;
   @HiveField(8)
   String liga;
+  @HiveField(9)
+  int id;
+  @HiveField(10)
+  String keyDataBase;
 
-  static int counter = 0;
+  //TODO: Añadir que cada jugador pertenezca a un equipo
+  static int counter = 1;
 
   Jugador({
     this.nombre,
@@ -35,9 +40,18 @@ class Jugador extends Comparable {
     this.amarillas,
     this.goles,
     this.rojas,
-    this.posicion,
+    this.hasTeam,
     this.liga,
-  });
+    this.id,
+    this.keyDataBase,
+  }) {
+    // this.hasTeam = false;
+    this.id = counter; //id tiene que arrancar en 1
+    // dev.debugger();
+    counter += 1;
+    print(
+        'Constructor de Jugador: Creando jugador ${this.nombre} ${this.apellido} con id: ${this.id}. El counter vale $counter. key: ${this.key}. El jugador tiene equipo: ${this.hasTeam}');
+  }
 
   Jugador.auto(String name, Leagues league) {
     this.nombre = name;
@@ -47,17 +61,22 @@ class Jugador extends Comparable {
     this.amarillas = 1;
     this.goles = counter * 5;
     this.rojas = 0;
-    this.posicion = counter + 1;
     this.liga = league.toString();
 
     print('Se creo el jugador: ${this.nombre}, con el DNI: ${this.dni}');
     counter += 1;
   }
 
-  @override
   int compareTo(other) {
     // TODO: implement compareTo
     return -this.goles.compareTo(other.goles);
+  }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return 'id: ${this.id}  - counter: $counter - key: ${this.key}-> El jugador ${this.nombre} ${this.apellido}, con DNI: ${this.dni}, que juega en la liga ${this.liga} y ha hecho ${this.goles} goles';
+    return super.toString();
   }
 
   @override

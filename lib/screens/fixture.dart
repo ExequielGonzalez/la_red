@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:la_red/provider/leagues_provider.dart';
 import 'package:la_red/provider/partido_data.dart';
+import 'package:la_red/widgets/admin/admin_fab.dart';
 import 'package:la_red/widgets/background.dart';
 import 'package:la_red/widgets/background_template.dart';
 import 'package:la_red/widgets/equiposListItem.dart';
@@ -34,9 +35,9 @@ class _FixtureState extends State<Fixture> {
 
     print(partidos.length);
     partidos.forEach((element) {
-      if (element.liga == league.toString()) {
+      if (element.liga == league.toString() && !element.isFinished) {
         print(
-            'creando un nuevo partido ${element.equipo1.nombre} vs ${element.equipo2.nombre}');
+            'creando un nuevo partido ${element.equipo1.first.nombre} vs ${element.equipo2.first.nombre}');
         _listItem = FixtureListItem(
           partido: element,
         );
@@ -61,6 +62,7 @@ class _FixtureState extends State<Fixture> {
   Widget build(BuildContext context) {
     LeaguesProvider league = Provider.of<LeaguesProvider>(context);
     return Scaffold(
+      floatingActionButton: kAdmin ? AdminFAB() : Container(),
       body: BackgroundTemplate(
         height: getHeight(1),
         width: getWidth(1),

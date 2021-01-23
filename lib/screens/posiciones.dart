@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:la_red/model/equipo.dart';
 import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/provider/leagues_provider.dart';
 import 'package:la_red/size_config.dart';
+import 'package:la_red/widgets/admin/admin_fab.dart';
 import 'package:la_red/widgets/background_template.dart';
 import 'package:la_red/widgets/leagues_tab.dart';
 import 'package:la_red/widgets/position_list_item.dart';
 import 'package:provider/provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../constants.dart';
 
@@ -28,8 +32,13 @@ class _FixtureState extends State<Posiciones> {
 
   List<Widget> createPositionList(Leagues league) {
     _positionList = [];
+    int _posicion = 1;
     final equipos = Provider.of<EquipoData>(context, listen: false).getEquipos;
-    equipos.sort();
+    // equipos.sort();
+    // Comparator<Equipo> sortByPuntos = (b, a) => a.puntos.compareTo(b.puntos);
+
+    Comparator<Equipo> sortTeams = (b, a) => Equipo.sortTeams(b, a);
+    equipos.sort(sortTeams);
     PositionListItem _listItem;
 
     print(equipos.length);
@@ -39,9 +48,12 @@ class _FixtureState extends State<Posiciones> {
             'creando un nuevo listItem con ${element.nombre} y ${element.id}');
         _listItem = PositionListItem(
           equipo: element,
+          posicion: _posicion,
         );
 
         _positionList.add(_listItem);
+
+        _posicion += 1;
       }
     });
 
@@ -53,6 +65,7 @@ class _FixtureState extends State<Posiciones> {
     SizeConfig().init(context);
     LeaguesProvider league = Provider.of<LeaguesProvider>(context);
     return Scaffold(
+      floatingActionButton: kAdmin ? AdminFAB() : Container(),
       body: BackgroundTemplate(
         height: getHeight(1),
         width: getWidth(1),
@@ -213,10 +226,10 @@ class _FixtureState extends State<Posiciones> {
                               padding:
                                   EdgeInsets.symmetric(horizontal: gridPadding),
                               child: Container(
-                                width: getWidth(1.2 * gridWidth),
+                                width: getWidth(1.43 * gridWidth),
                                 child: Center(
                                   child: Text(
-                                    'GE',
+                                    'GC',
                                     style: kTextStyleBold.copyWith(
                                         color: kBordo,
                                         fontSize: getWidth(scale)),
@@ -228,11 +241,20 @@ class _FixtureState extends State<Posiciones> {
                         ),
                       ),
                       Expanded(
-                        child: ListView(
-                          padding: EdgeInsets.only(bottom: getHeight(0.01)),
-                          children: createPositionList(league.currentLeague) ??
-                              [Center(child: CircularProgressIndicator())],
-                        ),
+                        child: ValueListenableBuilder(
+                            valueListenable:
+                                Hive.box<Equipo>(kBoxEquipos).listenable(),
+                            builder: (context, _, widget) {
+                              return ListView(
+                                padding:
+                                    EdgeInsets.only(bottom: getHeight(0.01)),
+                                children: createPositionList(
+                                        league.currentLeague) ??
+                                    [
+                                      Center(child: CircularProgressIndicator())
+                                    ],
+                              );
+                            }),
                       ),
                     ],
                   ),

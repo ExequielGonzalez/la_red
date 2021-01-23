@@ -25,10 +25,10 @@ class EquipoAdapter extends TypeAdapter<Equipo> {
       partidosJugados: fields[3] as int,
       partidosPerdidos: fields[7] as int,
       id: fields[10] as int,
-      jugadores: (fields[0] as List)?.cast<Jugador>(),
+      jugadores: (fields[0] as HiveList)?.castHiveList(),
       nombre: fields[9] as String,
-      partidosAnteriores: (fields[1] as List)?.cast<Partido>(),
-      photoURL: fields[11] as String,
+      partidosAnteriores: (fields[1] as HiveList)?.castHiveList(),
+      photoURL: fields[11] as Uint8List,
       liga: fields[12] as String,
       posicion: fields[13] as int,
     );
