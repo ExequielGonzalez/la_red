@@ -3,38 +3,44 @@ import 'package:flutter/material.dart';
 
 import 'package:la_red/constants.dart';
 import 'package:la_red/model/jugador.dart';
+import 'package:la_red/model/partido.dart';
 
 import 'package:la_red/provider/jugador_data.dart';
 import 'package:la_red/provider/leagues_provider.dart';
+import 'package:la_red/provider/partido_data.dart';
 import 'package:la_red/screens/admin/admin_jugadores.dart';
+import 'package:la_red/screens/admin/admin_partidos_create.dart';
+import 'package:la_red/screens/admin/admin_partidos_edit.dart';
 import 'package:la_red/widgets/leagues_tab.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class AdminDialogJugadores extends StatefulWidget {
+class AdminDialogPartidos extends StatefulWidget {
   @override
-  _AdminDialogJugadoresState createState() => _AdminDialogJugadoresState();
+  _AdminDialogPartidosState createState() => _AdminDialogPartidosState();
 }
 
-class _AdminDialogJugadoresState extends State<AdminDialogJugadores> {
+class _AdminDialogPartidosState extends State<AdminDialogPartidos> {
   double getHeight(double percent) =>
       MediaQuery.of(context).size.height * percent;
   double getWidth(double percent) =>
       MediaQuery.of(context).size.width * percent;
 
-  bool _playersWithTeams = false;
+  bool _matchesFinished = false;
 
   @override
   Widget build(BuildContext context) {
     final jugadores = Provider.of<JugadorData>(context, listen: false);
     LeaguesProvider league = Provider.of<LeaguesProvider>(context);
+    final partidosProvider = Provider.of<PartidoData>(context);
+    // final partidos = partidosProvider.getPartidos;
     return ValueListenableBuilder(
         valueListenable: Hive.box<Jugador>(kBoxJugadores).listenable(),
         builder: (context, _, widget) {
           return AlertDialog(
-            title: Text('Lista de jugadores'),
+            title: Text('Lista de Partidos'),
             content: Container(
               height: getHeight(0.9), // Change as per your requirement
               width: getWidth(0.9), // Change as per your requirement
@@ -45,15 +51,15 @@ class _AdminDialogJugadoresState extends State<AdminDialogJugadores> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(_playersWithTeams
-                            ? 'Jugadores con Equipo'
-                            : 'Jugadores sin Equipo'),
+                        Text(_matchesFinished
+                            ? 'Partidos Finalizados'
+                            : 'Partidos por jugar'),
                         CupertinoSwitch(
                           activeColor: kBordo,
-                          value: _playersWithTeams,
+                          value: _matchesFinished,
                           onChanged: (value) {
                             setState(() {
-                              _playersWithTeams = value;
+                              _matchesFinished = value;
                             });
                           },
                         ),
@@ -102,8 +108,8 @@ class _AdminDialogJugadoresState extends State<AdminDialogJugadores> {
                   Container(
                     child: ListView(
                       shrinkWrap: true,
-                      children: _createPlayerList(
-                          context, league.currentLeague, _playersWithTeams),
+                      children: _createMatchesList(
+                          context, league.currentLeague, _matchesFinished),
                     ),
                   ),
                 ],
@@ -112,16 +118,16 @@ class _AdminDialogJugadoresState extends State<AdminDialogJugadores> {
             actions: <Widget>[
               FlatButton(
                 child: Text(
-                  "Crear Nuevo jugador",
+                  "Crear Nuevo partido",
                   style: TextStyle(color: kBordo),
                 ),
                 onPressed: () async {
                   //Creando un nuevo jugador
-                  print('Creando un nuevo jugador');
+                  print('Creando un nuevo partido');
                   bool newValue = await Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {
-                      return AdminJugadores();
+                      return AdminPartidosCreate();
                     }),
                   );
                 },
@@ -132,6 +138,8 @@ class _AdminDialogJugadoresState extends State<AdminDialogJugadores> {
                   style: TextStyle(color: kBordo),
                 ),
                 onPressed: () {
+//Put your code here which you want to execute on Cancel button click.
+
                   Navigator.of(context).pop();
                 },
               ),
@@ -141,40 +149,64 @@ class _AdminDialogJugadoresState extends State<AdminDialogJugadores> {
   }
 }
 
-List<Widget> _createPlayerList(context, Leagues league, playersWithTeam) {
-  List<InkWell> _jugadoresList = [];
-  final jugadoresProvdier = Provider.of<JugadorData>(context, listen: false);
-  final jugadores = jugadoresProvdier.getJugadores;
+List<Widget> _createMatchesList(context, Leagues league, gamesFinished) {
+  List<InkWell> _partidosList = [];
+  final partidosProvider = Provider.of<PartidoData>(context);
+  final partidos = partidosProvider.getPartidos;
   // goleadores.sort();
   InkWell _listItem;
 
-  print(jugadores.toString());
-  jugadores.forEach((element) {
+  print(partidos.toString());
+  partidos.forEach((element) {
     print(element.toString());
     if (element.liga == league.toString() &&
-        element.hasTeam == playersWithTeam) {
+        element.isFinished == gamesFinished) {
       print(
-          'creando un nuevo listItem con ${element.nombre} y dni: ${element.dni}');
+          'el partido entre ${element.equipo1.first.nombre} vs ${element.equipo2.first.nombre} es mostrado');
+
       _listItem = InkWell(
         child: Padding(
           padding: EdgeInsets.only(top: 10, left: 5),
           child: Container(
             color: Colors.grey.shade50,
             child: Text(
-              '${element.nombre} ${element.apellido}',
+              '${element.equipo1.first.nombre} vs ${element.equipo2.first.nombre}',
               style: kTextStyle.copyWith(color: Colors.black, fontSize: 14),
             ),
           ),
         ),
         onTap: () async {
-          await Navigator.push(
+          bool success = await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AdminJugadores(
-                jugador: element,
+              builder: (context) => AdminPartidosEdit(
+                partido: element,
               ),
             ),
           );
+          if (success) {
+            // print(element);
+            // var games = await Hive.openBox<Partido>(kBoxPartidos);
+            Partido aux;
+            aux =
+                partidosProvider.getMatchByKey(partidosProvider.lastKeyEdited);
+
+            // List<Partido> aux1 = aux.equipo1.first.partidosAnteriores;
+            // print('Ya hay ${aux1.length} partidos creados ');
+            // List<Partido> aux2 = aux.equipo2.first.partidosAnteriores;
+            //
+            // aux1.add(aux);
+            // aux2.add(aux);
+            //
+            // print('Ya hay ${aux1.length} partidos creados ');
+            // element.equipo1.first.partidosAnteriores =
+            //     HiveList(games, objects: aux1);
+            // element.equipo2.first.partidosAnteriores =
+            //     HiveList(games, objects: aux2);
+
+            aux.equipo1.first.save();
+            aux.equipo2.first.save();
+          }
         },
         onLongPress: () {
           showDialog(
@@ -182,7 +214,7 @@ List<Widget> _createPlayerList(context, Leagues league, playersWithTeam) {
             barrierDismissible: true,
             child: AlertDialog(
               content: Text(
-                "¿Deseas eliminar a ${element.nombre} ${element.apellido}?",
+                "¿Deseas eliminar el partido entre ${element.equipo1.first.nombre} vs ${element.equipo2.first.nombre}?",
               ),
               actions: <Widget>[
                 FlatButton(
@@ -192,7 +224,7 @@ List<Widget> _createPlayerList(context, Leagues league, playersWithTeam) {
                 FlatButton(
                   child: Text("Yes"),
                   onPressed: () async {
-                    jugadoresProvdier.deletePlayer(element);
+                    partidosProvider.deleteMatch(element);
                     Navigator.of(context).pop();
                   },
                 ),
@@ -202,8 +234,8 @@ List<Widget> _createPlayerList(context, Leagues league, playersWithTeam) {
         },
       );
 
-      _jugadoresList.add(_listItem);
+      _partidosList.add(_listItem);
     }
   });
-  return _jugadoresList;
+  return _partidosList;
 }

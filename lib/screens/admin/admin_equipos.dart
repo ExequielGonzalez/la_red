@@ -10,6 +10,7 @@ import 'package:la_red/model/jugador.dart';
 import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/provider/jugadores_equipo_provider.dart';
 import 'package:la_red/size_config.dart';
+import 'package:la_red/widgets/admin/dialog_add_jugadores_to_team.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -223,7 +224,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
                   print('Aca se supone que se guarda todo');
 
                   if (!error) {
-                    dev.debugger();
+                    // dev.debugger();
                     final equipos =
                         Provider.of<EquipoData>(context, listen: false);
                     final jugadoresEdit =
@@ -291,7 +292,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
                         var players =
                             await Hive.openBox<Jugador>(kBoxJugadores);
 
-                        dev.debugger();
+                        // dev.debugger();
                         print(
                             '\ncreando equipo con jugadores: $jugadoresEquipo');
                         var aux = Equipo(
@@ -549,7 +550,7 @@ class CardJugadores extends StatelessWidget implements CardSettingsWidget {
               List<Jugador> aux = await showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return DialogJugadores(
+                    return DialogAddJugadoresToTeam(
                       jugadores: jugadores,
                     );
                   });
@@ -605,78 +606,4 @@ class CardJugadores extends StatelessWidget implements CardSettingsWidget {
   @override
   // TODO: implement visible
   bool get visible => true;
-}
-
-class DialogJugadores extends StatefulWidget {
-  @override
-  List<Jugador> jugadores = [];
-  DialogJugadores({this.jugadores});
-  _DialogJugadoresState createState() => _DialogJugadoresState();
-}
-
-class _DialogJugadoresState extends State<DialogJugadores> {
-  double getHeight(double percent) =>
-      MediaQuery.of(context).size.height * percent;
-  double getWidth(double percent) =>
-      MediaQuery.of(context).size.width * percent;
-
-  List<Jugador> _aux = [];
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('Lista de jugadores'),
-      content: Container(
-        height: getHeight(0.9), // Change as per your requirement
-        width: getWidth(0.9), // Change as per your requirement
-        child: Column(
-          children: [
-            Container(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: widget.jugadores.length ?? 0,
-                  itemBuilder: (context, index) {
-                    return CheckboxListTile(
-                      value: widget.jugadores[index].hasTeam,
-                      onChanged: (bool value) => setState(() {
-                        widget.jugadores[index].hasTeam = value;
-                      }),
-                      title: Text(
-                          '${widget.jugadores[index].nombre} ${widget.jugadores[index].apellido}'),
-                    );
-                  }),
-            ),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        FlatButton(
-          child: Text(
-            "Añadir",
-            style: TextStyle(color: kBordo),
-          ),
-          onPressed: () async {
-//Añadiendo jugador al equipo
-
-            widget.jugadores.forEach((element) {
-              if (element.hasTeam) _aux.add(element);
-            });
-
-            Navigator.of(context).pop(_aux);
-          },
-        ),
-        FlatButton(
-          child: Text(
-            "Salir",
-            style: TextStyle(color: kBordo),
-          ),
-          onPressed: () {
-//Put your code here which you want to execute on Cancel button click.
-
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
-  }
 }

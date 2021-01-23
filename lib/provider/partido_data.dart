@@ -13,46 +13,44 @@ class PartidoData with ChangeNotifier {
   static bool _read = false;
   final String _sizeDataBase = 'nMatches';
   final String _identifierDataBase = 'match';
+  var _lastKeyEdited;
 
   List<Partido> get getPartidos => _partidos;
-  Partido getMatch(index) => _partidos.elementAt(index);
+  Partido getMatchByIndex(index) => _partidos.elementAt(index);
   int get nMatches => _partidos.length;
+  // int get lastKeyEdited => _lastKeyEdited;
+  int get lastKeyEdited => _lastKeyEdited;
 
-  void createMatchAuto() async {
-    var box = await Hive.openBox(kBoxName);
+  Partido getMatchByKey(key) {
+    return _partidos.firstWhere((element) => element.key == key);
+  }
 
-    Partido.counter = await box.get(_sizeDataBase, defaultValue: 0);
-    print(Partido.counter);
-    await box.put('$_identifierDataBase${Partido.counter}',
-        Partido.autoT1T2(Equipo.auto(), Equipo.auto(), Leagues.libre));
-
-    await box.put(_sizeDataBase, Partido.counter);
+  void createMatch(Partido partido) async {
+    _partidos.add(partido);
+    var box = await Hive.openBox<Partido>(kBoxPartidos);
+    box.add(partido);
+    _lastKeyEdited = partido.key;
     notifyListeners();
   }
 
-  // void createMatch(Equipo equipo1,Equipo equipo2 ) async {
-  //   var box = await Hive.openBox(kBoxName);
-  //
-  //   Partido.counter = await box.get('nMatches', defaultValue: 0);
-  //   print(Partido.counter);
-  //   await box.put('match${Partido.counter}',
-  //       Partido.autoT1T2(Equipo.auto(), Equipo.auto(), Leagues.libre));
-  //
-  //
-  //   await box.put('size', Equipo.counter);
-  //   notifyListeners();
-  // }
+  void editMatch(Partido partido) async {
+    var box = await Hive.openBox<Partido>(kBoxPartidos);
+    partido.save();
+    _lastKeyEdited = partido.key;
+    notifyListeners();
+  }
 
   void readMatches() async {
-    var box = await Hive.openBox(kBoxName);
-    Partido.counter = await box.get(_sizeDataBase, defaultValue: 0);
+    var box = await Hive.openBox<Partido>(kBoxPartidos);
+    print('box values partidos: ${box.values}');
 
     print('there are ${Partido.counter} games to play');
     if (!_read) {
-      for (int i = 0; i < Partido.counter; i++) {
-        var aux = await box.get('$_identifierDataBase$i');
-        _partidos.add(aux);
-      }
+      box.values.forEach((element) {
+        print(
+            'el partido entre ${element.equipo1.first.nombre} vs ${element.equipo2.first.nombre} es creado');
+        _partidos.add(element);
+      });
       _read = true;
     }
 
@@ -60,10 +58,11 @@ class PartidoData with ChangeNotifier {
   }
 
   //TODO: Revisar esta función. Ahora esta eliminando el archivo de la lista, pero no de la base de datos
-  void deleteMatch(int id) async {
-    var box = await Hive.openBox(kBoxName);
-    _partidos.removeWhere((element) => element.id == id);
-
+  void deleteMatch(Partido partido) async {
+    var box = await Hive.openBox<Partido>(kBoxPartidos);
+    partido.delete();
+    _lastKeyEdited = partido.key;
+    _partidos.removeWhere((element) => element.id == partido.id);
     notifyListeners();
   }
 }

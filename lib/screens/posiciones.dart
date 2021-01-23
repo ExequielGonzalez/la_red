@@ -32,6 +32,7 @@ class _FixtureState extends State<Posiciones> {
 
   List<Widget> createPositionList(Leagues league) {
     _positionList = [];
+    int _posicion = 1;
     final equipos = Provider.of<EquipoData>(context, listen: false).getEquipos;
     // equipos.sort();
     // Comparator<Equipo> sortByPuntos = (b, a) => a.puntos.compareTo(b.puntos);
@@ -47,9 +48,12 @@ class _FixtureState extends State<Posiciones> {
             'creando un nuevo listItem con ${element.nombre} y ${element.id}');
         _listItem = PositionListItem(
           equipo: element,
+          posicion: _posicion,
         );
 
         _positionList.add(_listItem);
+
+        _posicion += 1;
       }
     });
 
@@ -238,7 +242,8 @@ class _FixtureState extends State<Posiciones> {
                       ),
                       Expanded(
                         child: ValueListenableBuilder(
-                            valueListenable: Hive.box<Equipo>(kBoxEquipos).listenable(),
+                            valueListenable:
+                                Hive.box<Equipo>(kBoxEquipos).listenable(),
                             builder: (context, _, widget) {
                               return ListView(
                                 padding:

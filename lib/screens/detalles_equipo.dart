@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:la_red/constants.dart';
+import 'package:la_red/model/partido.dart';
 import 'package:la_red/widgets/background.dart';
 import 'package:la_red/widgets/fixtureListItem.dart';
+import 'package:la_red/widgets/last_game_item.dart';
 import 'package:la_red/widgets/screen_banner.dart';
 import 'package:la_red/model/equipo.dart';
 
@@ -19,6 +21,8 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
   void initState() {
     super.initState();
     updateUI(widget.equipo);
+    ultimo = getLastGame();
+    proximo = getNextGame();
   }
 
   double getHeight(double percent) =>
@@ -36,6 +40,31 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
     });
   }
 
+  Partido getNextGame() {
+    Partido nextGame;
+    if (widget.equipo.partidosAnteriores != null)
+      widget.equipo.partidosAnteriores.forEach((element) {
+        if (!element.isFinished) nextGame = element;
+      });
+    return nextGame;
+  }
+
+  Partido getLastGame() {
+    Partido lastGame;
+    if (widget.equipo.partidosAnteriores != null) {
+      if (widget.equipo.partidosAnteriores.length > 1 ||
+          widget.equipo.partidosAnteriores.last.isFinished) {
+        lastGame = widget.equipo.partidosAnteriores.lastWhere(
+            (element) => element.isFinished,
+            orElse: lastGame = null);
+      }
+    }
+
+    return lastGame;
+  }
+
+  Partido ultimo;
+  Partido proximo;
   String title;
   double scale = 0.045;
   @override
@@ -121,231 +150,59 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                  top: getHeight(0.029),
-                                ),
-                                height: getHeight(0.16), //
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                ),
-                                child: Stack(
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
-                                  // mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: getWidth(0.05),
-                                        ),
-                                        child: Text(
-                                          'PRÓXIMO PARTIDO',
-                                          style: kTextStyleBold.copyWith(
-                                              color: kBordo,
-                                              fontSize: kFontSize),
-                                        ),
+                              proximo != null
+                                  ? Container(
+                                      margin: EdgeInsets.only(
+                                        top: getHeight(0.029),
                                       ),
-                                    ),
-                                    // SizedBox(
-                                    //   height: getHeight(0.02),
-                                    // ),
-                                    Center(
-                                      child: Container(
-                                        height: getHeight(0.1), //
-
-                                        decoration: BoxDecoration(
-                                          color: kBordo,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                        ),
-                                        // child: FixtureListItem(
-                                        //   height: getHeight(1),
-                                        //   width: getWidth(1),
-                                        //   equipo1: 'Barcelona',
-                                        //   equipo2: 'Real Madrid',
-                                        //   fecha: 'MIERCOLES 28/11',
-                                        //   hora: '17:30',
-                                        //   numCancha: 1,
-                                        // ),
+                                      height: getHeight(0.16), //
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                  top: getHeight(0.029),
-                                ),
-                                height: getHeight(0.16), //
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                ),
-                                child: Stack(
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
-                                  // mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: getWidth(0.05),
-                                        ),
-                                        child: Text(
-                                          'ÚLTIMO PARTIDO',
-                                          style: kTextStyleBold.copyWith(
-                                              color: kBordo,
-                                              fontSize: kFontSize),
-                                        ),
-                                      ),
-                                    ),
-                                    Center(
-                                      child: Container(
-                                        height: getHeight(0.1), //
-                                        decoration: BoxDecoration(
-                                          color: kBordo,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                    horizontal: getWidth(0.05),
-                                                    vertical: getHeight(0.002),
-                                                  ),
-                                                  child: Container(
-                                                    width: getWidth(0.07),
-                                                    height: getWidth(0.07),
-//
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 4.0),
-                                                      child: Image.asset(
-                                                          "assets/images/fixture.png"),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                    horizontal: getWidth(0.05),
-                                                    vertical: getHeight(0.002),
-                                                  ),
-                                                  child: Container(
-                                                    width: getWidth(0.07),
-                                                    height: getWidth(0.07),
-//
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 4.0),
-                                                      child: Image.asset(
-                                                          "assets/images/fixture.png"),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Expanded(
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Flexible(
-                                                    flex: 3,
-                                                    child: Text(
-                                                      'Arsenal',
-                                                      style:
-                                                          kTextStyle.copyWith(
-                                                              fontSize:
-                                                                  kFontSize),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: getHeight(0.01),
-                                                  ),
-                                                  Flexible(
-                                                    flex: 3,
-                                                    child: Text(
-                                                      'Real Madrid',
-                                                      style:
-                                                          kTextStyle.copyWith(
-                                                              fontSize:
-                                                                  kFontSize),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
+                                      child: Stack(
+                                        // crossAxisAlignment: CrossAxisAlignment.start,
+                                        // mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Padding(
                                               padding: EdgeInsets.symmetric(
-                                                  horizontal: getWidth(0.04)),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    width: getWidth(0.35),
-                                                    child: Center(
-                                                      child: Text(
-                                                        '1',
-                                                        style:
-                                                            kTextStyle.copyWith(
-                                                                fontSize:
-                                                                    kFontSize),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: getHeight(0.01),
-                                                  ),
-                                                  Container(
-                                                    width: getWidth(0.35),
-                                                    child: Center(
-                                                      child: Text(
-                                                        '2',
-                                                        style:
-                                                            kTextStyle.copyWith(
-                                                                fontSize:
-                                                                    kFontSize),
-                                                      ),
-                                                    ),
-                                                  )
-                                                ],
+                                                horizontal: getWidth(0.05),
                                               ),
-                                            )
-                                          ],
-                                        ),
+                                              child: Text(
+                                                'PRÓXIMO PARTIDO',
+                                                style: kTextStyleBold.copyWith(
+                                                    color: kBordo,
+                                                    fontSize: kFontSize),
+                                              ),
+                                            ),
+                                          ),
+                                          // SizedBox(
+                                          //   height: getHeight(0.02),
+                                          // ),
+                                          Center(
+                                            child: Container(
+                                              height: getHeight(0.1), //
+
+                                              decoration: BoxDecoration(
+                                                color: kBordo,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20)),
+                                              ),
+                                              child: FixtureListItem(
+                                                partido: proximo,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                    )
+                                  : Container(),
+                              ultimo != null
+                                  ? LastGameItem(lastGame: ultimo)
+                                  : Container()
                             ],
                           ),
                         ),

@@ -13,7 +13,7 @@ class Equipo extends HiveObject {
   @HiveField(0)
   HiveList<Jugador> jugadores;
   @HiveField(1)
-  List<Partido> partidosAnteriores;
+  HiveList<Partido> partidosAnteriores;
   @HiveField(2)
   int puntos;
   @HiveField(3)

@@ -64,27 +64,12 @@ Future<List<Box>> _openBox() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Directory directory = await pathProvider.getApplicationDocumentsDirectory();
-  // Hive.init(directory.path);
-  // //
-  // Hive.registerAdapter(EquipoAdapter());
-  // Hive.registerAdapter(PartidoAdapter());
-  // Hive.registerAdapter(JugadorAdapter());
   List<Box> boxList = [];
   boxList = await _openBox();
-
-  // final Box<dynamic> dbEquipo = await Hive.openBox(kBoxName,
-  //     compactionStrategy: (entries, deletedEntries) {
-  //   return deletedEntries > 10;
-  // });
-
-  // runApp(MyApp(database: dbEquipo));
   runApp(MyApp(database: boxList));
 }
 
 class MyApp extends StatelessWidget {
-  // final Box<dynamic> database;
-  // MyApp({this.database});
   final List<Box> database;
   MyApp({this.database});
   @override

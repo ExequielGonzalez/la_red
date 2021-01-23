@@ -35,9 +35,9 @@ class _FixtureState extends State<Fixture> {
 
     print(partidos.length);
     partidos.forEach((element) {
-      if (element.liga == league.toString()) {
+      if (element.liga == league.toString() && !element.isFinished) {
         print(
-            'creando un nuevo partido ${element.equipo1.nombre} vs ${element.equipo2.nombre}');
+            'creando un nuevo partido ${element.equipo1.first.nombre} vs ${element.equipo2.first.nombre}');
         _listItem = FixtureListItem(
           partido: element,
         );

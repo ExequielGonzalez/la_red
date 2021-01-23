@@ -8,9 +8,11 @@ class PositionListItem extends StatelessWidget {
   double height;
 
   final Equipo equipo;
+  final int posicion;
 
   PositionListItem({
     this.equipo,
+    this.posicion,
   });
 
   final double scale = 0.045;
@@ -43,7 +45,7 @@ class PositionListItem extends StatelessWidget {
                 width: width * 0.05,
                 child: Center(
                   child: Text(
-                    '${equipo.posicion ?? 0}',
+                    '${this.posicion}',
                     style: kTextStyle.copyWith(fontSize: kFontSize),
                   ),
                 ),

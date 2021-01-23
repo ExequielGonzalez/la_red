@@ -5,6 +5,7 @@ import 'package:la_red/screens/admin/admin_equipos.dart';
 import 'package:la_red/screens/admin/admin_jugadores.dart';
 import 'package:la_red/widgets/admin/admin_dialog_equipos.dart';
 import 'package:la_red/widgets/admin/admin_dialog_jugadores.dart';
+import 'package:la_red/widgets/admin/admin_dialog_partidos.dart';
 
 import '../../size_config.dart';
 
@@ -97,6 +98,11 @@ class AdminFAB extends StatelessWidget {
         RawMaterialButton(
             onPressed: () {
               print("Abriendo Menú para editar partidos");
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AdminDialogPartidos();
+                  });
             },
             shape: CircleBorder(),
             padding: const EdgeInsets.all(24.0),

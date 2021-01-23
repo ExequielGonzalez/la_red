@@ -127,60 +127,6 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                   });
                 },
               ),
-              CardSettingsInt(
-                label: 'Goles',
-                initialValue: goles,
-                inputAction: TextInputAction.next,
-                validator: (value) {
-                  if (value != null) {
-                    if (value < 0) return 'El valor debe de ser mayor que 0';
-                  }
-                  return null;
-                },
-                autovalidateMode: _autoValidateMode,
-                onSaved: (value) => goles = value,
-                onChanged: (value) {
-                  setState(() {
-                    goles = value;
-                  });
-                },
-              ),
-              CardSettingsInt(
-                label: 'Amarillas',
-                initialValue: amarillas,
-                inputAction: TextInputAction.next,
-                validator: (value) {
-                  if (value != null) {
-                    if (value < 0) return 'El valor debe de ser mayor que 0';
-                  }
-                  return null;
-                },
-                autovalidateMode: _autoValidateMode,
-                onSaved: (value) => amarillas = value,
-                onChanged: (value) {
-                  setState(() {
-                    amarillas = value;
-                  });
-                },
-              ),
-              CardSettingsInt(
-                label: 'Rojas',
-                initialValue: rojas,
-                inputAction: TextInputAction.next,
-                validator: (value) {
-                  if (value != null) {
-                    if (value < 0) return 'El valor debe de ser mayor que 0';
-                  }
-                  return null;
-                },
-                autovalidateMode: _autoValidateMode,
-                onSaved: (value) => rojas = value,
-                onChanged: (value) {
-                  setState(() {
-                    rojas = value;
-                  });
-                },
-              ),
               CardSettingsListPicker(
                 label: 'Liga',
                 initialValue: liga,
@@ -211,6 +157,63 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                 onChanged: (value) {
                   setState(() {
                     liga = value;
+                  });
+                },
+              ),
+              CardSettingsInt(
+                label: 'Goles',
+                initialValue: goles,
+                inputAction: TextInputAction.next,
+                validator: (value) {
+                  if (value != null) {
+                    if (value < 0) return 'El valor debe de ser mayor que 0';
+                  }
+                  return null;
+                },
+                enabled: false,
+                autovalidateMode: _autoValidateMode,
+                onSaved: (value) => goles = value,
+                onChanged: (value) {
+                  setState(() {
+                    goles = value;
+                  });
+                },
+              ),
+              CardSettingsInt(
+                label: 'Amarillas',
+                initialValue: amarillas,
+                inputAction: TextInputAction.next,
+                validator: (value) {
+                  if (value != null) {
+                    if (value < 0) return 'El valor debe de ser mayor que 0';
+                  }
+                  return null;
+                },
+                enabled: false,
+                autovalidateMode: _autoValidateMode,
+                onSaved: (value) => amarillas = value,
+                onChanged: (value) {
+                  setState(() {
+                    amarillas = value;
+                  });
+                },
+              ),
+              CardSettingsInt(
+                label: 'Rojas',
+                initialValue: rojas,
+                inputAction: TextInputAction.next,
+                validator: (value) {
+                  if (value != null) {
+                    if (value < 0) return 'El valor debe de ser mayor que 0';
+                  }
+                  return null;
+                },
+                enabled: false,
+                autovalidateMode: _autoValidateMode,
+                onSaved: (value) => rojas = value,
+                onChanged: (value) {
+                  setState(() {
+                    rojas = value;
                   });
                 },
               ),
