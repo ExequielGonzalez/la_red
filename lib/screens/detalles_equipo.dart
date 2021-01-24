@@ -4,6 +4,7 @@ import 'package:la_red/model/partido.dart';
 import 'package:la_red/widgets/background.dart';
 import 'package:la_red/widgets/fixtureListItem.dart';
 import 'package:la_red/widgets/last_game_item.dart';
+import 'package:la_red/widgets/player_statistics.dart';
 import 'package:la_red/widgets/screen_banner.dart';
 import 'package:la_red/model/equipo.dart';
 
@@ -206,7 +207,10 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                   : Container(),
                               ultimo != null
                                   ? LastGameItem(lastGame: ultimo)
-                                  : Container()
+                                  : Container(),
+                              PlayerStatitistics(
+                                equipo: widget.equipo,
+                              ),
                             ],
                           ),
                         ),

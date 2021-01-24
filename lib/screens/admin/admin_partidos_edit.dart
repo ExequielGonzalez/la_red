@@ -8,6 +8,7 @@ import 'package:la_red/provider/jugador_data.dart';
 import 'package:la_red/provider/partido_data.dart';
 import 'package:la_red/size_config.dart';
 import 'package:la_red/widgets/admin/dialog_show_jugadores.dart';
+import 'package:la_red/widgets/player_statistics.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -72,6 +73,7 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
     if (aux != null) {
       aux.amarillas += 1;
       aux.save();
+      setState(() {});
     }
   }
 
@@ -86,6 +88,7 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
     if (aux != null) {
       aux.rojas += 1;
       aux.save();
+      setState(() {});
     }
   }
 

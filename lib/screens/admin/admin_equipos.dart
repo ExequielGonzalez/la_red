@@ -231,7 +231,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
                         Provider.of<JugadorData>(context, listen: false);
                     // Provider.of<EquipoData>(context, listen: false);
                     jugadoresEquipo = jugadoresProvider.jugadorEquipo;
-                    dev.debugger();
+                    // dev.debugger();
 
                     if (widget.equipo != null) {
                       bool equals = true;

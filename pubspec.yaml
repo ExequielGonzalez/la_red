@@ -17,6 +17,7 @@ dependencies:
   path_provider: ^1.6.24
   fab_circular_menu: ^1.0.1
   card_settings: ^1.16.2
+  font_awesome_flutter: ^8.11.0
 
 dependency_overrides:
 cupertino_icons: ^1.0.0
