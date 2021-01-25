@@ -157,20 +157,23 @@ class _AdminEquiposState extends State<AdminEquipos> {
                     return null;
                 },
                 autovalidateMode: _autoValidateMode,
-                onSaved: (value) => foto = value,
+                onSaved: (value) {
+                  try {
+                    setState(() {
+                      foto = value;
+                    });
+                  } catch (e) {
+                    print(e);
+                  }
+                },
                 onChanged: (value) {
-                  setState(() {
-                    // List<int> aux = value;
-                    // print(aux);
-                    // aux.asMap().forEach((index, element) {
-                    //   if (element >= 255 || element < 0)
-                    //     print('Aca esta el putito, en index: ${index}');
-                    // });
-                    // //TODO:ARREGLAR ESTO, para poder usar las fotos como logo de los equipos
-                    // // foto = BinaryReader.utf8Decoder.convert(value).toString();
-                    // print(foto);
-                    foto = value;
-                  });
+                  try {
+                    setState(() {
+                      foto = value;
+                    });
+                  } catch (e) {
+                    print(e);
+                  }
                 },
               ), //foto
 

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:la_red/constants.dart';
@@ -24,74 +25,114 @@ class PlayerStatitistics extends StatelessWidget {
     SizeConfig().init(context);
     width = SizeConfig.safeBlockHorizontal;
     height = SizeConfig.blockSizeVertical;
-    return Flexible(
-      fit: FlexFit.loose,
-      child: Container(
-        width: double.infinity,
-        margin: EdgeInsets.only(top: height * (0.005)),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20),
-            topLeft: Radius.circular(20),
-          ),
-        ),
-        child: Column(
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.only(top: height * 0.025),
+        child: Stack(
           children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                  width * (0.05), width * (0.05), width * (0.05), 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: gridPadding),
-                    child: Container(
-                      width: width * (2 * gridWidth),
-                      child: Center(
-                        child: FaIcon(FontAwesomeIcons.futbol),
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(top: height * (0.005)),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(20),
+                  topLeft: Radius.circular(20),
+                ),
+              ),
+              child: Container(
+                margin: EdgeInsets.only(
+                  top: height * (0.029),
+                ),
+                // height: height * (0.16), //
+                decoration: BoxDecoration(
+                  color: kBordo,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(20),
+                    topLeft: Radius.circular(20),
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(
+                          width * (0.05), width * (0.05), width * (0.05), 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: gridPadding),
+                            child: Container(
+                              width: width * (2 * gridWidth),
+                              child: Center(
+                                child: FaIcon(
+                                  FontAwesomeIcons.solidFutbol,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: gridPadding),
+                            child: Container(
+                              width: width * (2 * gridWidth),
+                              child: Center(
+                                child: FaIcon(
+                                  FontAwesomeIcons.squareFull,
+                                  color: Colors.yellow[600],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: gridPadding),
+                            child: Container(
+                              width: width * (2 * gridWidth),
+                              child: Center(
+                                child: FaIcon(
+                                  FontAwesomeIcons.squareFull,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: gridPadding),
-                    child: Container(
-                      width: width * (2 * gridWidth),
-                      child: Center(
-                        child: FaIcon(
-                          FontAwesomeIcons.squareFull,
-                          color: Colors.yellow,
-                        ),
+                    Flexible(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: equipo.jugadores.length,
+                        itemBuilder: (context, index) {
+                          return PlayerList(
+                              gridPadding: gridPadding,
+                              height: height,
+                              jugador: equipo.jugadores[index],
+                              width: width,
+                              gridWidth: gridWidth);
+                        },
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: gridPadding),
-                    child: Container(
-                      width: width * (2 * gridWidth),
-                      child: Center(
-                        child: FaIcon(
-                          FontAwesomeIcons.squareFull,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: equipo.jugadores.length,
-              itemBuilder: (context, index) {
-                return PlayerList(
-                    gridPadding: gridPadding,
-                    height: height,
-                    jugador: equipo.jugadores[index],
-                    width: width,
-                    gridWidth: gridWidth);
-              },
-            )
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: width * (0.05), vertical: height * 0.005),
+                child: Text(
+                  'ESTADíSTICAS',
+                  style: kTextStyleBold.copyWith(
+                      color: kBordo, fontSize: kFontSize),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -100,7 +141,7 @@ class PlayerStatitistics extends StatelessWidget {
 }
 
 class PlayerList extends StatelessWidget {
-  const PlayerList({
+  PlayerList({
     @required this.gridPadding,
     @required this.height,
     @required this.jugador,
@@ -114,74 +155,82 @@ class PlayerList extends StatelessWidget {
   final double width;
   final double gridWidth;
 
-  final fontColor = Colors.black;
+  final fontColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              alignment: Alignment.centerLeft,
-              height: height * 0.025,
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  '${jugador.nombre} ${jugador.apellido}',
-                  style: kTextStyle.copyWith(
-                      fontSize: kFontSize, color: fontColor),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: gridPadding),
-            child: Container(
-              width: width * (2 * gridWidth),
-              child: Center(
-                child: Text(
-                  '${jugador.goles}',
-                  style: kTextStyle.copyWith(
-                    color: fontColor,
-                    fontSize: kFontSize,
+    return Container(
+      width: width * (0.08),
+      // height: height * (0.04),
+      decoration: BoxDecoration(
+        color: kBordo,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                height: height * 0.025,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    '${jugador.nombre} ${jugador.apellido}',
+                    style: kTextStyle.copyWith(
+                        fontSize: kFontSize, color: fontColor),
                   ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: gridPadding),
-            child: Container(
-              width: width * (2 * gridWidth),
-              child: Center(
-                child: Text(
-                  '${jugador.amarillas}',
-                  style: kTextStyle.copyWith(
-                    color: fontColor,
-                    fontSize: kFontSize,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: gridPadding),
+              child: Container(
+                width: width * (2 * gridWidth),
+                child: Center(
+                  child: Text(
+                    '${jugador.goles}',
+                    style: kTextStyle.copyWith(
+                      color: fontColor,
+                      fontSize: kFontSize,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: gridPadding),
-            child: Container(
-              width: width * (2 * gridWidth),
-              child: Center(
-                child: Text(
-                  '${jugador.rojas}',
-                  style: kTextStyle.copyWith(
-                    color: fontColor,
-                    fontSize: kFontSize,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: gridPadding),
+              child: Container(
+                width: width * (2 * gridWidth),
+                child: Center(
+                  child: Text(
+                    '${jugador.amarillas}',
+                    style: kTextStyle.copyWith(
+                      color: fontColor,
+                      fontSize: kFontSize,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: gridPadding),
+              child: Container(
+                width: width * (2 * gridWidth),
+                child: Center(
+                  child: Text(
+                    '${jugador.rojas}',
+                    style: kTextStyle.copyWith(
+                      color: fontColor,
+                      fontSize: kFontSize,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -81,6 +81,7 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
           Align(
             alignment: Alignment.center,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 ScreenBanner(
                   height: getHeight(1),
@@ -93,6 +94,7 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                       border: Border.all(color: Colors.blueGrey),
                     ),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Row(
                           children: [
