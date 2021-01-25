@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:card_settings/card_settings.dart';
 import 'package:hive/hive.dart';
 import 'package:la_red/model/equipo.dart';
-import 'package:la_red/model/jugador.dart';
+
 import 'package:la_red/model/partido.dart';
 import 'package:la_red/provider/equipo_data.dart';
-import 'package:la_red/provider/jugador_data.dart';
+
+import 'package:la_red/provider/leagues_provider.dart';
 import 'package:la_red/provider/partido_data.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -63,7 +64,7 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
   Widget build(BuildContext context) {
     final equiposProvider = Provider.of<EquipoData>(context, listen: false);
     equipos = equiposProvider.getEquipos;
-
+    LeaguesProvider league = Provider.of<LeaguesProvider>(context);
     return Scaffold(
       body: Form(
         key: _formKey,
@@ -89,6 +90,9 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                   if (value == null || value.isEmpty) {
                     error = true;
                     return 'Hay que elegir un equipo';
+                  } else if (value == 'NO HAY EQUIPOS') {
+                    error = true;
+                    return 'No hay equipos en esta liga';
                   } else {
                     error = false;
                     return null;
@@ -96,14 +100,27 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                 },
                 autovalidateMode: _autoValidateMode,
                 onSaved: (value) => equipo1String = value,
-                values: equipos.map((e) => e.nombre).toList(),
+                // values: equipos.map((e) => e.nombre).toList(),
+                values: equipos.map((e) {
+                  print(e.liga);
+                  if (e.liga == league.currentLeague.toString())
+                    return e.nombre;
+                  else
+                    return 'NO HAY EQUIPOS';
+                }).toList(),
                 // options: [
                 //   'libre',
                 //   'm30',
                 //   'm40',
                 //   'femenino',
                 // ],
-                options: equipos.map((e) => e.nombre).toList(),
+                options: equipos.map((e) {
+                  print(e.liga);
+                  if (e.liga == league.currentLeague.toString())
+                    return e.nombre;
+                  else
+                    return 'NO HAY EQUIPOS';
+                }).toList(),
                 enabled: true,
                 onChanged: (value) {
                   setState(() {
@@ -185,39 +202,39 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                   });
                 },
               ),
-              CardSettingsListPicker(
-                label: 'Liga',
-                initialValue: liga,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    error = true;
-                    return 'Hay que elegir una liga';
-                  } else {
-                    error = false;
-                    return null;
-                  }
-                },
-                autovalidateMode: _autoValidateMode,
-                onSaved: (value) => liga = value,
-                values: [
-                  Leagues.libre.toString(),
-                  Leagues.m30.toString(),
-                  Leagues.m40.toString(),
-                  Leagues.femenino.toString(),
-                ],
-                options: [
-                  'libre',
-                  'm30',
-                  'm40',
-                  'femenino',
-                ],
-                enabled: true,
-                onChanged: (value) {
-                  setState(() {
-                    liga = value;
-                  });
-                },
-              ),
+              // CardSettingsListPicker(
+              //   label: 'Liga',
+              //   initialValue: liga,
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       error = true;
+              //       return 'Hay que elegir una liga';
+              //     } else {
+              //       error = false;
+              //       return null;
+              //     }
+              //   },
+              //   autovalidateMode: _autoValidateMode,
+              //   onSaved: (value) => liga = value,
+              //   values: [
+              //     Leagues.libre.toString(),
+              //     Leagues.m30.toString(),
+              //     Leagues.m40.toString(),
+              //     Leagues.femenino.toString(),
+              //   ],
+              //   options: [
+              //     'libre',
+              //     'm30',
+              //     'm40',
+              //     'femenino',
+              //   ],
+              //   enabled: true,
+              //   onChanged: (value) {
+              //     setState(() {
+              //       liga = value;
+              //     });
+              //   },
+              // ),
               CardSettingsButton(
                 label: 'Guardar',
                 isDestructive: false,
@@ -276,9 +293,8 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
 
                     aux.equipo1.first.save();
                     aux.equipo2.first.save();
-
-                    Navigator.of(context).pop(true);
                   }
+                  Navigator.of(context).pop(true);
                 },
               ),
             ],
