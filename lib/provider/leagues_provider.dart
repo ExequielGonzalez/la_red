@@ -20,6 +20,8 @@ class LeaguesProvider with ChangeNotifier {
       case Leagues.femenino:
         return 'femenino';
         break;
+      default:
+        return 'ERROR';
     }
   }
 
@@ -34,6 +36,7 @@ class LeaguesProvider with ChangeNotifier {
 
   void setLeague(Leagues league) {
     _leagues = league;
+    print(currentLeagueString);
     notifyListeners();
   }
 

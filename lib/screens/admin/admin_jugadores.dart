@@ -153,7 +153,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                   'm40',
                   'femenino',
                 ],
-                enabled: true,
+                enabled: widget.jugador == null ? true : false,
                 onChanged: (value) {
                   setState(() {
                     liga = value;
