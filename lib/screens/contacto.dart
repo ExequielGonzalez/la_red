@@ -85,12 +85,12 @@ class _contactoState extends State<Contacto> {
                       ),
                       ),
                     Container(
-                      height: getHeight(0.11),  //  verrrrrrrrrrrrrrrrrrrrrrrr
-                      width: getHeight(0.79),    //  verrrrrrrrrrrrrrrrrrrrrrrr
+                      height: getHeight(0.11),
+                      width: getHeight(0.79),
                       margin: EdgeInsets.only(
-                          left: getWidth(0.026),  //  verrrrrrrrrrrrrrrrrrrrrrrr
-                          right: getWidth(0.026),  //  verrrrrrrrrrrrrrrrrrrrrrrr
-                          top: getHeight(0.025),  //  verrrrrrrrrrrrrrrrrrrrrrrr
+                          left: getWidth(0.026),
+                          right: getWidth(0.026),
+                          top: getHeight(0.025),
                           bottom: 0),
                       decoration: BoxDecoration(
                         color: kBordo,
