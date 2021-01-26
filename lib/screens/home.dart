@@ -178,7 +178,7 @@ class _HomeState extends State<Home> {
                               HomeButton(
                                 width: getWidth(0.38),
                                 height: getHeight(0.127),
-                                title: 'novedades',
+                                title: 'tutorial',
                                 onTap: () {
                                   Navigator.pushNamed(context, '/novedades');
                                 },

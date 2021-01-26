@@ -26,6 +26,13 @@ cupertino_icons: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.7.4
+
+flutter_icons:
+  ios: true
+  android: true
+  image_path: "assets/images/componente.jpeg"
+
   build_runner: ^1.10.11
   hive_generator: ^0.8.2
 
