@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:la_red/model/jugador.dart';
@@ -38,6 +39,13 @@ class JugadorData with ChangeNotifier {
     //     'creando jugador ${jugador.nombre} con el id: ${jugador.id} y n: ${_size}}');
 
     box.add(jugador);
+    final firestoreInstance = FirebaseFirestore.instance;
+    firestoreInstance
+        .collection("jugadores")
+        .add(jugador.toJson())
+        .then((value) {
+      print(value.id);
+    });
 
     notifyListeners();
   }

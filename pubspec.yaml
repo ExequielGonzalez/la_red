@@ -18,6 +18,9 @@ dependencies:
   fab_circular_menu: ^1.0.1
   card_settings: ^1.16.2
   font_awesome_flutter: ^8.11.0
+  cloud_firestore: ^0.14.3+1
+  firestore_cache: ^0.2.0+1
+  firebase_core: ^0.5.3
 
 dependency_overrides:
 cupertino_icons: ^1.0.0

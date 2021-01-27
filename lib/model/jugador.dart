@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
 
 import '../constants.dart';
@@ -50,8 +51,13 @@ class Jugador extends HiveObject {
     // dev.debugger();
     counter += 1;
     print(
-        'Constructor de Jugador: Creando jugador ${this.nombre} ${this.apellido} con id: ${this.id}. El counter vale $counter. key: ${this.key}. El jugador tiene equipo: ${this.hasTeam}');
+        'Constructor de Jugador: Creando jugador ${this.nombre} ${this.apellido} con id: ${this.id}. El counter vale $counter. key: ${this.key}. El jugador tiene equipo: ${this.hasTeam} y juega en la liga ${this.liga}');
   }
+
+  // factory Jugador.fromJason(Map<String, dynamic> json) =>
+  //     _$JugadorFromJson(json);
+
+  Map<dynamic, dynamic> toJson() => _$JugadorToJson(this);
 
   Jugador.auto(String name, Leagues league) {
     this.nombre = name;
@@ -78,6 +84,67 @@ class Jugador extends HiveObject {
     return 'id: ${this.id}  - counter: $counter - key: ${this.key}-> El jugador ${this.nombre} ${this.apellido}, con DNI: ${this.dni}, que juega en la liga ${this.liga} y ha hecho ${this.goles} goles';
     return super.toString();
   }
+
+  Map<String, dynamic> _$JugadorToJson(Jugador jugador) => <String, dynamic>{
+        'nombre': jugador.nombre,
+        'apellido': jugador.apellido,
+        'dni': jugador.dni,
+        'goles': jugador.goles,
+        'amarillas': jugador.amarillas,
+        'rojas': jugador.rojas,
+        'id': jugador.id,
+        'liga': jugador.liga,
+        'edad': jugador.edad,
+        'hasTeam': jugador.hasTeam,
+        'keyDataBase': jugador.keyDataBase,
+      };
+
+  factory Jugador.fromJson(Map<String, dynamic> json) {
+    return Jugador(
+      nombre: json['nombre'] as String,
+      apellido: json['apellido'] as String,
+      dni: json['dni'] as int,
+      goles: json['goles'] as int,
+      amarillas: json['amarillas'] as int,
+      rojas: json['rojas'] as int,
+      // id: json['id'] as int,
+      liga: json['liga'] as String,
+      edad: json['edad'] as int,
+      hasTeam: json['hasTeam'] as bool,
+      // keyDataBase: json['keyDataBase'] as String,
+    );
+  }
+
+  factory Jugador.fromFirestore(DocumentSnapshot doc) {
+    Map data = doc.data as Map;
+    return Jugador(
+      nombre: data['nombre'],
+      apellido: data['apellido'],
+      dni: data['dni'],
+      goles: data['goles'],
+      amarillas: data['amarillas'],
+      rojas: data['rojas'],
+      id: data['id'],
+      liga: data['liga'],
+      edad: data['edad'],
+      hasTeam: data['hasTeam'],
+      keyDataBase: data['keyDataBase'],
+    );
+  }
+
+  // Jugador _$JugadorFromJson(Map<String, dynamic> json) => Jugador(
+  //       nombre: json['nombre'] as String,
+  //       apellido: json['apellido'] as String,
+  //       dni: json['dni'] as int,
+  //       goles: json['goles'] as int,
+  //       amarillas: json['amarillas'] as int,
+  //       rojas: json['rojas'] as int,
+  //       id: json['id'] as int,
+  //       liga: json['liga'] as String,
+  //       edad: json['edad'] as int,
+  //       hasTeam: json['hasTeam'] as bool,
+  //       keyDataBase: json['keyDataBase'] as String,
+  //     );
 
   @override
   int get typeId => 0;
