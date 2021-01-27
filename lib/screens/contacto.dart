@@ -120,7 +120,7 @@ class _contactoState extends State<Contacto> {
                             width: getWidth(0.06),
                           ),
                           Text(
-                            "0343 502-2323",
+                            "3435 311 331 ",
                             style: kTextStyle.copyWith(fontSize: getHeight(0.02) ),
                           ),
                         ],
