@@ -99,9 +99,11 @@ class LastGameItem extends StatelessWidget {
                       children: [
                         Flexible(
                           flex: 3,
-                          child: Text(
-                            lastGame.equipo1.first.nombre,
-                            style: kTextStyle.copyWith(fontSize: kFontSize),
+                          child: FittedBox(
+                            child: Text(
+                              lastGame.equipo1.first.nombre,
+                              style: kTextStyle.copyWith(fontSize: kFontSize),
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -109,9 +111,11 @@ class LastGameItem extends StatelessWidget {
                         ),
                         Flexible(
                           flex: 3,
-                          child: Text(
-                            lastGame.equipo2.first.nombre,
-                            style: kTextStyle.copyWith(fontSize: kFontSize),
+                          child: FittedBox(
+                            child: Text(
+                              lastGame.equipo2.first.nombre,
+                              style: kTextStyle.copyWith(fontSize: kFontSize),
+                            ),
                           ),
                         )
                       ],

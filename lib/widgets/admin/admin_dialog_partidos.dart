@@ -46,24 +46,25 @@ class _AdminDialogPartidosState extends State<AdminDialogPartidos> {
               width: getWidth(0.9), // Change as per your requirement
               child: Column(
                 children: [
-                  Container(
-                    height: getHeight(0.05),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(_matchesFinished
-                            ? 'Partidos Finalizados'
-                            : 'Partidos por jugar'),
-                        CupertinoSwitch(
-                          activeColor: kBordo,
-                          value: _matchesFinished,
-                          onChanged: (value) {
-                            setState(() {
-                              _matchesFinished = value;
-                            });
-                          },
-                        ),
-                      ],
+                  Padding(
+                    padding: EdgeInsets.all(getWidth(0.01)),
+                    child: Container(
+                      height: getHeight(0.05),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(_matchesFinished ? 'Finalizados' : 'Por jugar'),
+                          CupertinoSwitch(
+                            activeColor: kBordo,
+                            value: _matchesFinished,
+                            onChanged: (value) {
+                              setState(() {
+                                _matchesFinished = value;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Container(

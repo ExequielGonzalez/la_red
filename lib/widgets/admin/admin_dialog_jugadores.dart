@@ -40,24 +40,31 @@ class _AdminDialogJugadoresState extends State<AdminDialogJugadores> {
               width: getWidth(0.9), // Change as per your requirement
               child: Column(
                 children: [
-                  Container(
-                    height: getHeight(0.05),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(_playersWithTeams
-                            ? 'Jugadores con Equipo'
-                            : 'Jugadores sin Equipo'),
-                        CupertinoSwitch(
-                          activeColor: kBordo,
-                          value: _playersWithTeams,
-                          onChanged: (value) {
-                            setState(() {
-                              _playersWithTeams = value;
-                            });
-                          },
-                        ),
-                      ],
+                  Padding(
+                    padding: EdgeInsets.all(getWidth(0.01)),
+                    child: Container(
+                      height: getHeight(0.05),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FittedBox(
+                            child: Text(_playersWithTeams
+                                ? 'Con Equipo'
+                                : 'Sin Equipo'),
+                          ),
+                          Flexible(
+                            child: CupertinoSwitch(
+                              activeColor: kBordo,
+                              value: _playersWithTeams,
+                              onChanged: (value) {
+                                setState(() {
+                                  _playersWithTeams = value;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Container(

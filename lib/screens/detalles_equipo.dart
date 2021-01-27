@@ -140,11 +140,13 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
                                   child: Container(
                                     height: getHeight(0.08),
                                     child: Center(
-                                      child: Text(
-                                        title,
-                                        style: kTextStyleBold.copyWith(
-                                            fontSize: getWidth(0.07),
-                                            height: 1),
+                                      child: FittedBox(
+                                        child: Text(
+                                          title,
+                                          style: kTextStyleBold.copyWith(
+                                              fontSize: getWidth(0.07),
+                                              height: 1),
+                                        ),
                                       ),
                                     ),
                                   ),

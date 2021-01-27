@@ -138,11 +138,13 @@ class _FixtureState extends State<Posiciones> {
                               child: Container(
                                 width: getWidth(2 * gridWidth),
                                 child: Center(
-                                  child: Text(
-                                    'PTS',
-                                    style: kTextStyleBold.copyWith(
-                                        color: kBordo,
-                                        fontSize: getWidth(scale)),
+                                  child: FittedBox(
+                                    child: Text(
+                                      'PTS',
+                                      style: kTextStyleBold.copyWith(
+                                          color: kBordo,
+                                          fontSize: getWidth(scale)),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -153,11 +155,13 @@ class _FixtureState extends State<Posiciones> {
                               child: Container(
                                 width: getWidth(1.2 * gridWidth),
                                 child: Center(
-                                  child: Text(
-                                    'J',
-                                    style: kTextStyleBold.copyWith(
-                                        color: kBordo,
-                                        fontSize: getWidth(scale)),
+                                  child: FittedBox(
+                                    child: Text(
+                                      'J',
+                                      style: kTextStyleBold.copyWith(
+                                          color: kBordo,
+                                          fontSize: getWidth(scale)),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -168,11 +172,13 @@ class _FixtureState extends State<Posiciones> {
                               child: Container(
                                 width: getWidth(1.2 * gridWidth),
                                 child: Center(
-                                  child: Text(
-                                    'G',
-                                    style: kTextStyleBold.copyWith(
-                                        color: kBordo,
-                                        fontSize: getWidth(scale)),
+                                  child: FittedBox(
+                                    child: Text(
+                                      'G',
+                                      style: kTextStyleBold.copyWith(
+                                          color: kBordo,
+                                          fontSize: getWidth(scale)),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -183,11 +189,13 @@ class _FixtureState extends State<Posiciones> {
                               child: Container(
                                 width: getWidth(1.2 * gridWidth),
                                 child: Center(
-                                  child: Text(
-                                    'E',
-                                    style: kTextStyleBold.copyWith(
-                                        color: kBordo,
-                                        fontSize: getWidth(scale)),
+                                  child: FittedBox(
+                                    child: Text(
+                                      'E',
+                                      style: kTextStyleBold.copyWith(
+                                          color: kBordo,
+                                          fontSize: getWidth(scale)),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -198,11 +206,13 @@ class _FixtureState extends State<Posiciones> {
                               child: Container(
                                 width: getWidth(1.2 * gridWidth),
                                 child: Center(
-                                  child: Text(
-                                    'P',
-                                    style: kTextStyleBold.copyWith(
-                                        color: kBordo,
-                                        fontSize: getWidth(scale)),
+                                  child: FittedBox(
+                                    child: Text(
+                                      'P',
+                                      style: kTextStyleBold.copyWith(
+                                          color: kBordo,
+                                          fontSize: getWidth(scale)),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -213,11 +223,13 @@ class _FixtureState extends State<Posiciones> {
                               child: Container(
                                 width: getWidth(1.2 * gridWidth),
                                 child: Center(
-                                  child: Text(
-                                    'GF',
-                                    style: kTextStyleBold.copyWith(
-                                        color: kBordo,
-                                        fontSize: getWidth(scale)),
+                                  child: FittedBox(
+                                    child: Text(
+                                      'GF',
+                                      style: kTextStyleBold.copyWith(
+                                          color: kBordo,
+                                          fontSize: getWidth(scale)),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -228,11 +240,13 @@ class _FixtureState extends State<Posiciones> {
                               child: Container(
                                 width: getWidth(1.43 * gridWidth),
                                 child: Center(
-                                  child: Text(
-                                    'GC',
-                                    style: kTextStyleBold.copyWith(
-                                        color: kBordo,
-                                        fontSize: getWidth(scale)),
+                                  child: FittedBox(
+                                    child: Text(
+                                      'GC',
+                                      style: kTextStyleBold.copyWith(
+                                          color: kBordo,
+                                          fontSize: getWidth(scale)),
+                                    ),
                                   ),
                                 ),
                               ),

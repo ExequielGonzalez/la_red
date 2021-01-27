@@ -24,196 +24,186 @@ class _contactoState extends State<Contacto> {
 
     return Scaffold(
       body: BackgroundTemplate(
-          height: getHeight(1),
-          width: getWidth(1),
-          title: 'contacto',
-          child: Expanded(
-            child: Center(
-              child: Container(
-                height: getHeight(0.98),  //
-                width: getWidth(0.85),   //
-                margin: EdgeInsets.only(
-                    left: getWidth(0.056),  //
-                    right: getWidth(0.056),  //
-                    top: getHeight(0.029),  //
-                    bottom: getHeight(0.08)),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: getHeight(0.11),
-                      width: getHeight(0.79),
-                      margin: EdgeInsets.only(
-                          left: getWidth(0.026),
-                          right: getWidth(0.026),
-                          top: getHeight(0.025),
-                          bottom: 0),
-                      decoration: BoxDecoration(
-                        color: kBordo,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: getWidth(0.046),
-                              vertical: getHeight(0.0098),
-                            ),
-                            child: Container(
-                              width: getWidth(0.13),
-                              height: getWidth(0.13),
-//
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: Image.asset("assets/images/Instagram.png"),
-
-                            ),
-                          ),
-                          SizedBox(
-                            width: getWidth(0.04),
-                          ),
-                          Text(
-                            "laredligadefutbol",
-                            style: kTextStyle.copyWith(fontSize: getHeight(0.02)),
-                          ),
-                        ],
-                      ),
-                      ),
-                    Container(
-                      height: getHeight(0.11),
-                      width: getHeight(0.79),
-                      margin: EdgeInsets.only(
-                          left: getWidth(0.026),
-                          right: getWidth(0.026),
-                          top: getHeight(0.025),
-                          bottom: 0),
-                      decoration: BoxDecoration(
-                        color: kBordo,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: getWidth(0.046),
-                              vertical: getHeight(0.0098),
-
-                            ),
-                            child: Container(
-                              width: getWidth(0.13),
-                              height: getWidth(0.13),
-//
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Image.asset("assets/images/whatsapp.png"),
-
-                            ),
-                          ),
-                          SizedBox(
-                            width: getWidth(0.06),
-                          ),
-                          Text(
-                            "3435 311 331 ",
-                            style: kTextStyle.copyWith(fontSize: getHeight(0.02) ),
-                          ),
-                        ],
-                      ),
+        height: getHeight(1),
+        width: getWidth(1),
+        title: 'contacto',
+        child: Expanded(
+          child: Center(
+            child: Container(
+              width: getWidth(0.85), //
+              margin: EdgeInsets.symmetric(vertical: getHeight(0.03)),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    height: getHeight(0.11),
+                    width: getHeight(0.79),
+                    margin: EdgeInsets.only(
+                        left: getWidth(0.026),
+                        right: getWidth(0.026),
+                        bottom: 0),
+                    decoration: BoxDecoration(
+                      color: kBordo,
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    Container(
-                      height: getHeight(0.11),
-                      width: getHeight(0.79),
-                      margin: EdgeInsets.only(
-                          left: getWidth(0.026),
-                          right: getWidth(0.026),
-                          top: getHeight(0.025),
-                          bottom: 0),
-                      decoration: BoxDecoration(
-                        color: kBordo,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: getWidth(0.046),
-                              vertical: getHeight(0.0098),
-                            ),
-                            child: Container(
-                              width: getWidth(0.13),
-                              //height: getWidth(0.13),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: getWidth(0.046),
+                            vertical: getHeight(0.0098),
+                          ),
+                          child: Container(
+                            width: getWidth(0.13),
+                            height: getWidth(0.13),
 //
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(13),
-                              ),
-                              child: Image.asset("assets/images/facebook.png"),
-
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
                             ),
+                            child: Image.asset("assets/images/Instagram.png"),
                           ),
-                          SizedBox(
-                            width: getWidth(0.01),
-                          ),
-                          Text(
-                            "La Red - Liga de Fútbol",
-                            style: kTextStyle.copyWith(fontSize: getHeight(0.02)),
-                          ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          width: getWidth(0.04),
+                        ),
+                        Text(
+                          "laredligadefutbol",
+                          style: kTextStyle.copyWith(fontSize: getHeight(0.02)),
+                        ),
+                      ],
                     ),
-                    Container(
-                      height: getHeight(0.11),
-                      width: getHeight(0.79),
-                      margin: EdgeInsets.only(
-                          left: getWidth(0.026),
-                          right: getWidth(0.026),
-                          top: getHeight(0.025),
-                          bottom: 0),
-                      decoration: BoxDecoration(
-                        color: kBordo,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: getWidth(0.046),
-                              vertical: getHeight(0.0098),
-                            ),
-                            child: Container(
-                              width: getWidth(0.13),
-                              //height: getWidth(0.12),
+                  ),
+                  Container(
+                    height: getHeight(0.11),
+                    width: getHeight(0.79),
+                    margin: EdgeInsets.only(
+                        left: getWidth(0.026),
+                        right: getWidth(0.026),
+                        top: getHeight(0.025),
+                        bottom: 0),
+                    decoration: BoxDecoration(
+                      color: kBordo,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: getWidth(0.046),
+                            vertical: getHeight(0.0098),
+                          ),
+                          child: Container(
+                            width: getWidth(0.13),
+                            height: getWidth(0.13),
 //
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                               borderRadius: BorderRadius.circular(13),
-                              ),
-                              child: Image.asset("assets/images/mail.png"),
-
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
                             ),
+                            child: Image.asset("assets/images/whatsapp.png"),
                           ),
-                          SizedBox(
-                            width: getWidth(0.009),
-                          ),
-                          Text(
-                            "laredcrespo@gmail.com",
-                            style: kTextStyle.copyWith(fontSize: getHeight(0.02)),
-                          ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          width: getWidth(0.06),
+                        ),
+                        Text(
+                          "3435 311 331 ",
+                          style: kTextStyle.copyWith(fontSize: getHeight(0.02)),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Container(
+                    height: getHeight(0.11),
+                    width: getHeight(0.79),
+                    margin: EdgeInsets.only(
+                        left: getWidth(0.026),
+                        right: getWidth(0.026),
+                        top: getHeight(0.025),
+                        bottom: 0),
+                    decoration: BoxDecoration(
+                      color: kBordo,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: getWidth(0.046),
+                            vertical: getHeight(0.0098),
+                          ),
+                          child: Container(
+                            width: getWidth(0.13),
+                            //height: getWidth(0.13),
+//
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(13),
+                            ),
+                            child: Image.asset("assets/images/facebook.png"),
+                          ),
+                        ),
+                        SizedBox(
+                          width: getWidth(0.01),
+                        ),
+                        Text(
+                          "La Red - Liga de Fútbol",
+                          style: kTextStyle.copyWith(fontSize: getHeight(0.02)),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: getHeight(0.11),
+                    width: getHeight(0.79),
+                    margin: EdgeInsets.only(
+                        left: getWidth(0.026),
+                        right: getWidth(0.026),
+                        top: getHeight(0.025),
+                        bottom: 0),
+                    decoration: BoxDecoration(
+                      color: kBordo,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: getWidth(0.046),
+                            vertical: getHeight(0.0098),
+                          ),
+                          child: Container(
+                            width: getWidth(0.13),
+                            //height: getWidth(0.12),
+//
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(13),
+                            ),
+                            child: Image.asset("assets/images/mail.png"),
+                          ),
+                        ),
+                        SizedBox(
+                          width: getWidth(0.009),
+                        ),
+                        Text(
+                          "laredcrespo@gmail.com",
+                          style: kTextStyle.copyWith(fontSize: getHeight(0.02)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-          ),
+        ),
+      ),
     );
   }
 }

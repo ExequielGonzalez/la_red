@@ -26,8 +26,6 @@ import 'model/jugador.dart';
 import 'model/partido.dart';
 
 import 'dart:developer' as dev;
-import 'package:url_launcher/url_launcher.dart';
-import 'package:simple_url_preview/simple_url_preview.dart';
 
 Future<List<Box>> _openBox() async {
   List<Box> boxList = [];

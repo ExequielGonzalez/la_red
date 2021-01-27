@@ -85,9 +85,12 @@ class FixtureListItem extends StatelessWidget {
               children: [
                 Flexible(
                   flex: 3,
-                  child: Text(
-                    partido.equipo1.first.nombre,
-                    style: kTextStyle.copyWith(fontSize: kFontSize, height: 1),
+                  child: FittedBox(
+                    child: Text(
+                      partido.equipo1.first.nombre,
+                      style:
+                          kTextStyle.copyWith(fontSize: kFontSize, height: 1),
+                    ),
                   ),
                 ),
                 Flexible(
@@ -99,9 +102,12 @@ class FixtureListItem extends StatelessWidget {
                 ),
                 Flexible(
                   flex: 3,
-                  child: Text(
-                    partido.equipo2.first.nombre,
-                    style: kTextStyle.copyWith(fontSize: kFontSize, height: 1),
+                  child: FittedBox(
+                    child: Text(
+                      partido.equipo2.first.nombre,
+                      style:
+                          kTextStyle.copyWith(fontSize: kFontSize, height: 1),
+                    ),
                   ),
                 )
               ],

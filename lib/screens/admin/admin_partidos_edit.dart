@@ -164,15 +164,23 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  equipo1.nombre,
-                  style: kTextStyleBold.copyWith(
-                      fontSize: width * 0.05, color: Colors.black),
+                Container(
+                  width: width * 0.45,
+                  child: Text(
+                    equipo1.nombre,
+                    style: kTextStyleBold.copyWith(
+                        fontSize: width * 0.05, color: Colors.black),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                Text(
-                  equipo2.nombre,
-                  style: kTextStyleBold.copyWith(
-                      fontSize: width * 0.05, color: Colors.black),
+                Container(
+                  width: width * 0.45,
+                  child: Text(
+                    equipo2.nombre,
+                    style: kTextStyleBold.copyWith(
+                        fontSize: width * 0.05, color: Colors.black),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ],
             ),
