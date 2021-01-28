@@ -27,7 +27,6 @@ import 'model/jugador.dart';
 import 'model/partido.dart';
 
 Future<List<Box>> _openBox() async {
-  await Firebase.initializeApp();
   List<Box> boxList = [];
   Directory directory = await pathProvider.getApplicationDocumentsDirectory();
   Hive.init(directory.path);
@@ -49,23 +48,32 @@ Future<List<Box>> _openBox() async {
       compactionStrategy: (entries, deletedEntries) {
     return deletedEntries > 10;
   });
+  var boxConfig = await Hive.openBox(kBoxConfig,
+      compactionStrategy: (entries, deletedEntries) {
+    return deletedEntries > 10;
+  });
 
   if (kRestart) {
     boxJugadores.clear();
     boxEquipos.clear();
     boxPartidos.clear();
+    boxConfig.clear();
+    boxJugadores.deleteFromDisk();
   }
 
   boxList.add(boxJugadores);
   boxList.add(boxPartidos);
   boxList.add(boxEquipos);
+  boxList.add(boxConfig);
 
   return boxList;
 }
 
+// void startFirebase() async => await Firebase.initializeApp();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  // await startFirebase();
   List<Box> boxList = [];
   boxList = await _openBox();
 
@@ -92,9 +100,9 @@ class MyApp extends StatelessWidget {
         title: 'La Red',
         initialRoute: '/',
         routes: {
-          // '/': (context) => Loading(),
-          '/': (context) => Home(),
-          // '/home': (context) => Home(),
+          '/': (context) => Loading(),
+          // '/': (context) => Home(),
+          '/home': (context) => Home(),
           '/equipos': (context) => Equipos(),
           '/fixture': (context) => Fixture(),
           '/posiciones': (context) => Posiciones(),

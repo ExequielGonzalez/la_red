@@ -31,7 +31,7 @@ class Jugador extends HiveObject {
   String keyDataBase;
 
   //TODO: Añadir que cada jugador pertenezca a un equipo
-  static int counter = 1;
+  static int counter = 0;
 
   Jugador({
     this.nombre,
@@ -51,7 +51,7 @@ class Jugador extends HiveObject {
     // dev.debugger();
     counter += 1;
     print(
-        'Constructor de Jugador: Creando jugador ${this.nombre} ${this.apellido} con id: ${this.id}. El counter vale $counter. key: ${this.key}. El jugador tiene equipo: ${this.hasTeam} y juega en la liga ${this.liga}');
+        'Constructor de Jugador: Creando jugador ${this.nombre} ${this.apellido} con dni: ${this.dni} con id: ${this.id}. El counter vale $counter. key: ${this.key}. El jugador tiene equipo: ${this.hasTeam} y juega en la liga ${this.liga}. la key en la database es ${this.keyDataBase}');
   }
 
   // factory Jugador.fromJason(Map<String, dynamic> json) =>
@@ -116,7 +116,7 @@ class Jugador extends HiveObject {
   }
 
   factory Jugador.fromFirestore(DocumentSnapshot doc) {
-    Map data = doc.data as Map;
+    Map data = doc.data();
     return Jugador(
       nombre: data['nombre'],
       apellido: data['apellido'],
@@ -128,8 +128,8 @@ class Jugador extends HiveObject {
       liga: data['liga'],
       edad: data['edad'],
       hasTeam: data['hasTeam'],
-      keyDataBase: data['keyDataBase'],
-    );
+      // keyDataBase: data['keyDataBase'],
+    )..keyDataBase = doc.id;
   }
 
   // Jugador _$JugadorFromJson(Map<String, dynamic> json) => Jugador(

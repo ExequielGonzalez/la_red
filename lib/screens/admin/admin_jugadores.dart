@@ -119,6 +119,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                   }
                   return null;
                 },
+                enabled: widget.jugador == null ? true : false,
                 autovalidateMode: _autoValidateMode,
                 onSaved: (value) => dni = value,
                 onChanged: (value) {
@@ -255,7 +256,8 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                       widget.jugador.rojas = rojas;
                       widget.jugador.hasTeam = hasTeam;
 
-                      widget.jugador.save();
+                      // widget.jugador.save();
+                      jugadores.editPlayer(widget.jugador);
                     } else
                       jugadores.createPlayer(aux);
                     print('guardando el jugador: ${aux.toString()}');

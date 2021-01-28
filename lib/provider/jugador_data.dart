@@ -23,14 +23,13 @@ class JugadorData with ChangeNotifier {
     return _aux;
   }
 
-  int _size = -1;
+  int _size = 0;
 
   List<Jugador> get getJugadores => _jugadores;
   Jugador getPlayer(index) => _jugadores.elementAt(index);
   int get playerLength => _jugadores.length;
 
-  void createPlayer(Jugador jugador) async {
-    _size += 1;
+  void createPlayer(Jugador jugador, {bool onFirestore = true}) async {
     jugador.keyDataBase = '$_identifierDataBase$_size';
     _jugadores.add(jugador);
     var box = await Hive.openBox<Jugador>(kBoxJugadores);
@@ -38,15 +37,28 @@ class JugadorData with ChangeNotifier {
     // print(
     //     'creando jugador ${jugador.nombre} con el id: ${jugador.id} y n: ${_size}}');
 
-    box.add(jugador);
-    final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance
-        .collection("jugadores")
-        .add(jugador.toJson())
-        .then((value) {
-      print(value.id);
-    });
+    await box.add(jugador);
+    if (onFirestore) {
+      var boxConfig = await Hive.openBox(kBoxConfig);
+      final firestoreInstance = FirebaseFirestore.instance;
 
+      await firestoreInstance
+          .collection("jugadores")
+          .doc('${jugador.dni}')
+          .set(jugador.toJson());
+
+      await firestoreInstance.collection("jugadores").doc('${jugador.dni}').set(
+          {'Timestamp': DateTime.now().microsecondsSinceEpoch},
+          SetOptions(merge: true));
+
+      // await boxConfig.put(
+      //     'jugadoresEdited', DateTime.now().microsecondsSinceEpoch);
+      await firestoreInstance.collection("config").doc('jugadoresEdited').set(
+        {'edited': DateTime.now().microsecondsSinceEpoch},
+        SetOptions(merge: true),
+      );
+    }
+    _size += 1;
     notifyListeners();
   }
 
@@ -54,11 +66,36 @@ class JugadorData with ChangeNotifier {
     // print('editando el jugador: ${jugador.toString()}');
     // print('editando el jugador: ${jugador.nombre} con el id: ${jugador.id}');
     var box = await Hive.openBox<Jugador>(kBoxJugadores);
-    jugador.save();
+    if (jugador.isInBox) {
+      await jugador.save();
+
+      final firestoreInstance = FirebaseFirestore.instance;
+
+      await firestoreInstance
+          .collection("jugadores")
+          .doc('${jugador.dni}')
+          .set(jugador.toJson(), SetOptions(merge: true))
+          .then((_) => print('success!: el jugador $jugador fue editado'));
+    } else {
+      Jugador aux =
+          _jugadores.singleWhere((element) => element.dni == jugador.dni);
+      aux.nombre = jugador.nombre;
+      aux.apellido = jugador.apellido;
+      aux.liga = jugador.liga;
+      aux.amarillas = jugador.amarillas;
+      aux.dni = jugador.dni;
+      aux.edad = jugador.edad;
+      aux.goles = jugador.goles;
+      aux.rojas = jugador.rojas;
+      aux.hasTeam = jugador.hasTeam;
+
+      aux.save();
+    }
+
     notifyListeners();
   }
 
-  void readPlayers({bool force = false}) async {
+  Future<List<Jugador>> readPlayers({bool force = false}) async {
     var box = await Hive.openBox<Jugador>(kBoxJugadores);
 
     // print('box values jugador: ${box.values}');
@@ -73,17 +110,24 @@ class JugadorData with ChangeNotifier {
     }
 
     notifyListeners();
+    return _jugadores;
   }
 
-  //TODO: Revisar esta función. Ahora esta eliminando el archivo de la lista, pero no de la base de datos
   void deletePlayer(Jugador jugador) async {
     print('eliminando el jugador ${jugador.toString()}');
     // dev.debugger();
     var box = await Hive.openBox<Jugador>(kBoxJugadores);
 
-    jugador.delete();
+    await jugador.delete();
 
     _jugadores.removeWhere((element) => element.id == jugador.id);
+
+    final firestoreInstance = FirebaseFirestore.instance;
+    await firestoreInstance
+        .collection("jugadores")
+        .doc('${jugador.dni}')
+        .delete();
+
     _size -= 1;
 
     notifyListeners();

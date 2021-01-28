@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:la_red/constants.dart';
 import 'package:la_red/model/jugador.dart';
+import 'package:la_red/provider/equipo_data.dart';
+import 'package:la_red/provider/jugador_data.dart';
+import 'package:la_red/provider/partido_data.dart';
+import 'package:provider/provider.dart';
 
 class Loading extends StatefulWidget {
   @override
@@ -13,40 +17,108 @@ class Loading extends StatefulWidget {
 class _LoadingState extends State<Loading> {
   @override
   void initState() {
-    // await readFirestore();
+    readFirestore(!kRestart);
     super.initState();
   }
 
-  void readFirestore() async {
+  void readFirestore(bool force) async {
+    await Provider.of<JugadorData>(context, listen: false).readPlayers();
     await Firebase.initializeApp();
-    final databaseReference = FirebaseFirestore.instance;
-    databaseReference.collection('jugadores').snapshots().listen((event) {
-      return event.docs.forEach((element) {
-        print(element['nombre']);
-      });
-    });
 
-    var box = await Hive.openBox<Jugador>(kBoxJugadores);
-    // DocumentReference ref = await databaseReference.collection("jugadores").add({
-    //   'title': 'Flutter in Action',
-    //   'description': 'Complete Programming Guide to learn Flutter'
-    // });
-    // print(ref.id);
+    final jugadores = Provider.of<JugadorData>(context, listen: false);
 
-    // var ref.snapshots().map((list) => list.documents.map((doc) => Jugador.fromJson(doc)).toList());
+    if (force) {
+      var timestamp = DateTime.now().microsecondsSinceEpoch;
+      var box = await Hive.openBox<Jugador>(kBoxJugadores);
+      var boxConfig = await Hive.openBox(kBoxConfig);
+      final firestoreInstance = FirebaseFirestore.instance;
+      int lastRead = boxConfig.get('lastReadJugador', defaultValue: -1);
 
-    databaseReference
-        .collection("jugadores")
-        .get()
-        .then((value) => value.docs.forEach((element) {
-              print('${element.data()}');
-              Jugador aux = Jugador.fromJson(element.data());
-              box.add(aux);
-            }));
+      if (lastRead == -1) {
+        ///Nunca fue leída la base de datos
+        print("nunca fue leida la base de datos");
+        await firestoreInstance
+            .collection("jugadores")
+            .where("Timestamp", isLessThanOrEqualTo: timestamp)
+            .get()
+            .then((value) {
+          value.docs.forEach((element) {
+            if (element.exists) {
+              print(element.data());
+              Jugador aux = Jugador.fromFirestore(element);
+              if (jugadores.getJugadores.isEmpty)
+                jugadores.createPlayer(aux, onFirestore: false);
+              else if (jugadores.getJugadores.isNotEmpty) {
+                if (jugadores.getJugadores.singleWhere(
+                        (element2) => element2.dni == aux.dni,
+                        orElse: () => null) !=
+                    null) {
+                  jugadores.editPlayer(aux);
+                } else
+                  jugadores.createPlayer(aux, onFirestore: false);
+              }
+            }
+          });
+        });
+      } else {
+        print("la base de datos ya fue leída alguna vez");
+
+        ///La base de datos ya fue leída alguna vez, esto implica que la aplicación no es la primera vez que se ejecuta
+        int lastEditionDatabase = 0;
+        firestoreInstance
+            .collection("config")
+            .doc("jugadoresEdited")
+            .get()
+            .then((value) async {
+          if (value.exists) {
+            print("Existen jugadores en firestore");
+
+            ///Si algun jugador existe en firestore, entra a este condicional
+            lastEditionDatabase = value.get('edited');
+            if (lastEditionDatabase > lastRead) {
+              print('Leyendo información de firebase');
+              await firestoreInstance
+                  .collection("jugadores")
+                  .where("Timestamp", isLessThanOrEqualTo: timestamp)
+                  .get()
+                  .then((value) {
+                value.docs.forEach((element) {
+                  if (element.exists) {
+                    print(element.data());
+                    Jugador aux = Jugador.fromFirestore(element);
+                    if (jugadores.getJugadores.isEmpty)
+                      jugadores.createPlayer(aux, onFirestore: false);
+                    else if (jugadores.getJugadores.isNotEmpty) {
+                      if (jugadores.getJugadores.singleWhere(
+                              (element2) => element2.dni == aux.dni,
+                              orElse: () => null) !=
+                          null) {
+                        jugadores.editPlayer(aux);
+                      } else
+                        jugadores.createPlayer(aux, onFirestore: false);
+                    }
+                  }
+                });
+              });
+            } else
+              print('No es necesario leer firestore. Se usa hive de cache');
+          } else
+            print('Nada para leer en firestore');
+        });
+      }
+
+      await boxConfig.put('lastReadJugador', timestamp);
+    }
+
+    Navigator.pushReplacementNamed(context, '/home');
   }
 
   @override
   Widget build(BuildContext context) {
+    // Provider.of<JugadorData>(context, listen: false).readPlayers();
+    Provider.of<EquipoData>(context, listen: false).readTeams();
+    Provider.of<PartidoData>(context, listen: false).readMatches();
+
     return Scaffold(
       body: Center(
         child: CircularProgressIndicator(),

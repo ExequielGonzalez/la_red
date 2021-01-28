@@ -7,10 +7,11 @@ bool kRestart = false;
 
 enum Leagues { libre, m30, m40, femenino }
 
-String kBoxName = "Equipos";
+// String kBoxName = "Equipos";
 String kBoxJugadores = "box_jugadores";
 String kBoxEquipos = "box_equipos";
 String kBoxPartidos = "box_partidos";
+String kBoxConfig = "box_config";
 
 Color kBordo = Color(0xFF601A24);
 
