@@ -34,9 +34,6 @@ class JugadorData with ChangeNotifier {
     _jugadores.add(jugador);
     var box = await Hive.openBox<Jugador>(kBoxJugadores);
 
-    // print(
-    //     'creando jugador ${jugador.nombre} con el id: ${jugador.id} y n: ${_size}}');
-
     await box.add(jugador);
     if (onFirestore) {
       var boxConfig = await Hive.openBox(kBoxConfig);
@@ -51,8 +48,6 @@ class JugadorData with ChangeNotifier {
           {'Timestamp': DateTime.now().microsecondsSinceEpoch},
           SetOptions(merge: true));
 
-      // await boxConfig.put(
-      //     'jugadoresEdited', DateTime.now().microsecondsSinceEpoch);
       await firestoreInstance.collection("config").doc('jugadoresEdited').set(
         {'edited': DateTime.now().microsecondsSinceEpoch},
         SetOptions(merge: true),
@@ -76,6 +71,15 @@ class JugadorData with ChangeNotifier {
           .doc('${jugador.dni}')
           .set(jugador.toJson(), SetOptions(merge: true))
           .then((_) => print('success!: el jugador $jugador fue editado'));
+
+      await firestoreInstance.collection("jugadores").doc('${jugador.dni}').set(
+          {'Timestamp': DateTime.now().microsecondsSinceEpoch},
+          SetOptions(merge: true));
+
+      await firestoreInstance.collection("config").doc('jugadoresEdited').set(
+        {'edited': DateTime.now().microsecondsSinceEpoch},
+        SetOptions(merge: true),
+      );
     } else {
       Jugador aux =
           _jugadores.singleWhere((element) => element.dni == jugador.dni);
@@ -113,6 +117,7 @@ class JugadorData with ChangeNotifier {
     return _jugadores;
   }
 
+  //TODO: Pensar la forma de que cuando elimino un jugador de firebase, luego ese jugador se elimine de los hive de todos los celulares
   void deletePlayer(Jugador jugador) async {
     print('eliminando el jugador ${jugador.toString()}');
     // dev.debugger();

@@ -275,23 +275,6 @@ class _AdminEquiposState extends State<AdminEquipos> {
                             HiveList(players, objects: jugadoresEquipo);
                         widget.equipo.partidosJugados = partidosJugados;
 
-                        // var aux = Equipo(
-                        //   nombre: nombre,
-                        //   liga: liga,
-                        //   posicion: posicion,
-                        //   puntos: puntos,
-                        //   partidosPerdidos: partidosPerdidos,
-                        //   partidosEmpates: partidosEmpatados,
-                        //   partidosGanados: partidosGanados,
-                        //   golesFavor: golesFavor,
-                        //   golesContra: golesContra,
-                        //   partidosJugados: partidosJugados,
-                        //   photoURL: foto,
-                        //   jugadores:
-                        //       HiveList(players, objects: jugadoresEquipo),
-                        // );
-
-                        // equipos.createTeam(aux);
                         equipos.editTeam(widget.equipo);
                         print(
                             'guardando el equipo: ${widget.equipo.toString()}');
@@ -304,9 +287,6 @@ class _AdminEquiposState extends State<AdminEquipos> {
                       } else {
                         print(
                             '----------------------->Se supone que son iguales<------------------');
-
-                        // if (widget.equipo != null)
-                        // equipos.deleteTeam(widget.equipo);
 
                         var players =
                             await Hive.openBox<Jugador>(kBoxJugadores);
@@ -328,21 +308,6 @@ class _AdminEquiposState extends State<AdminEquipos> {
                             HiveList(players, objects: jugadoresEquipo);
                         widget.equipo.partidosJugados = partidosJugados;
 
-                        // var aux = Equipo(
-                        //   nombre: nombre,
-                        //   liga: liga,
-                        //   posicion: posicion,
-                        //   puntos: puntos,
-                        //   partidosPerdidos: partidosPerdidos,
-                        //   partidosEmpates: partidosEmpatados,
-                        //   partidosGanados: partidosGanados,
-                        //   golesFavor: golesFavor,
-                        //   golesContra: golesContra,
-                        //   partidosJugados: partidosJugados,
-                        //   photoURL: foto,
-                        //   jugadores:
-                        //       HiveList(players, objects: jugadoresEquipo),
-                        // );
                         equipos.editTeam(widget.equipo);
                         // equipos.createTeam(aux);
                         print(

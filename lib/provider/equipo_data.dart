@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:la_red/model/equipo.dart';
@@ -17,44 +18,34 @@ class EquipoData with ChangeNotifier {
   Equipo getTeam(index) => _equipos.elementAt(index);
   int get teamLength => _equipos.length;
 
-  // void createTeam() async {
-  //   var box = await Hive.openBox(kBoxName);
-  //
-  //   Equipo.counter = await box.get(_sizeDataBase, defaultValue: 0);
-  //   print(Equipo.counter);
-  //   await box.put('$_identifierDataBase${Equipo.counter}',
-  //       Equipo.autoNameLeague('Real Madrid', Leagues.libre));
-  //   await box.put('$_identifierDataBase${Equipo.counter}',
-  //       Equipo.autoNameLeague('Barcelona', Leagues.libre));
-  //   await box.put('$_identifierDataBase${Equipo.counter}',
-  //       Equipo.autoNameLeague('Bayer Leverkusen', Leagues.libre));
-  //   await box.put('$_identifierDataBase${Equipo.counter}',
-  //       Equipo.autoNameLeague('Schalke 04', Leagues.femenino));
-  //   await box.put('$_identifierDataBase${Equipo.counter}',
-  //       Equipo.autoNameLeague('borussia mönchengladbach', Leagues.femenino));
-  //   await box.put('$_identifierDataBase${Equipo.counter}',
-  //       Equipo.autoNameLeague('Boca Juniors', Leagues.m30));
-  //   await box.put('$_identifierDataBase${Equipo.counter}',
-  //       Equipo.autoNameLeague('River Plate', Leagues.m30));
-  //
-  //   await box.put(_sizeDataBase, Equipo.counter);
-  //   notifyListeners();
-  // }
-
-  void createTeam(Equipo equipo) async {
-    // _size += 1;
-    // equipo.keyDataBase = '$_identifierDataBase$_size';
-
+  void createTeam(Equipo equipo, {bool onFirestore = true}) async {
     _equipos.add(equipo);
     var box = await Hive.openBox<Equipo>(kBoxEquipos);
 
     print(
         'creando equipo ${equipo.nombre} con el id: ${equipo.id} y con jugadores ${equipo.jugadores} ');
 
-    // box.put(jugador.keyDataBase, jugador);
     box.add(equipo);
-    // equipo.save();
-    // box.put(_sizeDataBase, _size);
+
+    if (onFirestore) {
+      var boxConfig = await Hive.openBox(kBoxConfig);
+      final firestoreInstance = FirebaseFirestore.instance;
+
+      await firestoreInstance
+          .collection("equipos")
+          .doc('${equipo.nombre}')
+          .set(jugador.toJson());
+
+      await firestoreInstance.collection("jugadores").doc('${jugador.dni}').set(
+          {'Timestamp': DateTime.now().microsecondsSinceEpoch},
+          SetOptions(merge: true));
+
+      await firestoreInstance.collection("config").doc('jugadoresEdited').set(
+        {'edited': DateTime.now().microsecondsSinceEpoch},
+        SetOptions(merge: true),
+      );
+    }
+
     notifyListeners();
   }
 
@@ -69,9 +60,6 @@ class EquipoData with ChangeNotifier {
 
   void readTeams({bool force = false}) async {
     var box = await Hive.openBox<Equipo>(kBoxEquipos);
-    // Equipo.counter = await box.get(_sizeDataBase, defaultValue: 0);
-
-    // print('Hay ${Equipo.counter} equipos');
 
     print('box values equipo: ${box.values}');
     if (!_read) {
@@ -95,7 +83,6 @@ class EquipoData with ChangeNotifier {
     equipo.delete();
 
     _equipos.removeWhere((element) => element.id == equipo.id);
-    // _size -= 1;
 
     notifyListeners();
   }
@@ -107,9 +94,4 @@ class EquipoData with ChangeNotifier {
     box2.deleteFromDisk();
     notifyListeners();
   }
-
-  // void closeDB() async {
-  //   var box = await Hive.openBox<Equipo>(kBoxEquipos);
-  //   box.put(_sizeDataBase, Equipo.counter);
-  // }
 }

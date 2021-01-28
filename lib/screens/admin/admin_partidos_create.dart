@@ -202,39 +202,6 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                   });
                 },
               ),
-              // CardSettingsListPicker(
-              //   label: 'Liga',
-              //   initialValue: liga,
-              //   validator: (value) {
-              //     if (value == null || value.isEmpty) {
-              //       error = true;
-              //       return 'Hay que elegir una liga';
-              //     } else {
-              //       error = false;
-              //       return null;
-              //     }
-              //   },
-              //   autovalidateMode: _autoValidateMode,
-              //   onSaved: (value) => liga = value,
-              //   values: [
-              //     Leagues.libre.toString(),
-              //     Leagues.m30.toString(),
-              //     Leagues.m40.toString(),
-              //     Leagues.femenino.toString(),
-              //   ],
-              //   options: [
-              //     'libre',
-              //     'm30',
-              //     'm40',
-              //     'femenino',
-              //   ],
-              //   enabled: true,
-              //   onChanged: (value) {
-              //     setState(() {
-              //       liga = value;
-              //     });
-              //   },
-              // ),
               CardSettingsButton(
                 label: 'Guardar',
                 isDestructive: false,
