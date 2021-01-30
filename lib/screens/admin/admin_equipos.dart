@@ -83,9 +83,9 @@ class _AdminEquiposState extends State<AdminEquipos> {
             'Y ahora estos jugadores estan en el initState de la clase admin_equipos: ${jugadoresEquipo}');
       });
 
-      widget.equipo.partidosAnteriores.forEach((element) {
-        partidosAnteriores.add(element);
-      });
+      // widget.equipo.partidosAnteriores.forEach((element) {
+      //   partidosAnteriores.add(element);
+      // });
     } else
       initPhoto();
     Future.delayed(Duration.zero, () {
@@ -352,8 +352,8 @@ class _AdminEquiposState extends State<AdminEquipos> {
                         partidosJugados: partidosJugados,
                         photoURL: foto,
                         jugadores: HiveList(players, objects: jugadoresEquipo),
-                        partidosAnteriores:
-                            HiveList(games, objects: partidosAnteriores),
+                        // partidosAnteriores:
+                        //     HiveList(games, objects: partidosAnteriores),
                       );
 
                       equipos.createTeam(aux);

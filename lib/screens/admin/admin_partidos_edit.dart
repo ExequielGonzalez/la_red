@@ -32,9 +32,9 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
   Equipo equipo1;
   Equipo equipo2;
   int numCancha = 0;
-  // DateTime fecha = DateTime(2020, 10, 10, 20, 30);
+
   DateTime fecha = DateTime.now();
-  String hora = '';
+
   int golE1 = 0;
   int golE2 = 0;
   String id = '';

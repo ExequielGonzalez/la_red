@@ -94,7 +94,7 @@ class EquipoData with ChangeNotifier {
 
       aux.jugadores = equipo.jugadores;
       aux.nombre = equipo.nombre;
-      aux.partidosAnteriores = equipo.partidosAnteriores;
+      // aux.partidosAnteriores = equipo.partidosAnteriores;
       aux.photoURL = equipo.photoURL;
       aux.liga = equipo.liga;
       aux.save();

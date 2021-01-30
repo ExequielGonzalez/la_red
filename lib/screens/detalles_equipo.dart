@@ -22,8 +22,8 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
   void initState() {
     super.initState();
     updateUI(widget.equipo);
-    ultimo = getLastGame();
-    proximo = getNextGame();
+    // ultimo = getLastGame();
+    // proximo = getNextGame();
   }
 
   double getHeight(double percent) =>
@@ -41,32 +41,32 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
     });
   }
 
-  Partido getNextGame() {
-    Partido nextGame;
-    if (widget.equipo.partidosAnteriores != null)
-      widget.equipo.partidosAnteriores.forEach((element) {
-        if (!element.isFinished) nextGame = element;
-      });
-    return nextGame;
-  }
-
-  Partido getLastGame() {
-    Partido lastGame;
-    try {
-      if (widget.equipo.partidosAnteriores != null) {
-        if (widget.equipo.partidosAnteriores.length > 1 ||
-            widget.equipo.partidosAnteriores.last.isFinished) {
-          lastGame = widget.equipo.partidosAnteriores.lastWhere(
-              (element) => element.isFinished,
-              orElse: lastGame = null);
-        }
-      }
-    } catch (e) {
-      print(e);
-    }
-
-    return lastGame;
-  }
+  // Partido getNextGame() {
+  //   Partido nextGame;
+  //   if (widget.equipo.partidosAnteriores != null)
+  //     widget.equipo.partidosAnteriores.forEach((element) {
+  //       if (!element.isFinished) nextGame = element;
+  //     });
+  //   return nextGame;
+  // }
+  //
+  // Partido getLastGame() {
+  //   Partido lastGame;
+  //   try {
+  //     if (widget.equipo.partidosAnteriores != null) {
+  //       if (widget.equipo.partidosAnteriores.length > 1 ||
+  //           widget.equipo.partidosAnteriores.last.isFinished) {
+  //         lastGame = widget.equipo.partidosAnteriores.lastWhere(
+  //             (element) => element.isFinished,
+  //             orElse: lastGame = null);
+  //       }
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //
+  //   return lastGame;
+  // }
 
   Partido ultimo;
   Partido proximo;

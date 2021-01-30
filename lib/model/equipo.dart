@@ -13,29 +13,29 @@ part 'equipo.g.dart';
 class Equipo extends HiveObject {
   @HiveField(0)
   HiveList<Jugador> jugadores;
+  // @HiveField(1)
+  // HiveList<Partido> partidosAnteriores;
   @HiveField(1)
-  HiveList<Partido> partidosAnteriores;
-  @HiveField(2)
   int puntos;
-  @HiveField(3)
+  @HiveField(2)
   int partidosJugados;
-  @HiveField(4)
+  @HiveField(3)
   int golesFavor;
-  @HiveField(5)
+  @HiveField(4)
   int golesContra;
-  @HiveField(6)
+  @HiveField(5)
   int partidosGanados;
-  @HiveField(7)
+  @HiveField(6)
   int partidosPerdidos;
-  @HiveField(8)
+  @HiveField(7)
   int partidosEmpates;
-  @HiveField(9)
+  @HiveField(8)
   String nombre;
-  @HiveField(10)
+  @HiveField(9)
   String id;
-  @HiveField(11)
+  @HiveField(10)
   Uint8List photoURL;
-  @HiveField(12)
+  @HiveField(11)
   String liga;
 
   static int counter = 0;
@@ -51,7 +51,7 @@ class Equipo extends HiveObject {
     this.id,
     this.jugadores,
     this.nombre,
-    this.partidosAnteriores,
+    // this.partidosAnteriores,
     this.photoURL,
     this.liga,
   }) {
@@ -72,7 +72,7 @@ class Equipo extends HiveObject {
 
     this.jugadores = null;
     this.nombre = 'Boca Juniors';
-    this.partidosAnteriores = null;
+    // this.partidosAnteriores = null;
     // this.photoURL = "assets/images/contacto.png";
     this.liga = Leagues.femenino.toString();
 
@@ -91,7 +91,7 @@ class Equipo extends HiveObject {
 
     this.jugadores = null;
     this.nombre = name;
-    this.partidosAnteriores = null;
+    // this.partidosAnteriores = null;
     // this.photoURL = "assets/images/contacto.png";
     this.liga = league.toString();
 

@@ -240,22 +240,22 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                     partidos.createMatch(aux);
                     print('guardando el partido: ${aux.toString()}');
 
-                    var games = await Hive.openBox<Partido>(kBoxPartidos);
+                    // var games = await Hive.openBox<Partido>(kBoxPartidos);
 
-                    List<Partido> _aux1 =
-                        aux.equipo1.first.partidosAnteriores ?? [];
+                    // List<Partido> _aux1 =
+                    //     aux.equipo1.first.partidosAnteriores ?? [];
+                    // print('Ya hay ${aux1.length} partidos creados ');
+                    // List<Partido> _aux2 =
+                    //     aux.equipo2.first.partidosAnteriores ?? [];
+                    //
+                    // _aux1.add(aux);
+                    // _aux2.add(aux);
+
                     print('Ya hay ${aux1.length} partidos creados ');
-                    List<Partido> _aux2 =
-                        aux.equipo2.first.partidosAnteriores ?? [];
-
-                    _aux1.add(aux);
-                    _aux2.add(aux);
-
-                    print('Ya hay ${aux1.length} partidos creados ');
-                    aux.equipo1.first.partidosAnteriores =
-                        HiveList(games, objects: _aux1);
-                    aux.equipo2.first.partidosAnteriores =
-                        HiveList(games, objects: _aux2);
+                    // aux.equipo1.first.partidosAnteriores =
+                    //     HiveList(games, objects: _aux1);
+                    // aux.equipo2.first.partidosAnteriores =
+                    //     HiveList(games, objects: _aux2);
 
                     equiposProvider.editTeam(aux.equipo1.first);
                     equiposProvider.editTeam(aux.equipo2.first);

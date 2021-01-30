@@ -54,11 +54,14 @@ Future<List<Box>> _openBox() async {
   });
 
   if (kRestart) {
+    // boxJugadores.deleteFromDisk();
+    // boxConfig.deleteFromDisk();
+    // boxPartidos.deleteFromDisk();
+    // boxConfig.deleteFromDisk();
     boxJugadores.clear();
     boxEquipos.clear();
     boxPartidos.clear();
     boxConfig.clear();
-    // boxJugadores.deleteFromDisk();
   }
 
   boxList.add(boxJugadores);
