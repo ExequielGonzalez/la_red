@@ -26,6 +26,17 @@ class PartidoData with ChangeNotifier {
     return _partidos.firstWhere((element) => element.key == key);
   }
 
+  List<Partido> getMatchesByTeam(Equipo equipo) {
+    print(
+        'en el metodo getMatchesByTeam se recibio el equipo ${equipo.nombre}');
+    List<Partido> _aux = [];
+    _partidos.forEach((element) {
+      if (element.equipo1.first.id == equipo.id ||
+          element.equipo2.first.id == equipo.id) _aux.add(element);
+    });
+    return _aux;
+  }
+
   void createMatch(Partido partido, {bool onFirestore = true}) async {
     print('Creando partido con hive');
     _partidos.add(partido);

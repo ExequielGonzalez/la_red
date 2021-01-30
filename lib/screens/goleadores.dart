@@ -38,7 +38,8 @@ class _GoleadoresState extends State<Goleadores> {
         Provider.of<JugadorData>(context, listen: false).getJugadores;
 
     goleadores = goleadores
-        .where((element) => element.liga == league.toString())
+        .where(
+            (element) => element.liga == league.toString() && element.goles > 0)
         .toList();
 
     Comparator<Jugador> sortByGoles = (b, a) => a.goles.compareTo(b.goles);

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:la_red/constants.dart';
 import 'package:la_red/model/partido.dart';
+import 'package:la_red/provider/partido_data.dart';
 import 'package:la_red/widgets/background.dart';
 import 'package:la_red/widgets/fixtureListItem.dart';
 import 'package:la_red/widgets/last_game_item.dart';
 import 'package:la_red/widgets/player_statistics.dart';
 import 'package:la_red/widgets/screen_banner.dart';
 import 'package:la_red/model/equipo.dart';
+import 'package:provider/provider.dart';
 
 class DetallesEquipo extends StatefulWidget {
   final Equipo equipo;
@@ -21,9 +23,13 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
   @override
   void initState() {
     super.initState();
+    //valiendose de la clase provider, se toma se revisa en que partidos de la base de datos aparece este equipo
+    partidos = Provider.of<PartidoData>(context, listen: false)
+        .getMatchesByTeam(widget.equipo);
     updateUI(widget.equipo);
-    // ultimo = getLastGame();
-    // proximo = getNextGame();
+    //se arma la UI para el proximo partido y el último jugado
+    ultimo = getLastGame();
+    proximo = getNextGame();
   }
 
   double getHeight(double percent) =>
@@ -41,37 +47,44 @@ class _DetallesEquipoState extends State<DetallesEquipo> {
     });
   }
 
-  // Partido getNextGame() {
-  //   Partido nextGame;
-  //   if (widget.equipo.partidosAnteriores != null)
-  //     widget.equipo.partidosAnteriores.forEach((element) {
-  //       if (!element.isFinished) nextGame = element;
-  //     });
-  //   return nextGame;
-  // }
-  //
-  // Partido getLastGame() {
-  //   Partido lastGame;
-  //   try {
-  //     if (widget.equipo.partidosAnteriores != null) {
-  //       if (widget.equipo.partidosAnteriores.length > 1 ||
-  //           widget.equipo.partidosAnteriores.last.isFinished) {
-  //         lastGame = widget.equipo.partidosAnteriores.lastWhere(
-  //             (element) => element.isFinished,
-  //             orElse: lastGame = null);
-  //       }
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //
-  //   return lastGame;
-  // }
+  Partido getNextGame() {
+    Partido nextGame;
+    try {
+      if (partidos.isNotEmpty)
+        setState(() {
+          nextGame = partidos.firstWhere((element) => !element.isFinished,
+              orElse: nextGame = null);
+        });
+    } catch (e) {
+      print(e);
+    }
+
+    return nextGame;
+  }
+
+  Partido getLastGame() {
+    Partido lastGame;
+    try {
+      if (partidos.isNotEmpty) {
+        setState(() {
+          lastGame = partidos.lastWhere((element) => element.isFinished,
+              orElse: lastGame = null);
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    return lastGame;
+  }
 
   Partido ultimo;
   Partido proximo;
   String title;
   double scale = 0.045;
+
+  List<Partido> partidos = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
