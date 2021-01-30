@@ -37,7 +37,7 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
   String hora = '';
   int golE1 = 0;
   int golE2 = 0;
-  int id = 0;
+  String id = '';
   bool isFinished = false;
   String liga = Leagues.libre.toString();
 
@@ -46,6 +46,7 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
   String equipo2String = '';
 
   void addGol(context, Equipo equipo) async {
+    final jugadores = Provider.of<JugadorData>(context, listen: false);
     Jugador aux = await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -55,7 +56,7 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
         });
     if (aux != null) {
       aux.goles += 1;
-      aux.save();
+      jugadores.editPlayer(aux);
       setState(() {
         (equipo == equipo1) ? golE1 += 1 : golE2 += 1;
       });
@@ -63,6 +64,7 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
   }
 
   void addAmarilla(context, Equipo equipo) async {
+    final jugadores = Provider.of<JugadorData>(context, listen: false);
     Jugador aux = await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -72,12 +74,13 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
         });
     if (aux != null) {
       aux.amarillas += 1;
-      aux.save();
+      jugadores.editPlayer(aux);
       setState(() {});
     }
   }
 
   void addRoja(context, Equipo equipo) async {
+    final jugadores = Provider.of<JugadorData>(context, listen: false);
     Jugador aux = await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -87,12 +90,13 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
         });
     if (aux != null) {
       aux.rojas += 1;
-      aux.save();
+      jugadores.editPlayer(aux);
       setState(() {});
     }
   }
 
   void actualizarEstadisticas() {
+    final equipos = Provider.of<EquipoData>(context, listen: false);
     equipo1.partidosJugados += 1;
     equipo2.partidosJugados += 1;
     if (golE1 == golE2) {
@@ -115,8 +119,10 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
     equipo1.golesContra += golE2;
     equipo2.golesContra += golE1;
 
-    equipo1.save();
-    equipo2.save();
+    equipos.editTeam(equipo1);
+    equipos.editTeam(equipo2);
+    // equipo1.save();
+    // equipo2.save();
   }
 
   @override
@@ -128,7 +134,7 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
       numCancha = widget.partido.numCancha;
       liga = widget.partido.liga;
       fecha = widget.partido.fecha;
-      hora = widget.partido.hora;
+
       golE1 = widget.partido.golE1;
       golE2 = widget.partido.golE2;
       id = widget.partido.id;
@@ -400,11 +406,14 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
                     widget.partido.golE2 = golE2;
                     widget.partido.isFinished = isFinished;
                     widget.partido.fecha = fecha;
-                    widget.partido.hora = hora;
+
                     widget.partido.numCancha = numCancha;
 
                     // widget.partido.save();
                     partidos.editMatch(widget.partido);
+
+                    equiposProvider.editTeam(widget.partido.equipo1.first);
+                    equiposProvider.editTeam(widget.partido.equipo2.first);
                   }
                   print('guardando el partido: ${widget.partido.toString()}');
 

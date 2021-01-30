@@ -23,6 +23,15 @@ class JugadorData with ChangeNotifier {
     return _aux;
   }
 
+  Jugador getJugadorByDNI(int dni) {
+    Jugador aux;
+    _jugadores.forEach((element) {
+      if (element.dni == dni) aux = element;
+    });
+    print('retornando el jugador $aux');
+    return aux;
+  }
+
   int _size = 0;
 
   List<Jugador> get getJugadores => _jugadores;
@@ -30,7 +39,6 @@ class JugadorData with ChangeNotifier {
   int get playerLength => _jugadores.length;
 
   void createPlayer(Jugador jugador, {bool onFirestore = true}) async {
-    jugador.keyDataBase = '$_identifierDataBase$_size';
     _jugadores.add(jugador);
     var box = await Hive.openBox<Jugador>(kBoxJugadores);
 
@@ -88,7 +96,7 @@ class JugadorData with ChangeNotifier {
       aux.liga = jugador.liga;
       aux.amarillas = jugador.amarillas;
       aux.dni = jugador.dni;
-      aux.edad = jugador.edad;
+      aux.nacimiento = jugador.nacimiento;
       aux.goles = jugador.goles;
       aux.rojas = jugador.rojas;
       aux.hasTeam = jugador.hasTeam;

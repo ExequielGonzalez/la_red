@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:la_red/constants.dart';
 import 'package:la_red/model/jugador.dart';
 import 'package:la_red/model/partido.dart';
+import 'package:la_red/provider/equipo_data.dart';
 
 import 'package:la_red/provider/jugador_data.dart';
 import 'package:la_red/provider/leagues_provider.dart';
@@ -152,6 +153,7 @@ class _AdminDialogPartidosState extends State<AdminDialogPartidos> {
 List<Widget> _createMatchesList(context, Leagues league, gamesFinished) {
   List<InkWell> _partidosList = [];
   final partidosProvider = Provider.of<PartidoData>(context);
+  final equiposProvider = Provider.of<EquipoData>(context);
   final partidos = partidosProvider.getPartidos;
   // goleadores.sort();
   InkWell _listItem;
@@ -184,29 +186,16 @@ List<Widget> _createMatchesList(context, Leagues league, gamesFinished) {
               ),
             ),
           );
-          if (success) {
-            // print(element);
-            // var games = await Hive.openBox<Partido>(kBoxPartidos);
-            Partido aux;
-            aux =
-                partidosProvider.getMatchByKey(partidosProvider.lastKeyEdited);
-
-            // List<Partido> aux1 = aux.equipo1.first.partidosAnteriores;
-            // print('Ya hay ${aux1.length} partidos creados ');
-            // List<Partido> aux2 = aux.equipo2.first.partidosAnteriores;
-            //
-            // aux1.add(aux);
-            // aux2.add(aux);
-            //
-            // print('Ya hay ${aux1.length} partidos creados ');
-            // element.equipo1.first.partidosAnteriores =
-            //     HiveList(games, objects: aux1);
-            // element.equipo2.first.partidosAnteriores =
-            //     HiveList(games, objects: aux2);
-
-            aux.equipo1.first.save();
-            aux.equipo2.first.save();
-          }
+          // if (success) {
+          //   Partido aux;
+          //   aux =
+          //       partidosProvider.getMatchByKey(partidosProvider.lastKeyEdited);
+          //
+          //   equiposProvider.editTeam(aux.equipo1.first);
+          //   equiposProvider.editTeam(aux.equipo2.first);
+          //   // aux.equipo1.first.save();
+          //   // aux.equipo2.first.save();
+          // }
         },
         onLongPress: () {
           showDialog(

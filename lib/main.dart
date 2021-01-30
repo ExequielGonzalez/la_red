@@ -58,7 +58,7 @@ Future<List<Box>> _openBox() async {
     boxEquipos.clear();
     boxPartidos.clear();
     boxConfig.clear();
-    boxJugadores.deleteFromDisk();
+    // boxJugadores.deleteFromDisk();
   }
 
   boxList.add(boxJugadores);

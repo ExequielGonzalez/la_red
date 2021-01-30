@@ -12,7 +12,7 @@ class Jugador extends HiveObject {
   @HiveField(1)
   String apellido;
   @HiveField(2)
-  int edad;
+  DateTime nacimiento;
   @HiveField(3)
   int goles;
   @HiveField(4)
@@ -27,8 +27,6 @@ class Jugador extends HiveObject {
   String liga;
   @HiveField(9)
   int id;
-  @HiveField(10)
-  String keyDataBase;
 
   //TODO: Añadir que cada jugador pertenezca a un equipo
   static int counter = 0;
@@ -37,33 +35,30 @@ class Jugador extends HiveObject {
     this.nombre,
     this.apellido,
     this.dni,
-    this.edad,
+    this.nacimiento,
     this.amarillas,
     this.goles,
     this.rojas,
     this.hasTeam,
     this.liga,
     this.id,
-    this.keyDataBase,
   }) {
     // this.hasTeam = false;
     this.id = counter; //id tiene que arrancar en 1
     // dev.debugger();
     counter += 1;
     print(
-        'Constructor de Jugador: Creando jugador ${this.nombre} ${this.apellido} con dni: ${this.dni} con id: ${this.id}. El counter vale $counter. key: ${this.key}. El jugador tiene equipo: ${this.hasTeam} y juega en la liga ${this.liga}. la key en la database es ${this.keyDataBase}');
+        'Constructor de Jugador: Creando jugador ${this.nombre} ${this.apellido} con dni: ${this.dni} con id: ${this.id}. El counter vale $counter. key: ${this.key}. El jugador tiene equipo: ${this.hasTeam} y juega en la liga ${this.liga}. ');
   }
 
   // factory Jugador.fromJason(Map<String, dynamic> json) =>
   //     _$JugadorFromJson(json);
 
-  Map<dynamic, dynamic> toJson() => _$JugadorToJson(this);
-
   Jugador.auto(String name, Leagues league) {
     this.nombre = name;
     this.apellido = '';
     this.dni = counter;
-    this.edad = 23;
+    // this.edad = 23;
     this.amarillas = 1;
     this.goles = counter * 5;
     this.rojas = 0;
@@ -81,9 +76,11 @@ class Jugador extends HiveObject {
   @override
   String toString() {
     // TODO: implement toString
-    return 'id: ${this.id}  - counter: $counter - key: ${this.key}-> El jugador ${this.nombre} ${this.apellido}, con DNI: ${this.dni}, que juega en la liga ${this.liga} y ha hecho ${this.goles} goles';
+    return 'id: ${this.id}  - counter: $counter - key: ${this.key} - dni: ${this.dni}-> El jugador ${this.nombre} ${this.apellido}, con DNI: ${this.dni}, que juega en la liga ${this.liga} y ha hecho ${this.goles} goles';
     return super.toString();
   }
+
+  Map<dynamic, dynamic> toJson() => _$JugadorToJson(this);
 
   Map<String, dynamic> _$JugadorToJson(Jugador jugador) => <String, dynamic>{
         'nombre': jugador.nombre,
@@ -94,24 +91,36 @@ class Jugador extends HiveObject {
         'rojas': jugador.rojas,
         'id': jugador.id,
         'liga': jugador.liga,
-        'edad': jugador.edad,
+        'nacimiento': jugador.nacimiento,
         'hasTeam': jugador.hasTeam,
-        'keyDataBase': jugador.keyDataBase,
       };
 
+  // factory Jugador.fromJson(Map<String, dynamic> json) {
+  //   return Jugador(
+  //     nombre: json['nombre'] as String,
+  //     apellido: json['apellido'] as String,
+  //     dni: json['dni'] as int,
+  //     goles: json['goles'] as int,
+  //     amarillas: json['amarillas'] as int,
+  //     rojas: json['rojas'] as int,
+  //     id: json['id'] as int,
+  //     liga: json['liga'] as String,
+  //     nacimiento: json['nacimiento'].toDate(),
+  //     hasTeam: json['hasTeam'] as bool,
+  //   );
+  // }
   factory Jugador.fromJson(Map<String, dynamic> json) {
     return Jugador(
-      nombre: json['nombre'] as String,
-      apellido: json['apellido'] as String,
-      dni: json['dni'] as int,
-      goles: json['goles'] as int,
-      amarillas: json['amarillas'] as int,
-      rojas: json['rojas'] as int,
-      // id: json['id'] as int,
-      liga: json['liga'] as String,
-      edad: json['edad'] as int,
-      hasTeam: json['hasTeam'] as bool,
-      // keyDataBase: json['keyDataBase'] as String,
+      nombre: json['nombre'],
+      apellido: json['apellido'],
+      dni: json['dni'],
+      goles: json['goles'],
+      amarillas: json['amarillas'],
+      rojas: json['rojas'],
+      id: json['id'],
+      liga: json['liga'],
+      nacimiento: json['nacimiento'].toDate(),
+      hasTeam: json['hasTeam'],
     );
   }
 
@@ -126,25 +135,10 @@ class Jugador extends HiveObject {
       rojas: data['rojas'],
       id: data['id'],
       liga: data['liga'],
-      edad: data['edad'],
+      nacimiento: data['nacimiento'].toDate(),
       hasTeam: data['hasTeam'],
-      // keyDataBase: data['keyDataBase'],
-    )..keyDataBase = doc.id;
+    );
   }
-
-  // Jugador _$JugadorFromJson(Map<String, dynamic> json) => Jugador(
-  //       nombre: json['nombre'] as String,
-  //       apellido: json['apellido'] as String,
-  //       dni: json['dni'] as int,
-  //       goles: json['goles'] as int,
-  //       amarillas: json['amarillas'] as int,
-  //       rojas: json['rojas'] as int,
-  //       id: json['id'] as int,
-  //       liga: json['liga'] as String,
-  //       edad: json['edad'] as int,
-  //       hasTeam: json['hasTeam'] as bool,
-  //       keyDataBase: json['keyDataBase'] as String,
-  //     );
 
   @override
   int get typeId => 0;

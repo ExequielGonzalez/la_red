@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:la_red/model/equipo.dart';
 import 'package:la_red/model/jugador.dart';
+import 'package:la_red/model/partido.dart';
 import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/provider/jugadores_equipo_provider.dart';
 import 'package:la_red/size_config.dart';
@@ -48,13 +49,13 @@ class _AdminEquiposState extends State<AdminEquipos> {
   int partidosJugados = 0;
 
   List<Jugador> jugadoresEquipo = [];
+  List<Partido> partidosAnteriores = [];
 
   Uint8List foto;
 
   void initPhoto() async {
-    foto = (await rootBundle.load("assets/images/logo_principal.png"))
-        .buffer
-        .asUint8List();
+    foto =
+        (await rootBundle.load("assets/images/logo.jpg")).buffer.asUint8List();
   }
 
   @override
@@ -66,7 +67,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
       liga = widget.equipo.liga;
       golesFavor = widget.equipo.golesFavor;
       golesContra = widget.equipo.golesContra;
-      posicion = widget.equipo.posicion;
+
       partidosGanados = widget.equipo.partidosGanados;
       partidosEmpatados = widget.equipo.partidosEmpates;
       partidosPerdidos = widget.equipo.partidosPerdidos;
@@ -80,6 +81,10 @@ class _AdminEquiposState extends State<AdminEquipos> {
         jugadoresEquipo.add(element);
         print(
             'Y ahora estos jugadores estan en el initState de la clase admin_equipos: ${jugadoresEquipo}');
+      });
+
+      widget.equipo.partidosAnteriores.forEach((element) {
+        partidosAnteriores.add(element);
       });
     } else
       initPhoto();
@@ -234,6 +239,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
                         Provider.of<JugadorData>(context, listen: false);
                     // Provider.of<EquipoData>(context, listen: false);
                     jugadoresEquipo = jugadoresProvider.jugadorEquipo;
+                    var games = await Hive.openBox<Partido>(kBoxPartidos);
                     // dev.debugger();
 
                     if (widget.equipo != null) {
@@ -254,6 +260,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
                             '--------------->>>>>>>>>>>>>son distintas<<<<<<<<<--------------------');
                         var players =
                             await Hive.openBox<Jugador>(kBoxJugadores);
+
                         jugadoresEquipo = jugadoresProvider.jugadorEquipo;
                         print(
                             'Aprete el boton de save: ${jugadoresProvider.jugadorEquipo}');
@@ -263,7 +270,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
 
                         widget.equipo.nombre = nombre;
                         widget.equipo.liga = liga;
-                        widget.equipo.posicion = posicion;
+
                         widget.equipo.puntos = puntos;
                         widget.equipo.partidosPerdidos = partidosPerdidos;
                         widget.equipo.partidosEmpates = partidosEmpatados;
@@ -273,6 +280,8 @@ class _AdminEquiposState extends State<AdminEquipos> {
                         widget.equipo.photoURL = foto;
                         widget.equipo.jugadores =
                             HiveList(players, objects: jugadoresEquipo);
+                        partidosAnteriores =
+                            HiveList(games, objects: partidosAnteriores);
                         widget.equipo.partidosJugados = partidosJugados;
 
                         equipos.editTeam(widget.equipo);
@@ -296,7 +305,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
                             '\ncreando equipo con jugadores: $jugadoresEquipo');
                         widget.equipo.nombre = nombre;
                         widget.equipo.liga = liga;
-                        widget.equipo.posicion = posicion;
+
                         widget.equipo.puntos = puntos;
                         widget.equipo.partidosPerdidos = partidosPerdidos;
                         widget.equipo.partidosEmpates = partidosEmpatados;
@@ -306,6 +315,8 @@ class _AdminEquiposState extends State<AdminEquipos> {
                         widget.equipo.photoURL = foto;
                         widget.equipo.jugadores =
                             HiveList(players, objects: jugadoresEquipo);
+                        partidosAnteriores =
+                            HiveList(games, objects: partidosAnteriores);
                         widget.equipo.partidosJugados = partidosJugados;
 
                         equipos.editTeam(widget.equipo);
@@ -323,6 +334,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
                       print(
                           '--------------->>>>>>>>>>>>>Es nuevito el team<<<<<<<<<--------------------');
                       var players = await Hive.openBox<Jugador>(kBoxJugadores);
+
                       jugadoresEquipo = jugadoresProvider.jugadorEquipo;
                       print(
                           'Aprete el boton de save: ${jugadoresProvider.jugadorEquipo}');
@@ -331,7 +343,6 @@ class _AdminEquiposState extends State<AdminEquipos> {
                       var aux = Equipo(
                         nombre: nombre,
                         liga: liga,
-                        posicion: posicion,
                         puntos: puntos,
                         partidosPerdidos: partidosPerdidos,
                         partidosEmpates: partidosEmpatados,
@@ -341,6 +352,8 @@ class _AdminEquiposState extends State<AdminEquipos> {
                         partidosJugados: partidosJugados,
                         photoURL: foto,
                         jugadores: HiveList(players, objects: jugadoresEquipo),
+                        partidosAnteriores:
+                            HiveList(games, objects: partidosAnteriores),
                       );
 
                       equipos.createTeam(aux);
@@ -586,7 +599,8 @@ class CardJugadores extends StatelessWidget implements CardSettingsWidget {
                         // widget.jugadoresDelEquipo[index].hasTeam = false;
                         // widget.jugadoresDelEquipo
                         //     .remove(widget.jugadoresDelEquipo[index]);
-                        jugadoresProvider.deleteJugador(jugadoresEquipo[index]);
+                        jugadoresProvider.deleteJugador(
+                            context, jugadoresEquipo[index]);
                         // jugadoresEquipo[index].hasTeam = false;
                         // jugadoresEquipo.remove(jugadoresEquipo[index]);
                       },

@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:la_red/model/jugador.dart';
+import 'package:la_red/provider/jugador_data.dart';
+import 'package:provider/provider.dart';
 
 class JugadoresEquipo with ChangeNotifier {
   List<Jugador> _jugadorEquipo = [];
@@ -16,10 +18,10 @@ class JugadoresEquipo with ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteJugador(Jugador jugador) {
+  void deleteJugador(context, Jugador jugador) {
     jugador.hasTeam = false;
-    jugador.save();
-    _jugadorEquipo.removeWhere((element) => element.id == jugador.id);
+    Provider.of<JugadorData>(context, listen: false).editPlayer(jugador);
+    _jugadorEquipo.removeWhere((element) => element.dni == jugador.dni);
     notifyListeners();
   }
 

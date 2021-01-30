@@ -34,7 +34,7 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
   String hora = '';
   int golE1 = 0;
   int golE2 = 0;
-  int id = 0;
+  String id = '';
   bool isFinished = false;
   String liga = Leagues.libre.toString();
 
@@ -51,7 +51,7 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
       numCancha = widget.partido.numCancha;
       liga = widget.partido.liga;
       fecha = widget.partido.fecha;
-      hora = widget.partido.hora;
+
       golE1 = widget.partido.golE1;
       golE2 = widget.partido.golE2;
       id = widget.partido.id;
@@ -232,7 +232,6 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                       golE1: golE1,
                       golE2: golE2,
                       fecha: fecha,
-                      hora: hora,
                       isFinished: isFinished,
                       numCancha: numCancha,
                       liga: liga,
@@ -258,8 +257,10 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                     aux.equipo2.first.partidosAnteriores =
                         HiveList(games, objects: _aux2);
 
-                    aux.equipo1.first.save();
-                    aux.equipo2.first.save();
+                    equiposProvider.editTeam(aux.equipo1.first);
+                    equiposProvider.editTeam(aux.equipo2.first);
+                    // aux.equipo1.first.save();
+                    // aux.equipo2.first.save();
                   }
                   Navigator.of(context).pop(true);
                 },

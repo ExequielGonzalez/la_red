@@ -19,21 +19,20 @@ class PartidoAdapter extends TypeAdapter<Partido> {
     return Partido(
       equipo1: (fields[0] as HiveList)?.castHiveList(),
       equipo2: (fields[1] as HiveList)?.castHiveList(),
-      id: fields[7] as int,
+      id: fields[6] as String,
       fecha: fields[3] as DateTime,
-      golE1: fields[5] as int,
-      golE2: fields[6] as int,
-      hora: fields[4] as String,
+      golE1: fields[4] as int,
+      golE2: fields[5] as int,
       numCancha: fields[2] as int,
-      liga: fields[8] as String,
-      isFinished: fields[9] as bool,
+      liga: fields[7] as String,
+      isFinished: fields[8] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, Partido obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.equipo1)
       ..writeByte(1)
@@ -43,16 +42,14 @@ class PartidoAdapter extends TypeAdapter<Partido> {
       ..writeByte(3)
       ..write(obj.fecha)
       ..writeByte(4)
-      ..write(obj.hora)
-      ..writeByte(5)
       ..write(obj.golE1)
-      ..writeByte(6)
+      ..writeByte(5)
       ..write(obj.golE2)
-      ..writeByte(7)
+      ..writeByte(6)
       ..write(obj.id)
-      ..writeByte(8)
+      ..writeByte(7)
       ..write(obj.liga)
-      ..writeByte(9)
+      ..writeByte(8)
       ..write(obj.isFinished);
   }
 

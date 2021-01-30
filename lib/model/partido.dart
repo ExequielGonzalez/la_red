@@ -1,7 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:la_red/model/equipo.dart';
 import 'package:hive/hive.dart';
-
-import '../constants.dart';
 
 part 'partido.g.dart';
 
@@ -16,19 +15,15 @@ class Partido extends HiveObject {
   @HiveField(3)
   DateTime fecha;
   @HiveField(4)
-  String hora;
-  @HiveField(5)
   int golE1;
-  @HiveField(6)
+  @HiveField(5)
   int golE2;
+  @HiveField(6)
+  String id;
   @HiveField(7)
-  int id;
-  @HiveField(8)
   String liga;
-  @HiveField(9)
+  @HiveField(8)
   bool isFinished;
-
-  static int counter = 0;
 
   Partido({
     this.equipo1,
@@ -37,35 +32,62 @@ class Partido extends HiveObject {
     this.fecha,
     this.golE1,
     this.golE2,
-    this.hora,
     this.numCancha,
     this.liga,
     this.isFinished,
   }) {
-    counter += 1;
-    this.id = counter; //id tiene que arrancar en 0
+    this.id =
+        '${this.fecha.day.toString().padLeft(2, '0')}-${this.fecha.month.toString().padLeft(2, '0')}-${this.fecha.year.toString()}-${this.fecha.millisecond.toString()}-${this.fecha.microsecond.toString()}-${this.liga}-${this.numCancha.toString()}'; //id tiene que arrancar en 0
 
-    print(
-        'Constructor de Partido: Creando el partido entre ${this.equipo1.first.nombre} vs  ${this.equipo2.first.nombre} con id: ${this.id}. El counter vale $counter. key: ${this.key}. El partido es en la fecha: ${this.fecha}');
+    // print(
+    //     'Constructor de Partido: Creando el partido entre ${this.equipo1.first.nombre} vs  ${this.equipo2.first.nombre} con id: ${this.id}.  key: ${this.key}. El partido es en la fecha: ${this.fecha}');
   }
 
-  // Partido.autoT1T2(Equipo equipo1, Equipo equipo2, Leagues league) {
-  //   this.equipo1 = equipo1;
-  //   this.equipo2 = equipo2;
-  //   this.golE2 = 1;
-  //   this.golE1 = 3;
-  //   this.id = counter;
-  //   this.liga = league.toString();
-  //   this.numCancha = 3;
-  //   this.hora = '15:30';
-  //   // this.fecha = '01-02-03';
-  //   print(
-  //       'Se creo el partido: ${this.equipo1} vs ${this.equipo2}, con el ID: ${this.id}');
-  //   counter += 1;
-  // }
-
   String toString() =>
-      'Partido: Creando el partido entre ${this.equipo1.first.nombre} vs  ${this.equipo2.first.nombre} con id: ${this.id}. El counter vale $counter. key: ${this.key}. El partido es en la fecha: ${this.fecha}';
+      'id:${this.id} --- Partido: Creando el partido entre ${this.equipo1.first.nombre} vs  ${this.equipo2.first.nombre} con id: ${this.id}.  key: ${this.key}. El partido es en la fecha: ${this.fecha}';
+
+  Map<dynamic, dynamic> toJson() => _$PartidoToJson(this);
+
+  Map<String, dynamic> _$PartidoToJson(Partido partido) => <String, dynamic>{
+        'id': partido.id,
+        'fecha': partido.fecha,
+        'numCancha': partido.numCancha,
+        'golE1': partido.golE1,
+        'golE2': partido.golE2,
+        'liga': partido.liga,
+        'isFinished': partido.isFinished,
+        'equipo1': partido.equipo1.map((i) => i.toJson()).toList(),
+        'equipo2': partido.equipo2.map((i) => i.toJson()).toList(),
+      };
+
+  factory Partido.fromJson(Map<String, dynamic> json) {
+    return Partido(
+      fecha: json['fecha'].toDate(),
+      numCancha: json['numCancha'],
+      golE1: json['golE1'],
+      golE2: json['golE2'],
+      isFinished: json['isFinished'],
+      equipo1: json['equipo1'],
+      equipo2: json['equipo2'],
+      id: json['id'],
+      liga: json['liga'],
+    );
+  }
+
+  factory Partido.fromFirestore(DocumentSnapshot doc) {
+    Map data = doc.data();
+    return Partido(
+      fecha: data['fecha'].toDate(),
+      numCancha: data['numCancha'],
+      golE1: data['golE1'],
+      golE2: data['golE2'],
+      isFinished: data['isFinished'],
+      // equipo1: data['equipo1'],
+      // equipo2: data['equipo2'],
+      id: data['id'],
+      liga: data['liga'],
+    );
+  }
 
   int get typeId => 2;
 }

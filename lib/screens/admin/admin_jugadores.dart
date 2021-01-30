@@ -24,7 +24,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
   String apellido = '';
   int amarillas = 0;
   int dni = 0;
-  int edad = 0;
+  DateTime nacimiento = DateTime.now();
   int goles = 0;
   int posicion = 0;
   int rojas = 0;
@@ -40,7 +40,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
       liga = widget.jugador.liga;
       amarillas = widget.jugador.amarillas;
       dni = widget.jugador.dni;
-      edad = widget.jugador.edad;
+      nacimiento = widget.jugador.nacimiento;
       goles = widget.jugador.goles;
       rojas = widget.jugador.rojas;
       hasTeam = widget.jugador.hasTeam;
@@ -239,7 +239,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                       apellido: apellido,
                       amarillas: amarillas,
                       dni: dni,
-                      edad: edad,
+                      nacimiento: nacimiento,
                       goles: goles,
                       liga: liga,
                       rojas: rojas,
@@ -251,7 +251,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                       widget.jugador.liga = liga;
                       widget.jugador.amarillas = amarillas;
                       widget.jugador.dni = dni;
-                      widget.jugador.edad = edad;
+                      widget.jugador.nacimiento = nacimiento;
                       widget.jugador.goles = goles;
                       widget.jugador.rojas = rojas;
                       widget.jugador.hasTeam = hasTeam;
