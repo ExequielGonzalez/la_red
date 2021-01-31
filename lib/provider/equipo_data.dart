@@ -21,10 +21,12 @@ class EquipoData with ChangeNotifier {
 
   Equipo getEquipoById(String id) {
     Equipo aux;
+    // print(id);
     _equipos.forEach((element) {
+      // print(element.id);
       if (element.id == id) aux = element;
     });
-    print('retornando el equipo $aux');
+    // print('retornando el equipo $aux');
     return aux;
   }
 
@@ -104,7 +106,7 @@ class EquipoData with ChangeNotifier {
     notifyListeners();
   }
 
-  void readTeams({bool force = false}) async {
+  Future<List<Equipo>> readTeams({bool force = false}) async {
     var box = await Hive.openBox<Equipo>(kBoxEquipos);
 
     print('box values equipo: ${box.values}');
@@ -116,13 +118,13 @@ class EquipoData with ChangeNotifier {
         });
         _read = true;
       }
-
-      notifyListeners();
     }
+    notifyListeners();
+    return _equipos;
   }
 
   void deleteTeam(Equipo equipo) async {
-    print('eliminando el equipo ${equipo.toString()}');
+    // print('eliminando el equipo ${equipo.toString()}');
     // dev.debugger();
     var box = await Hive.openBox<Equipo>(kBoxEquipos);
 

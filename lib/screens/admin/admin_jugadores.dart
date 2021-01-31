@@ -5,7 +5,8 @@ import 'package:la_red/provider/jugador_data.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
-import '../../provider/leagues_provider.dart';
+
+import 'package:intl/intl.dart';
 
 class AdminJugadores extends StatefulWidget {
   Jugador jugador;
@@ -125,6 +126,21 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                 onChanged: (value) {
                   setState(() {
                     dni = value;
+                  });
+                },
+              ),
+              CardSettingsDatePicker(
+                firstDate: DateTime(1940),
+                lastDate: DateTime(2015),
+                icon: Icon(Icons.calendar_today),
+                label: 'Fecha de Nacimiento',
+                dateFormat: DateFormat.yMMMMd(),
+                initialValue: DateTime(1999, 02, 20),
+                onSaved: (value) =>
+                    nacimiento = updateJustDate(value, nacimiento),
+                onChanged: (value) {
+                  setState(() {
+                    nacimiento = value;
                   });
                 },
               ),

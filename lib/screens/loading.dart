@@ -25,8 +25,131 @@ class Loading extends StatefulWidget {
 class _LoadingState extends State<Loading> {
   @override
   void initState() {
-    readFirestore(!kRestart);
     super.initState();
+    starFirebase();
+  }
+
+  void starFirebase() async {
+    await Firebase.initializeApp();
+
+    ///Esto es para provocar un reset en todos los celulares.
+    // await cleanDataBase(reset: true, hardReset: false);
+
+    checkCleanDataBase().then((value) {
+      setState(() {
+        progress = 0.20;
+      });
+      print('Ya se limpio la base de datos : $value');
+      readFirestore(!kRestart);
+    });
+
+    // if (continueReading) readFirestore(!kRestart);
+  }
+
+  Future<bool> checkCleanDataBase() async {
+    bool continueReading = false;
+    var boxConfig = await Hive.openBox(kBoxConfig);
+    var timestamp = DateTime.now().microsecondsSinceEpoch;
+    int lastRead = await boxConfig.get('lastReadClean', defaultValue: -1);
+    if (lastRead != -1) {
+      final firestoreInstance = FirebaseFirestore.instance;
+      firestoreInstance
+          .collection("config")
+          .doc("clean_database")
+          .get()
+          .then((value) async {
+        if (value.exists) {
+          int lastEditionDatabase = value.get('edited');
+          if (lastEditionDatabase > lastRead) {
+            bool softReset = value.get('reset');
+            bool hardReset = value.get('hard_reset');
+            print(
+                '\n\n\n\nhay que hacer soft reset: $softReset.\n Hay que hacer hard reset: $hardReset');
+            if (softReset) {
+              var boxJugadores = await Hive.openBox<Jugador>(
+                kBoxJugadores,
+              );
+              var boxEquipos = await Hive.openBox<Equipo>(
+                kBoxEquipos,
+              );
+              var boxPartidos = await Hive.openBox<Partido>(
+                kBoxPartidos,
+              );
+              boxJugadores.clear();
+              boxEquipos.clear();
+              boxPartidos.clear();
+              await boxConfig.put('lastReadJugador', -1);
+              await boxConfig.put('lastReadEquipo', -1);
+              await boxConfig.put('lastReadPartido', -1);
+              continueReading = true;
+            }
+          }
+        }
+      });
+    }
+    await boxConfig.put('lastReadClean', timestamp);
+    return continueReading;
+  }
+
+  Future<void> readFirestore(bool force) async {
+    await Provider.of<JugadorData>(context, listen: false).readPlayers();
+    await Provider.of<EquipoData>(context, listen: false).readTeams();
+    await Provider.of<PartidoData>(context, listen: false).readMatches();
+
+    // if (force) {
+    //   await readPlayersFirestore();
+    //   setState(() {
+    //     progress = 0.40;
+    //   });
+    //   await readTeamsFirestore();
+    //   setState(() {
+    //     progress = 0.60;
+    //   });
+    //   await readMatchesFirestore();
+    //   setState(() {
+    //     progress = 0.80;
+    //   });
+    //   await updateTeamPhotos();
+    //   setState(() {
+    //     progress = 1;
+    //   });
+    // }
+    if (force) {
+      readPlayersFirestore().then((_) {
+        setState(() {
+          progress = 0.40;
+        });
+        readTeamsFirestore().then((_) {
+          setState(() {
+            progress = 0.60;
+          });
+
+          readMatchesFirestore().then((_) {
+            setState(() {
+              progress = 0.80;
+            });
+            updateTeamPhotos().then((value) {
+              setState(() {
+                progress = 1;
+              });
+              Navigator.pushReplacementNamed(context, '/home');
+            });
+          });
+        });
+      });
+    }
+  }
+
+  Future<void> cleanDataBase({bool reset, bool hardReset = false}) async {
+    final firestoreInstance = FirebaseFirestore.instance;
+    await firestoreInstance.collection("config").doc('clean_database').set(
+      {
+        'edited': DateTime.now().microsecondsSinceEpoch,
+        'reset': reset,
+        'hard_reset': hardReset,
+      },
+      SetOptions(merge: true),
+    );
   }
 
   Future<void> readPlayersFirestore() async {
@@ -115,7 +238,7 @@ class _LoadingState extends State<Loading> {
     final firestoreInstance = FirebaseFirestore.instance;
     var timestamp = DateTime.now().microsecondsSinceEpoch;
 
-    int lastRead = boxConfig.get('lastReadEquipo', defaultValue: -1);
+    int lastRead = await boxConfig.get('lastReadEquipo', defaultValue: -1);
 
     if (lastRead == -1) {
       ///Nunca fue leída la base de datos
@@ -137,14 +260,11 @@ class _LoadingState extends State<Loading> {
             listPlayers.forEach((element) {
               _temporaryList.add(jugadores.getJugadorByDNI(element.dni));
             });
-            //se descarga la foto del equipo
-
-            Uint8List foto = await downloadPhoto(
-                element.data()["liga"], element.data()["nombre"]);
 
             //Se crea el equipo con la información de firestore, pero no se le
             //agregan los jugadores
-            Equipo aux = Equipo.fromFirestore(element, foto);
+            Equipo aux = Equipo.fromFirestore(element);
+            // dev.debugger();
             //Se le añaden los jugadores al equipo recien creado.
             aux.jugadores = HiveList(boxJugadores, objects: _temporaryList);
 
@@ -201,14 +321,9 @@ class _LoadingState extends State<Loading> {
                     _temporaryList.add(jugadores.getJugadorByDNI(element.dni));
                   });
 
-                  //se descarga la foto del equipo
-
-                  Uint8List foto = await downloadPhoto(
-                      element.data()["liga"], element.data()["nombre"]);
-
                   //Se crea el equipo con la información de firestore, pero no se le
                   //agregan los jugadores
-                  Equipo aux = Equipo.fromFirestore(element, foto);
+                  Equipo aux = Equipo.fromFirestore(element);
                   //Se le añaden los jugadores al equipo recien creado.
                   aux.jugadores =
                       HiveList(boxJugadores, objects: _temporaryList);
@@ -239,6 +354,7 @@ class _LoadingState extends State<Loading> {
   Future<Uint8List> downloadPhoto(String league, String name) async {
     String downloadLink;
     Uint8List downloadedData;
+    // print('buscando: $league/$name.text');
     firebase_storage.Reference ref =
         firebase_storage.FirebaseStorage.instance.ref('$league/$name.text');
 
@@ -263,67 +379,77 @@ class _LoadingState extends State<Loading> {
     var boxEquipos = await Hive.openBox<Equipo>(kBoxEquipos);
     final equipos = Provider.of<EquipoData>(context, listen: false);
     final partidos = Provider.of<PartidoData>(context, listen: false);
+    // dev.debugger();
+    await equipos.readTeams(force: true);
     final firestoreInstance = FirebaseFirestore.instance;
     var timestamp = DateTime.now().microsecondsSinceEpoch;
 
-    int lastRead = boxConfig.get('lastReadPartido', defaultValue: -1);
+    int lastRead = await boxConfig.get('lastReadPartido', defaultValue: -1);
 
     if (lastRead == -1) {
       ///Nunca fue leída la base de datos
       print("nunca fue leida la base de datos");
-      await firestoreInstance.collection("partidos").get().then((value) {
-        value.docs.forEach((element) async {
-          if (element.exists) {
-            //Primero se crean los dos equipos que conforman el partido.
-            List<Equipo> equipo1 =
-                List<Equipo>.from((element.data()["equipo1"].map((item) {
-              return Equipo.fromJson(item);
-            })));
 
-            List<Equipo> equipo2 =
-                List<Equipo>.from((element.data()["equipo2"].map((item) {
-              return Equipo.fromJson(item);
-            })));
+      if (equipos.getEquipos.isNotEmpty) {
+        await firestoreInstance.collection("partidos").get().then((value) {
+          value.docs.forEach((element) async {
+            if (element.exists) {
+              //Primero se crean los dos equipos que conforman el partido.
+              List<Equipo> equipo1 =
+                  List<Equipo>.from((element.data()["equipo1"].map((item) {
+                return Equipo.fromJson(item);
+              })));
 
-            //Luego en esta lista auxiliar se toman los equipos que ya estan
-            // en hive que conciden con los equipos que se leyeron de firestore
+              List<Equipo> equipo2 =
+                  List<Equipo>.from((element.data()["equipo2"].map((item) {
+                return Equipo.fromJson(item);
+              })));
 
-            List<Equipo> _temporaryListEquipo1 = [];
-            List<Equipo> _temporaryListEquipo2 = [];
+              //Luego en esta lista auxiliar se toman los equipos que ya estan
+              // en hive que conciden con los equipos que se leyeron de firestore
 
-            equipo1.forEach((element1) {
-              _temporaryListEquipo1.add(equipos.getEquipoById(element1.id));
-            });
-            equipo2.forEach((element1) {
-              _temporaryListEquipo2.add(equipos.getEquipoById(element1.id));
-            });
+              List<Equipo> _temporaryListEquipo1 = [];
+              List<Equipo> _temporaryListEquipo2 = [];
 
-            print(
-                'el equipo 1 es: ${_temporaryListEquipo1.first.nombre} y tiene los jugadores: ${_temporaryListEquipo1.first.jugadores}');
-            print(
-                'el equipo 2 es: ${_temporaryListEquipo2.first.nombre} y tiene los jugadores: ${_temporaryListEquipo2.first.jugadores}');
+              equipo1.forEach((element1) {
+                print('buscando ${element1.id}');
+                _temporaryListEquipo1.add(equipos.getEquipoById(element1.id));
+              });
+              equipo2.forEach((element1) {
+                print('buscando ${element1.id}');
+                _temporaryListEquipo2.add(equipos.getEquipoById(element1.id));
+              });
 
-            //Se crea el partido con la información de firestore, pero no se le
-            //agregan los equipos
-            Partido aux = Partido.fromFirestore(element);
-            //Se le añaden los jugadores al equipo recien creado.
-            aux.equipo1 = HiveList(boxEquipos, objects: _temporaryListEquipo1);
-            aux.equipo2 = HiveList(boxEquipos, objects: _temporaryListEquipo2);
+              // print(
+              //     'el equipo 1 es: ${_temporaryListEquipo1.first.nombre} y tiene los jugadores: ${_temporaryListEquipo1.first.jugadores}');
+              // print(
+              //     'el equipo 2 es: ${_temporaryListEquipo2.first.nombre} y tiene los jugadores: ${_temporaryListEquipo2.first.jugadores}');
 
-            if (partidos.getPartidos.isEmpty)
-              partidos.createMatch(aux, onFirestore: false);
-            else if (partidos.getPartidos.isNotEmpty) {
-              if (partidos.getPartidos.singleWhere(
-                      (element2) => element2.id == aux.id,
-                      orElse: () => null) !=
-                  null) {
-                partidos.editMatch(aux);
-              } else
+              //Se crea el partido con la información de firestore, pero no se le
+              //agregan los equipos
+              Partido aux = Partido.fromFirestore(element);
+              //Se le añaden los jugadores al equipo recien creado.
+              aux.equipo1 =
+                  HiveList(boxEquipos, objects: _temporaryListEquipo1);
+              aux.equipo2 =
+                  HiveList(boxEquipos, objects: _temporaryListEquipo2);
+
+              if (partidos.getPartidos.isEmpty)
                 partidos.createMatch(aux, onFirestore: false);
+              else if (partidos.getPartidos.isNotEmpty) {
+                if (partidos.getPartidos.singleWhere(
+                        (element2) => element2.id == aux.id,
+                        orElse: () => null) !=
+                    null) {
+                  partidos.editMatch(aux);
+                } else
+                  partidos.createMatch(aux, onFirestore: false);
+              }
             }
-          }
+          });
         });
-      });
+      }
+      print('No hay equipos sooo, no hay partidoss');
     } else {
       print("la base de datos de partidos ya fue leída alguna vez");
 
@@ -411,26 +537,22 @@ class _LoadingState extends State<Loading> {
     await boxConfig.put('lastReadPartido', timestamp);
   }
 
-  void readFirestore(bool force) async {
-    await Provider.of<JugadorData>(context, listen: false).readPlayers();
-    await Firebase.initializeApp();
+  Future<void> updateTeamPhotos() async {
+    final equiposProvider = Provider.of<EquipoData>(context, listen: false);
+    List<Equipo> _equipos = equiposProvider.getEquipos;
 
-    if (force) {
-      await readPlayersFirestore();
-      setState(() {
-        progress = 0.33;
-      });
-      await readTeamsFirestore();
-      setState(() {
-        progress = 0.66;
-      });
-      await readMatchesFirestore();
-    }
-    setState(() {
-      progress = 1;
+    _equipos.forEach((element) async {
+      if (element.photoURL == null) {
+        // print('El equipo no tiene foto, sooo, se va a descargar');
+        Uint8List _aux;
+        _aux = await downloadPhoto(element.liga, element.nombre);
+        element.photoURL = _aux;
+        // equiposProvider.editTeam(element);
+        element.save();
+      }
     });
-
-    Navigator.pushReplacementNamed(context, '/home');
+    // Uint8List foto = await downloadPhoto(
+    //     element.data()["liga"], element.data()["nombre"]);
   }
 
   double width;
@@ -440,11 +562,11 @@ class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     // Provider.of<JugadorData>(context, listen: false).readPlayers();
+    //   Provider.of<EquipoData>(context, listen: false).readTeams();
+    //   Provider.of<PartidoData>(context, listen: false).readMatches();
     SizeConfig().init(context);
     width = SizeConfig.safeBlockHorizontal;
     height = SizeConfig.blockSizeVertical;
-    Provider.of<EquipoData>(context, listen: false).readTeams();
-    Provider.of<PartidoData>(context, listen: false).readMatches();
 
     return Scaffold(
       backgroundColor: kBordo,

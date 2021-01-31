@@ -47,8 +47,8 @@ class Jugador extends HiveObject {
     this.id = counter; //id tiene que arrancar en 1
     // dev.debugger();
     counter += 1;
-    print(
-        'Constructor de Jugador: Creando jugador ${this.nombre} ${this.apellido} con dni: ${this.dni} con id: ${this.id}. El counter vale $counter. key: ${this.key}. El jugador tiene equipo: ${this.hasTeam} y juega en la liga ${this.liga}. ');
+    // print(
+    //     'Constructor de Jugador: Creando jugador ${this.nombre} ${this.apellido} con dni: ${this.dni} con id: ${this.id}. El counter vale $counter. key: ${this.key}. El jugador tiene equipo: ${this.hasTeam} y juega en la liga ${this.liga}. ');
   }
 
   // factory Jugador.fromJason(Map<String, dynamic> json) =>

@@ -153,7 +153,28 @@ class Equipo extends HiveObject {
     );
   }
 
-  factory Equipo.fromFirestore(DocumentSnapshot doc, foto) {
+  // factory Equipo.fromFirestore(DocumentSnapshot doc, foto) {
+  //   // var players = await Hive.openBox<Jugador>(kBoxJugadores);
+  //   Map data = doc.data();
+  //   return Equipo(
+  //     nombre: data['nombre'],
+  //     puntos: data['puntos'],
+  //     partidosJugados: data['partidosJugados'],
+  //     golesFavor: data['golesFavor'],
+  //     golesContra: data['golesContra'],
+  //     partidosGanados: data['partidosGanados'],
+  //     partidosPerdidos: data['partidosPerdidos'],
+  //     partidosEmpates: data['partidosEmpates'],
+  //     // photoURL: data['photoURL'],
+  //     photoURL: foto,
+  //     // jugadores:  HiveList(box, objects: jugadores),
+  //     // partidosAnteriores: data['partidosAnteriores'],
+  //     id: data['id'],
+  //     liga: data['liga'],
+  //   );
+  // }
+
+  factory Equipo.fromFirestore(DocumentSnapshot doc) {
     // var players = await Hive.openBox<Jugador>(kBoxJugadores);
     Map data = doc.data();
     return Equipo(
@@ -166,7 +187,7 @@ class Equipo extends HiveObject {
       partidosPerdidos: data['partidosPerdidos'],
       partidosEmpates: data['partidosEmpates'],
       // photoURL: data['photoURL'],
-      photoURL: foto,
+      // photoURL: foto,
       // jugadores:  HiveList(box, objects: jugadores),
       // partidosAnteriores: data['partidosAnteriores'],
       id: data['id'],

@@ -114,7 +114,7 @@ class JugadorData with ChangeNotifier {
 
     if (!_read || force) {
       box.values.forEach((element) {
-        print('el jugador ${element.nombre} es creado');
+        // print('el jugador ${element.nombre} es creado');
         _jugadores.add(element);
       });
 
@@ -127,7 +127,7 @@ class JugadorData with ChangeNotifier {
 
   //TODO: Pensar la forma de que cuando elimino un jugador de firebase, luego ese jugador se elimine de los hive de todos los celulares
   void deletePlayer(Jugador jugador) async {
-    print('eliminando el jugador ${jugador.toString()}');
+    // print('eliminando el jugador ${jugador.toString()}');
     // dev.debugger();
     var box = await Hive.openBox<Jugador>(kBoxJugadores);
 

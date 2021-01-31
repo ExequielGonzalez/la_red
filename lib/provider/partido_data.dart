@@ -103,7 +103,7 @@ class PartidoData with ChangeNotifier {
     notifyListeners();
   }
 
-  void readMatches() async {
+  Future<List<Partido>> readMatches() async {
     var box = await Hive.openBox<Partido>(kBoxPartidos);
     print('box values partidos: ${box.values}');
 
@@ -117,6 +117,7 @@ class PartidoData with ChangeNotifier {
     }
 
     notifyListeners();
+    return _partidos;
   }
 
   //TODO: Revisar esta función. Ahora esta eliminando el archivo de la lista, pero no de la base de datos

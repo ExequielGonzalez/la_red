@@ -36,7 +36,7 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
   int golE2 = 0;
   String id = '';
   bool isFinished = false;
-  String liga = Leagues.libre.toString();
+  String liga;
 
   List<Equipo> equipos = [];
   String equipo1String = '';
@@ -236,7 +236,7 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                       fecha: fecha,
                       isFinished: isFinished,
                       numCancha: numCancha,
-                      liga: liga,
+                      liga: league.currentLeague.toString(),
                     );
 
                     partidos.createMatch(aux);

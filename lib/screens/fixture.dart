@@ -15,6 +15,8 @@ import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
+import 'dart:developer' as dev;
+
 class Fixture extends StatefulWidget {
   @override
   _FixtureState createState() => _FixtureState();
