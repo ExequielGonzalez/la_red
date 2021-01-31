@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:la_red/constants.dart';
-import 'package:la_red/model/jugador.dart';
+
 import 'package:la_red/model/partido.dart';
 import 'package:la_red/provider/equipo_data.dart';
 
 import 'package:la_red/provider/jugador_data.dart';
 import 'package:la_red/provider/leagues_provider.dart';
 import 'package:la_red/provider/partido_data.dart';
-import 'package:la_red/screens/admin/admin_jugadores.dart';
+
 import 'package:la_red/screens/admin/admin_partidos_create.dart';
 import 'package:la_red/screens/admin/admin_partidos_edit.dart';
 import 'package:la_red/widgets/leagues_tab.dart';
@@ -38,7 +38,7 @@ class _AdminDialogPartidosState extends State<AdminDialogPartidos> {
     final partidosProvider = Provider.of<PartidoData>(context);
     // final partidos = partidosProvider.getPartidos;
     return ValueListenableBuilder(
-        valueListenable: Hive.box<Jugador>(kBoxJugadores).listenable(),
+        valueListenable: Hive.box<Partido>(kBoxPartidos).listenable(),
         builder: (context, _, widget) {
           return AlertDialog(
             title: Text('Lista de Partidos'),

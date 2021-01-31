@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:la_red/model/partido.dart';
 import 'package:la_red/provider/leagues_provider.dart';
 import 'package:la_red/provider/partido_data.dart';
 import 'package:la_red/widgets/admin/admin_fab.dart';
-import 'package:la_red/widgets/background.dart';
+
 import 'package:la_red/widgets/background_template.dart';
-import 'package:la_red/widgets/equiposListItem.dart';
+
 import 'package:la_red/widgets/fixtureListItem.dart';
 import 'package:la_red/widgets/leagues_tab.dart';
-import 'package:la_red/widgets/screen_banner.dart';
-import 'package:la_red/widgets/screen_title.dart';
+
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
@@ -109,41 +111,49 @@ class _FixtureState extends State<Fixture> {
                   ],
                 ),
               ),
-              Flexible(
-                fit: FlexFit.loose,
-                child: Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(top: getHeight(0.005)),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      topLeft: Radius.circular(20),
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: getWidth(0.05)),
-                        child: Text(
-                          'PARTIDOS',
-                          style: kTextStyleBold.copyWith(
-                              color: kBordo, fontSize: 30),
+              ValueListenableBuilder(
+                  valueListenable: Hive.box<Partido>(kBoxPartidos).listenable(),
+                  builder: (context, _, widget) {
+                    return Flexible(
+                      fit: FlexFit.loose,
+                      child: Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.only(top: getHeight(0.005)),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(20),
+                            topLeft: Radius.circular(20),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: getWidth(0.05)),
+                              child: Text(
+                                'PARTIDOS',
+                                style: kTextStyleBold.copyWith(
+                                    color: kBordo, fontSize: 30),
+                              ),
+                            ),
+                            Expanded(
+                              child: ListView(
+                                padding:
+                                    EdgeInsets.only(bottom: getHeight(0.01)),
+                                children: createFixtureList(
+                                        league.currentLeague) ??
+                                    [
+                                      Center(child: CircularProgressIndicator())
+                                    ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Expanded(
-                        child: ListView(
-                          padding: EdgeInsets.only(bottom: getHeight(0.01)),
-                          children: createFixtureList(league.currentLeague) ??
-                              [Center(child: CircularProgressIndicator())],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                    );
+                  }),
             ],
           ),
         ),

@@ -93,34 +93,29 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                   } else if (value == 'NO HAY EQUIPOS') {
                     error = true;
                     return 'No hay equipos en esta liga';
+                  } else if (equipo1String == equipo2String) {
+                    error = true;
+                    return 'Estas eligiendo el mismo equipo';
                   } else {
                     error = false;
                     return null;
                   }
                 },
                 autovalidateMode: _autoValidateMode,
-                onSaved: (value) => equipo1String = value,
-                // values: equipos.map((e) => e.nombre).toList(),
-                values: equipos.map((e) {
-                  print(e.liga);
-                  if (e.liga == league.currentLeague.toString())
-                    return e.nombre;
-                  else
-                    return 'NO HAY EQUIPOS';
-                }).toList(),
-                // options: [
-                //   'libre',
-                //   'm30',
-                //   'm40',
-                //   'femenino',
-                // ],
-                options: equipos.map((e) {
-                  print(e.liga);
-                  if (e.liga == league.currentLeague.toString())
-                    return e.nombre;
-                  else
-                    return 'NO HAY EQUIPOS';
-                }).toList(),
+                onSaved: (value) =>
+                    equipo2String != value ? equipo1String = value : '',
+                values: equipos
+                    .where((element) =>
+                        element.liga == league.currentLeague.toString() &&
+                        equipo2String != element.nombre)
+                    .map((e) => e.nombre)
+                    .toList(),
+                options: equipos
+                    .where((element) =>
+                        element.liga == league.currentLeague.toString() &&
+                        equipo2String != element.nombre)
+                    .map((e) => e.nombre)
+                    .toList(),
                 enabled: true,
                 onChanged: (value) {
                   setState(() {
@@ -135,6 +130,9 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                   if (value == null || value.isEmpty) {
                     error = true;
                     return 'Hay que elegir un equipo';
+                  } else if (value == 'NO HAY EQUIPOS') {
+                    error = true;
+                    return 'No hay equipos en esta liga';
                   } else if (equipo1String == equipo2String) {
                     error = true;
                     return 'Estas eligiendo el mismo equipo';
@@ -146,18 +144,22 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                 autovalidateMode: _autoValidateMode,
                 onSaved: (value) =>
                     equipo1String != value ? equipo2String = value : '',
-                values: equipos.map((e) => e.nombre).toList(),
-                // options: [
-                //   'libre',
-                //   'm30',
-                //   'm40',
-                //   'femenino',
-                // ],
-                options: equipos.map((e) => e.nombre).toList(),
+                values: equipos
+                    .where((element) =>
+                        element.liga == league.currentLeague.toString() &&
+                        equipo1String != element.nombre)
+                    .map((e) => e.nombre)
+                    .toList(),
+                options: equipos
+                    .where((element) =>
+                        element.liga == league.currentLeague.toString() &&
+                        equipo1String != element.nombre)
+                    .map((e) => e.nombre)
+                    .toList(),
                 enabled: true,
                 onChanged: (value) {
                   setState(() {
-                    if (equipo1String != equipo2String) equipo2String = value;
+                    equipo2String = value;
                   });
                 },
               ),

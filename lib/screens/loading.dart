@@ -12,7 +12,10 @@ import 'package:la_red/model/partido.dart';
 import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/provider/jugador_data.dart';
 import 'package:la_red/provider/partido_data.dart';
+import 'package:la_red/widgets/background.dart';
 import 'package:provider/provider.dart';
+
+import '../size_config.dart';
 
 class Loading extends StatefulWidget {
   @override
@@ -262,8 +265,7 @@ class _LoadingState extends State<Loading> {
     final partidos = Provider.of<PartidoData>(context, listen: false);
     final firestoreInstance = FirebaseFirestore.instance;
     var timestamp = DateTime.now().microsecondsSinceEpoch;
-    Uint8List foto =
-        (await rootBundle.load("assets/images/logo.jpg")).buffer.asUint8List();
+
     int lastRead = boxConfig.get('lastReadPartido', defaultValue: -1);
 
     if (lastRead == -1) {
@@ -415,22 +417,72 @@ class _LoadingState extends State<Loading> {
 
     if (force) {
       await readPlayersFirestore();
+      setState(() {
+        progress = 0.33;
+      });
       await readTeamsFirestore();
+      setState(() {
+        progress = 0.66;
+      });
       await readMatchesFirestore();
     }
+    setState(() {
+      progress = 1;
+    });
 
     Navigator.pushReplacementNamed(context, '/home');
   }
 
+  double width;
+  double height;
+  double progress = 0;
+
   @override
   Widget build(BuildContext context) {
     // Provider.of<JugadorData>(context, listen: false).readPlayers();
+    SizeConfig().init(context);
+    width = SizeConfig.safeBlockHorizontal;
+    height = SizeConfig.blockSizeVertical;
     Provider.of<EquipoData>(context, listen: false).readTeams();
     Provider.of<PartidoData>(context, listen: false).readMatches();
 
     return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
+      backgroundColor: kBordo,
+      body: Stack(
+        children: [
+          Background(),
+          Align(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: Image.asset(
+                    "assets/images/logo_principal.png",
+                    width: width * (0.65),
+                    // height: getWidth(0.375),
+                  ),
+                ),
+                SizedBox(
+                  height: height * 0.1,
+                ),
+                Text(
+                  'Cargando...',
+                  style: kTextStyleBold.copyWith(fontSize: width * 0.075),
+                ),
+                SizedBox(
+                  height: height * 0.06,
+                ),
+                CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                  valueColor: AlwaysStoppedAnimation<Color>(kBordo),
+                  value: progress,
+                  strokeWidth: 6,
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
