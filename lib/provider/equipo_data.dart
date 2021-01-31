@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/foundation.dart';
 
 import 'package:la_red/model/equipo.dart';
@@ -131,6 +132,15 @@ class EquipoData with ChangeNotifier {
 
     final firestoreInstance = FirebaseFirestore.instance;
     await firestoreInstance.collection("equipos").doc('${equipo.id}').delete();
+
+    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+        .ref('${equipo.liga}/${equipo.nombre}.text');
+
+    try {
+      await ref.delete();
+    } catch (e) {
+      print(e);
+    }
 
     notifyListeners();
   }

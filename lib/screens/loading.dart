@@ -1,6 +1,5 @@
-import 'dart:convert';
 import 'dart:typed_data';
-
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -112,8 +111,7 @@ class _LoadingState extends State<Loading> {
     final jugadores = Provider.of<JugadorData>(context, listen: false);
     final firestoreInstance = FirebaseFirestore.instance;
     var timestamp = DateTime.now().microsecondsSinceEpoch;
-    Uint8List foto =
-        (await rootBundle.load("assets/images/logo.jpg")).buffer.asUint8List();
+
     int lastRead = boxConfig.get('lastReadEquipo', defaultValue: -1);
 
     if (lastRead == -1) {
@@ -136,6 +134,10 @@ class _LoadingState extends State<Loading> {
             listPlayers.forEach((element) {
               _temporaryList.add(jugadores.getJugadorByDNI(element.dni));
             });
+            //se descarga la foto del equipo
+
+            Uint8List foto = await downloadPhoto(
+                element.data()["liga"], element.data()["nombre"]);
 
             //Se crea el equipo con la información de firestore, pero no se le
             //agregan los jugadores
@@ -179,7 +181,7 @@ class _LoadingState extends State<Loading> {
                 .where("Timestamp", isGreaterThanOrEqualTo: lastRead)
                 .get()
                 .then((value) {
-              value.docs.forEach((element) {
+              value.docs.forEach((element) async {
                 if (element.exists) {
                   //Primero se crea la lista de jugadores que pertenecen al equipo.
                   List<Jugador> listPlayers = List<Jugador>.from(
@@ -195,6 +197,11 @@ class _LoadingState extends State<Loading> {
                   listPlayers.forEach((element) {
                     _temporaryList.add(jugadores.getJugadorByDNI(element.dni));
                   });
+
+                  //se descarga la foto del equipo
+
+                  Uint8List foto = await downloadPhoto(
+                      element.data()["liga"], element.data()["nombre"]);
 
                   //Se crea el equipo con la información de firestore, pero no se le
                   //agregan los jugadores
@@ -224,6 +231,28 @@ class _LoadingState extends State<Loading> {
       });
     }
     await boxConfig.put('lastReadEquipo', timestamp);
+  }
+
+  Future<Uint8List> downloadPhoto(String league, String name) async {
+    String downloadLink;
+    Uint8List downloadedData;
+    firebase_storage.Reference ref =
+        firebase_storage.FirebaseStorage.instance.ref('$league/$name.text');
+
+    try {
+      // Get raw data.
+      downloadedData = await ref.getData();
+
+      downloadLink = await ref.getDownloadURL();
+      print(downloadLink);
+    } catch (e) {
+      downloadedData = (await rootBundle.load("assets/images/logo.jpg"))
+          .buffer
+          .asUint8List();
+      print(e);
+    }
+
+    return downloadedData;
   }
 
   Future<void> readMatchesFirestore() async {

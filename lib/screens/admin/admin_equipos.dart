@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:card_settings/card_settings.dart';
 import 'package:flutter/services.dart';
@@ -76,16 +77,12 @@ class _AdminEquiposState extends State<AdminEquipos> {
       foto = widget.equipo.photoURL;
       print(
           'Estos jugadores estan en el initState de la clase admin_equipos: ${widget.equipo.jugadores}');
-      // jugadoresEquipo = widget.equipo.jugadores.cast<Jugador>();
+
       widget.equipo.jugadores.forEach((element) {
         jugadoresEquipo.add(element);
         print(
             'Y ahora estos jugadores estan en el initState de la clase admin_equipos: ${jugadoresEquipo}');
       });
-
-      // widget.equipo.partidosAnteriores.forEach((element) {
-      //   partidosAnteriores.add(element);
-      // });
     } else
       initPhoto();
     Future.delayed(Duration.zero, () {
@@ -97,6 +94,31 @@ class _AdminEquiposState extends State<AdminEquipos> {
     });
 
     super.initState();
+  }
+
+  Future<void> uploadPic(String league, String name, Uint8List data) async {
+    // String text = 'Hello World!';
+    // List<int> encoded = utf8.encode(text);
+    // Uint8List data = Uint8List.fromList(encoded);
+    String downloadLink;
+    // Uint8List downloadedData ;
+    firebase_storage.Reference ref =
+        firebase_storage.FirebaseStorage.instance.ref('$league/$name.text');
+
+    try {
+      // Upload raw data.
+      await ref.putData(data);
+      // Get raw data.
+      // Uint8List downloadedData = await ref.getData();
+      // prints -> Hello World!
+      // print(utf8.decode(downloadedData));
+      downloadLink = await ref.getDownloadURL();
+      print(downloadLink);
+    } catch (e) {
+      print(e);
+    }
+
+    // return downloadedData;
   }
 
   @override
@@ -232,6 +254,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
                   print('Aca se supone que se guarda todo');
 
                   if (!error) {
+                    uploadPic(liga, nombre, foto);
                     // dev.debugger();
                     final equipos =
                         Provider.of<EquipoData>(context, listen: false);
