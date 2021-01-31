@@ -34,7 +34,7 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
   String hora = '';
   int golE1 = 0;
   int golE2 = 0;
-  int id = 0;
+  String id = '';
   bool isFinished = false;
   String liga = Leagues.libre.toString();
 
@@ -51,7 +51,7 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
       numCancha = widget.partido.numCancha;
       liga = widget.partido.liga;
       fecha = widget.partido.fecha;
-      hora = widget.partido.hora;
+
       golE1 = widget.partido.golE1;
       golE2 = widget.partido.golE2;
       id = widget.partido.id;
@@ -93,34 +93,29 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                   } else if (value == 'NO HAY EQUIPOS') {
                     error = true;
                     return 'No hay equipos en esta liga';
+                  } else if (equipo1String == equipo2String) {
+                    error = true;
+                    return 'Estas eligiendo el mismo equipo';
                   } else {
                     error = false;
                     return null;
                   }
                 },
                 autovalidateMode: _autoValidateMode,
-                onSaved: (value) => equipo1String = value,
-                // values: equipos.map((e) => e.nombre).toList(),
-                values: equipos.map((e) {
-                  print(e.liga);
-                  if (e.liga == league.currentLeague.toString())
-                    return e.nombre;
-                  else
-                    return 'NO HAY EQUIPOS';
-                }).toList(),
-                // options: [
-                //   'libre',
-                //   'm30',
-                //   'm40',
-                //   'femenino',
-                // ],
-                options: equipos.map((e) {
-                  print(e.liga);
-                  if (e.liga == league.currentLeague.toString())
-                    return e.nombre;
-                  else
-                    return 'NO HAY EQUIPOS';
-                }).toList(),
+                onSaved: (value) =>
+                    equipo2String != value ? equipo1String = value : '',
+                values: equipos
+                    .where((element) =>
+                        element.liga == league.currentLeague.toString() &&
+                        equipo2String != element.nombre)
+                    .map((e) => e.nombre)
+                    .toList(),
+                options: equipos
+                    .where((element) =>
+                        element.liga == league.currentLeague.toString() &&
+                        equipo2String != element.nombre)
+                    .map((e) => e.nombre)
+                    .toList(),
                 enabled: true,
                 onChanged: (value) {
                   setState(() {
@@ -135,6 +130,9 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                   if (value == null || value.isEmpty) {
                     error = true;
                     return 'Hay que elegir un equipo';
+                  } else if (value == 'NO HAY EQUIPOS') {
+                    error = true;
+                    return 'No hay equipos en esta liga';
                   } else if (equipo1String == equipo2String) {
                     error = true;
                     return 'Estas eligiendo el mismo equipo';
@@ -146,18 +144,22 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                 autovalidateMode: _autoValidateMode,
                 onSaved: (value) =>
                     equipo1String != value ? equipo2String = value : '',
-                values: equipos.map((e) => e.nombre).toList(),
-                // options: [
-                //   'libre',
-                //   'm30',
-                //   'm40',
-                //   'femenino',
-                // ],
-                options: equipos.map((e) => e.nombre).toList(),
+                values: equipos
+                    .where((element) =>
+                        element.liga == league.currentLeague.toString() &&
+                        equipo1String != element.nombre)
+                    .map((e) => e.nombre)
+                    .toList(),
+                options: equipos
+                    .where((element) =>
+                        element.liga == league.currentLeague.toString() &&
+                        equipo1String != element.nombre)
+                    .map((e) => e.nombre)
+                    .toList(),
                 enabled: true,
                 onChanged: (value) {
                   setState(() {
-                    if (equipo1String != equipo2String) equipo2String = value;
+                    equipo2String = value;
                   });
                 },
               ),
@@ -202,39 +204,6 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                   });
                 },
               ),
-              // CardSettingsListPicker(
-              //   label: 'Liga',
-              //   initialValue: liga,
-              //   validator: (value) {
-              //     if (value == null || value.isEmpty) {
-              //       error = true;
-              //       return 'Hay que elegir una liga';
-              //     } else {
-              //       error = false;
-              //       return null;
-              //     }
-              //   },
-              //   autovalidateMode: _autoValidateMode,
-              //   onSaved: (value) => liga = value,
-              //   values: [
-              //     Leagues.libre.toString(),
-              //     Leagues.m30.toString(),
-              //     Leagues.m40.toString(),
-              //     Leagues.femenino.toString(),
-              //   ],
-              //   options: [
-              //     'libre',
-              //     'm30',
-              //     'm40',
-              //     'femenino',
-              //   ],
-              //   enabled: true,
-              //   onChanged: (value) {
-              //     setState(() {
-              //       liga = value;
-              //     });
-              //   },
-              // ),
               CardSettingsButton(
                 label: 'Guardar',
                 isDestructive: false,
@@ -265,7 +234,6 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                       golE1: golE1,
                       golE2: golE2,
                       fecha: fecha,
-                      hora: hora,
                       isFinished: isFinished,
                       numCancha: numCancha,
                       liga: liga,
@@ -274,25 +242,27 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                     partidos.createMatch(aux);
                     print('guardando el partido: ${aux.toString()}');
 
-                    var games = await Hive.openBox<Partido>(kBoxPartidos);
+                    // var games = await Hive.openBox<Partido>(kBoxPartidos);
 
-                    List<Partido> _aux1 =
-                        aux.equipo1.first.partidosAnteriores ?? [];
+                    // List<Partido> _aux1 =
+                    //     aux.equipo1.first.partidosAnteriores ?? [];
+                    // print('Ya hay ${aux1.length} partidos creados ');
+                    // List<Partido> _aux2 =
+                    //     aux.equipo2.first.partidosAnteriores ?? [];
+                    //
+                    // _aux1.add(aux);
+                    // _aux2.add(aux);
+
                     print('Ya hay ${aux1.length} partidos creados ');
-                    List<Partido> _aux2 =
-                        aux.equipo2.first.partidosAnteriores ?? [];
+                    // aux.equipo1.first.partidosAnteriores =
+                    //     HiveList(games, objects: _aux1);
+                    // aux.equipo2.first.partidosAnteriores =
+                    //     HiveList(games, objects: _aux2);
 
-                    _aux1.add(aux);
-                    _aux2.add(aux);
-
-                    print('Ya hay ${aux1.length} partidos creados ');
-                    aux.equipo1.first.partidosAnteriores =
-                        HiveList(games, objects: _aux1);
-                    aux.equipo2.first.partidosAnteriores =
-                        HiveList(games, objects: _aux2);
-
-                    aux.equipo1.first.save();
-                    aux.equipo2.first.save();
+                    equiposProvider.editTeam(aux.equipo1.first);
+                    equiposProvider.editTeam(aux.equipo2.first);
+                    // aux.equipo1.first.save();
+                    // aux.equipo2.first.save();
                   }
                   Navigator.of(context).pop(true);
                 },

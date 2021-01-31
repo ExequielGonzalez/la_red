@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:card_settings/card_settings.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:la_red/model/equipo.dart';
 import 'package:la_red/model/jugador.dart';
+import 'package:la_red/model/partido.dart';
 import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/provider/jugadores_equipo_provider.dart';
 import 'package:la_red/size_config.dart';
@@ -48,13 +50,13 @@ class _AdminEquiposState extends State<AdminEquipos> {
   int partidosJugados = 0;
 
   List<Jugador> jugadoresEquipo = [];
+  List<Partido> partidosAnteriores = [];
 
   Uint8List foto;
 
   void initPhoto() async {
-    foto = (await rootBundle.load("assets/images/logo_principal.png"))
-        .buffer
-        .asUint8List();
+    foto =
+        (await rootBundle.load("assets/images/logo.jpg")).buffer.asUint8List();
   }
 
   @override
@@ -66,7 +68,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
       liga = widget.equipo.liga;
       golesFavor = widget.equipo.golesFavor;
       golesContra = widget.equipo.golesContra;
-      posicion = widget.equipo.posicion;
+
       partidosGanados = widget.equipo.partidosGanados;
       partidosEmpatados = widget.equipo.partidosEmpates;
       partidosPerdidos = widget.equipo.partidosPerdidos;
@@ -75,7 +77,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
       foto = widget.equipo.photoURL;
       print(
           'Estos jugadores estan en el initState de la clase admin_equipos: ${widget.equipo.jugadores}');
-      // jugadoresEquipo = widget.equipo.jugadores.cast<Jugador>();
+
       widget.equipo.jugadores.forEach((element) {
         jugadoresEquipo.add(element);
         print(
@@ -92,6 +94,31 @@ class _AdminEquiposState extends State<AdminEquipos> {
     });
 
     super.initState();
+  }
+
+  Future<void> uploadPic(String league, String name, Uint8List data) async {
+    // String text = 'Hello World!';
+    // List<int> encoded = utf8.encode(text);
+    // Uint8List data = Uint8List.fromList(encoded);
+    String downloadLink;
+    // Uint8List downloadedData ;
+    firebase_storage.Reference ref =
+        firebase_storage.FirebaseStorage.instance.ref('$league/$name.text');
+
+    try {
+      // Upload raw data.
+      await ref.putData(data);
+      // Get raw data.
+      // Uint8List downloadedData = await ref.getData();
+      // prints -> Hello World!
+      // print(utf8.decode(downloadedData));
+      downloadLink = await ref.getDownloadURL();
+      print(downloadLink);
+    } catch (e) {
+      print(e);
+    }
+
+    // return downloadedData;
   }
 
   @override
@@ -227,6 +254,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
                   print('Aca se supone que se guarda todo');
 
                   if (!error) {
+                    uploadPic(liga, nombre, foto);
                     // dev.debugger();
                     final equipos =
                         Provider.of<EquipoData>(context, listen: false);
@@ -234,6 +262,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
                         Provider.of<JugadorData>(context, listen: false);
                     // Provider.of<EquipoData>(context, listen: false);
                     jugadoresEquipo = jugadoresProvider.jugadorEquipo;
+                    var games = await Hive.openBox<Partido>(kBoxPartidos);
                     // dev.debugger();
 
                     if (widget.equipo != null) {
@@ -254,6 +283,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
                             '--------------->>>>>>>>>>>>>son distintas<<<<<<<<<--------------------');
                         var players =
                             await Hive.openBox<Jugador>(kBoxJugadores);
+
                         jugadoresEquipo = jugadoresProvider.jugadorEquipo;
                         print(
                             'Aprete el boton de save: ${jugadoresProvider.jugadorEquipo}');
@@ -263,7 +293,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
 
                         widget.equipo.nombre = nombre;
                         widget.equipo.liga = liga;
-                        widget.equipo.posicion = posicion;
+
                         widget.equipo.puntos = puntos;
                         widget.equipo.partidosPerdidos = partidosPerdidos;
                         widget.equipo.partidosEmpates = partidosEmpatados;
@@ -273,25 +303,10 @@ class _AdminEquiposState extends State<AdminEquipos> {
                         widget.equipo.photoURL = foto;
                         widget.equipo.jugadores =
                             HiveList(players, objects: jugadoresEquipo);
+                        partidosAnteriores =
+                            HiveList(games, objects: partidosAnteriores);
                         widget.equipo.partidosJugados = partidosJugados;
 
-                        // var aux = Equipo(
-                        //   nombre: nombre,
-                        //   liga: liga,
-                        //   posicion: posicion,
-                        //   puntos: puntos,
-                        //   partidosPerdidos: partidosPerdidos,
-                        //   partidosEmpates: partidosEmpatados,
-                        //   partidosGanados: partidosGanados,
-                        //   golesFavor: golesFavor,
-                        //   golesContra: golesContra,
-                        //   partidosJugados: partidosJugados,
-                        //   photoURL: foto,
-                        //   jugadores:
-                        //       HiveList(players, objects: jugadoresEquipo),
-                        // );
-
-                        // equipos.createTeam(aux);
                         equipos.editTeam(widget.equipo);
                         print(
                             'guardando el equipo: ${widget.equipo.toString()}');
@@ -305,9 +320,6 @@ class _AdminEquiposState extends State<AdminEquipos> {
                         print(
                             '----------------------->Se supone que son iguales<------------------');
 
-                        // if (widget.equipo != null)
-                        // equipos.deleteTeam(widget.equipo);
-
                         var players =
                             await Hive.openBox<Jugador>(kBoxJugadores);
 
@@ -316,7 +328,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
                             '\ncreando equipo con jugadores: $jugadoresEquipo');
                         widget.equipo.nombre = nombre;
                         widget.equipo.liga = liga;
-                        widget.equipo.posicion = posicion;
+
                         widget.equipo.puntos = puntos;
                         widget.equipo.partidosPerdidos = partidosPerdidos;
                         widget.equipo.partidosEmpates = partidosEmpatados;
@@ -326,23 +338,10 @@ class _AdminEquiposState extends State<AdminEquipos> {
                         widget.equipo.photoURL = foto;
                         widget.equipo.jugadores =
                             HiveList(players, objects: jugadoresEquipo);
+                        partidosAnteriores =
+                            HiveList(games, objects: partidosAnteriores);
                         widget.equipo.partidosJugados = partidosJugados;
 
-                        // var aux = Equipo(
-                        //   nombre: nombre,
-                        //   liga: liga,
-                        //   posicion: posicion,
-                        //   puntos: puntos,
-                        //   partidosPerdidos: partidosPerdidos,
-                        //   partidosEmpates: partidosEmpatados,
-                        //   partidosGanados: partidosGanados,
-                        //   golesFavor: golesFavor,
-                        //   golesContra: golesContra,
-                        //   partidosJugados: partidosJugados,
-                        //   photoURL: foto,
-                        //   jugadores:
-                        //       HiveList(players, objects: jugadoresEquipo),
-                        // );
                         equipos.editTeam(widget.equipo);
                         // equipos.createTeam(aux);
                         print(
@@ -358,6 +357,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
                       print(
                           '--------------->>>>>>>>>>>>>Es nuevito el team<<<<<<<<<--------------------');
                       var players = await Hive.openBox<Jugador>(kBoxJugadores);
+
                       jugadoresEquipo = jugadoresProvider.jugadorEquipo;
                       print(
                           'Aprete el boton de save: ${jugadoresProvider.jugadorEquipo}');
@@ -366,7 +366,6 @@ class _AdminEquiposState extends State<AdminEquipos> {
                       var aux = Equipo(
                         nombre: nombre,
                         liga: liga,
-                        posicion: posicion,
                         puntos: puntos,
                         partidosPerdidos: partidosPerdidos,
                         partidosEmpates: partidosEmpatados,
@@ -376,6 +375,8 @@ class _AdminEquiposState extends State<AdminEquipos> {
                         partidosJugados: partidosJugados,
                         photoURL: foto,
                         jugadores: HiveList(players, objects: jugadoresEquipo),
+                        // partidosAnteriores:
+                        //     HiveList(games, objects: partidosAnteriores),
                       );
 
                       equipos.createTeam(aux);
@@ -621,7 +622,8 @@ class CardJugadores extends StatelessWidget implements CardSettingsWidget {
                         // widget.jugadoresDelEquipo[index].hasTeam = false;
                         // widget.jugadoresDelEquipo
                         //     .remove(widget.jugadoresDelEquipo[index]);
-                        jugadoresProvider.deleteJugador(jugadoresEquipo[index]);
+                        jugadoresProvider.deleteJugador(
+                            context, jugadoresEquipo[index]);
                         // jugadoresEquipo[index].hasTeam = false;
                         // jugadoresEquipo.remove(jugadoresEquipo[index]);
                       },

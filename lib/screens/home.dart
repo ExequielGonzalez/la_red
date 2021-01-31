@@ -35,9 +35,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<EquipoData>(context, listen: false).readTeams();
-    Provider.of<PartidoData>(context, listen: false).readMatches();
-    Provider.of<JugadorData>(context, listen: false).readPlayers();
     //
     // Provider.of<EquipoData>(context, listen: false).deleteAll();
 

@@ -33,28 +33,33 @@ class _GoleadoresState extends State<Goleadores> {
   List<GoleadoresListItem> _goleadoresList = [];
 
   List<Widget> createPlayerList(Leagues league) {
-    int _posicion = 1;
     _goleadoresList = [];
-    final goleadores =
+    List<Jugador> goleadores =
         Provider.of<JugadorData>(context, listen: false).getJugadores;
+
+    goleadores = goleadores
+        .where(
+            (element) => element.liga == league.toString() && element.goles > 0)
+        .toList();
 
     Comparator<Jugador> sortByGoles = (b, a) => a.goles.compareTo(b.goles);
     goleadores.sort(sortByGoles);
     GoleadoresListItem _listItem;
 
-    goleadores.forEach((element) {
-      print(
-          'Goleadores tab:creando un nuevo listItem con ${element.nombre} y dni: ${element.dni} y la id ${element.id}');
-      if (element.liga == league.toString()) {
-        _listItem = GoleadoresListItem(
-          jugador: element,
-          posicion: _posicion,
-        );
+    int lengthItemsList = goleadores.length <= 10 ? goleadores.length : 10;
 
-        _goleadoresList.add(_listItem);
-        _posicion += 1;
-      }
-    });
+    for (int _posicion = 1; _posicion <= lengthItemsList; _posicion++) {
+      print(_posicion);
+      print(
+          'Goleadores tab:creando un nuevo listItem con ${goleadores[_posicion - 1].nombre} y dni: ${goleadores[_posicion - 1].dni} y la id ${goleadores[_posicion - 1].id}');
+
+      _listItem = GoleadoresListItem(
+        jugador: goleadores[_posicion - 1],
+        posicion: _posicion,
+      );
+
+      _goleadoresList.add(_listItem);
+    }
     return _goleadoresList;
   }
 

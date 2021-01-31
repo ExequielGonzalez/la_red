@@ -102,11 +102,6 @@ class _AdminDialogEquiposState extends State<AdminDialogEquipos> {
                       return AdminEquipos();
                     }),
                   );
-                  // if (newValue) {
-                  //   // print('${aux.toString()} fue creado');
-                  //   setState(() {});
-                  // }
-                  // jugadores.editPlayer(aux);
                 },
               ),
               FlatButton(
@@ -177,7 +172,9 @@ List<Widget> _createTeamList(context, Leagues league) {
                   onPressed: () async {
                     element.jugadores.forEach((element) {
                       element.hasTeam = false;
-                      element.save();
+                      // element.save();
+                      Provider.of<JugadorData>(context, listen: false)
+                          .editPlayer(element);
                     });
                     equiposProvider.deleteTeam(element);
                     Navigator.of(context).pop();

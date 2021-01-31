@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:la_red/widgets/background.dart';
+
 import 'package:la_red/widgets/background_template.dart';
+
 import 'package:la_red/widgets/leagues_tab.dart';
 import 'package:la_red/widgets/screen_banner.dart';
 import 'package:la_red/widgets/screen_title.dart';
+
 import '../constants.dart';
 
 import 'package:url_launcher/url_launcher.dart';
@@ -11,12 +13,11 @@ import 'package:simple_url_preview/simple_url_preview.dart';
 
 class Instalaciones extends StatefulWidget {
   @override
-  _instalacionesState createState() => _instalacionesState();
+  _InstalacionesState createState() => _InstalacionesState();
 }
 
-class _instalacionesState extends State<Instalaciones> {
+class _InstalacionesState extends State<Instalaciones> {
   get onTap => null;
-
   double getHeight(double percent) =>
       MediaQuery.of(context).size.height * percent;
   double getWidth(double percent) =>
@@ -47,6 +48,7 @@ class _instalacionesState extends State<Instalaciones> {
                   Container(
                     height: getHeight(0.55), //
                     width: getWidth(0.85), //
+
                     decoration: BoxDecoration(
                       color: kBordo,
                       border: Border.all(

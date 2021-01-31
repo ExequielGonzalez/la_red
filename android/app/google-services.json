@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "69501883014",
+    "project_id": "la-red-c14b5",
+    "storage_bucket": "la-red-c14b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69501883014:android:415d37db3a0cabcb063707",
+        "android_client_info": {
+          "package_name": "com.goingsmartly.la_red"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "69501883014-7n1n4uktv17ftvfllagdcbbb8dcfjsdc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.goingsmartly.la_red",
+            "certificate_hash": "3c5f8b2012e669fe50a03d43c746bd265625878b"
+          }
+        },
+        {
+          "client_id": "69501883014-60a3q6a9k6o8kvmdm9a491g8v9n7cl6i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL87NpCg-jvzTHYLgZ08lQz8rAoAadgs8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "69501883014-60a3q6a9k6o8kvmdm9a491g8v9n7cl6i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
