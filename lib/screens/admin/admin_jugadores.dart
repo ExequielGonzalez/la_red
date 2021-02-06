@@ -25,7 +25,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
   String apellido = '';
   int amarillas = 0;
   int dni = 0;
-  DateTime nacimiento = DateTime.now();
+  DateTime nacimiento;
   int goles = 0;
   int posicion = 0;
   int rojas = 0;
@@ -55,239 +55,243 @@ class _AdminJugadoresState extends State<AdminJugadores> {
     return Scaffold(
       body: Form(
         key: _formKey,
-        child: CardSettings(children: <CardSettingsSection>[
-          CardSettingsSection(
-            header: CardSettingsHeader(
-              child: Container(
-                height: 80,
-                child: Row(
-                  children: [
-                    Expanded(child: Divider(color: kBordo, thickness: 5)),
-                    Text('Editar Jugador', style: TextStyle(fontSize: 20)),
-                    Expanded(child: Divider(color: kBordo, thickness: 5)),
-                  ],
+        child: CardSettings(
+          children: <CardSettingsSection>[
+            CardSettingsSection(
+              header: CardSettingsHeader(
+                child: Container(
+                  height: 80,
+                  child: Row(
+                    children: [
+                      Expanded(child: Divider(color: kBordo, thickness: 5)),
+                      Text('Editar Jugador', style: TextStyle(fontSize: 20)),
+                      Expanded(child: Divider(color: kBordo, thickness: 5)),
+                    ],
+                  ),
                 ),
               ),
+              children: <CardSettingsWidget>[
+                CardSettingsText(
+                  label: 'Nombre',
+                  initialValue: nombre ?? '',
+                  requiredIndicator:
+                      Text('*', style: TextStyle(color: Colors.red)),
+                  inputAction: TextInputAction.next,
+                  validator: (value) {
+                    if (value == null || value.isEmpty)
+                      return 'Se requiere un nombre';
+                    if (value == '')
+                      return 'Se requiere un nombre';
+                    else
+                      return null;
+                  },
+                  autovalidateMode: _autoValidateMode,
+                  onSaved: (value) => nombre = value,
+                  onChanged: (value) {
+                    setState(() {
+                      nombre = value;
+                    });
+                  },
+                ),
+                CardSettingsText(
+                  label: 'Apellido',
+                  initialValue: apellido,
+                  requiredIndicator:
+                      Text('*', style: TextStyle(color: Colors.red)),
+                  inputAction: TextInputAction.next,
+                  validator: (value) {
+                    if (value == null || value.isEmpty)
+                      return 'Se requiere un apellido';
+                    if (value == '')
+                      return 'Se requiere un nombre';
+                    else
+                      return null;
+                  },
+                  autovalidateMode: _autoValidateMode,
+                  onSaved: (value) => apellido = value,
+                  onChanged: (value) {
+                    setState(() {
+                      apellido = value;
+                    });
+                  },
+                ),
+                CardSettingsInt(
+                  label: 'DNI',
+                  initialValue: dni,
+                  inputAction: TextInputAction.next,
+                  validator: (value) {
+                    if (value != null) {
+                      if (value < 0) return 'El valor debe de ser mayor que 0';
+                    }
+                    return null;
+                  },
+                  enabled: widget.jugador == null ? true : false,
+                  autovalidateMode: _autoValidateMode,
+                  onSaved: (value) => dni = value,
+                  onChanged: (value) {
+                    setState(() {
+                      dni = value;
+                    });
+                  },
+                ),
+                CardSettingsDatePicker(
+                  // forceCupertino: true,
+                  forceCupertino: true,
+                  firstDate: DateTime(1940),
+                  lastDate: DateTime.now(),
+                  icon: Icon(Icons.calendar_today),
+                  label: 'Fecha de Nacimiento',
+                  dateFormat: DateFormat.yMMMMd(),
+                  initialValue: nacimiento ?? DateTime(1999, 02, 20),
+                  onSaved: (value) =>
+                      nacimiento = updateJustDate(value, nacimiento),
+                  onChanged: (value) {
+                    setState(() {
+                      nacimiento = value;
+                    });
+                  },
+                ),
+                CardSettingsListPicker(
+                  label: 'Liga',
+                  initialValue: liga,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      error = true;
+                      return 'Hay que elegir una liga';
+                    } else {
+                      error = false;
+                      return null;
+                    }
+                  },
+                  autovalidateMode: _autoValidateMode,
+                  onSaved: (value) => liga = value,
+                  values: [
+                    Leagues.libre.toString(),
+                    Leagues.m30.toString(),
+                    Leagues.m40.toString(),
+                    Leagues.femenino.toString(),
+                  ],
+                  options: [
+                    'libre',
+                    'm30',
+                    'm40',
+                    'femenino',
+                  ],
+                  enabled: widget.jugador == null ? true : false,
+                  onChanged: (value) {
+                    setState(() {
+                      liga = value;
+                    });
+                  },
+                ),
+                CardSettingsInt(
+                  label: 'Goles',
+                  initialValue: goles,
+                  inputAction: TextInputAction.next,
+                  validator: (value) {
+                    if (value != null) {
+                      if (value < 0) return 'El valor debe de ser mayor que 0';
+                    }
+                    return null;
+                  },
+                  enabled: false,
+                  autovalidateMode: _autoValidateMode,
+                  onSaved: (value) => goles = value,
+                  onChanged: (value) {
+                    setState(() {
+                      goles = value;
+                    });
+                  },
+                ),
+                CardSettingsInt(
+                  label: 'Amarillas',
+                  initialValue: amarillas,
+                  inputAction: TextInputAction.next,
+                  validator: (value) {
+                    if (value != null) {
+                      if (value < 0) return 'El valor debe de ser mayor que 0';
+                    }
+                    return null;
+                  },
+                  enabled: false,
+                  autovalidateMode: _autoValidateMode,
+                  onSaved: (value) => amarillas = value,
+                  onChanged: (value) {
+                    setState(() {
+                      amarillas = value;
+                    });
+                  },
+                ),
+                CardSettingsInt(
+                  label: 'Rojas',
+                  initialValue: rojas,
+                  inputAction: TextInputAction.next,
+                  validator: (value) {
+                    if (value != null) {
+                      if (value < 0) return 'El valor debe de ser mayor que 0';
+                    }
+                    return null;
+                  },
+                  enabled: false,
+                  autovalidateMode: _autoValidateMode,
+                  onSaved: (value) => rojas = value,
+                  onChanged: (value) {
+                    setState(() {
+                      rojas = value;
+                    });
+                  },
+                ),
+                CardSettingsButton(
+                  label: 'Guardar',
+                  isDestructive: false,
+                  backgroundColor: kBordo,
+                  textColor: Colors.white,
+                  bottomSpacing: 4,
+                  onPressed: () {
+                    print('Aca se supone que se guarda todo');
+
+                    if (!error && nombre != '' && apellido != '') {
+                      final jugadores =
+                          Provider.of<JugadorData>(context, listen: false);
+                      // if (widget.jugador != null) {
+                      //   jugadores.deletePlayer(widget.jugador);
+                      // }
+                      var aux = Jugador(
+                        nombre: nombre,
+                        apellido: apellido,
+                        amarillas: amarillas,
+                        dni: dni,
+                        nacimiento: nacimiento,
+                        goles: goles,
+                        liga: liga,
+                        rojas: rojas,
+                        hasTeam: hasTeam,
+                      );
+                      if (widget.jugador != null) {
+                        widget.jugador.nombre = nombre;
+                        widget.jugador.apellido = apellido;
+                        widget.jugador.liga = liga;
+                        widget.jugador.amarillas = amarillas;
+                        widget.jugador.dni = dni;
+                        widget.jugador.nacimiento = nacimiento;
+                        widget.jugador.goles = goles;
+                        widget.jugador.rojas = rojas;
+                        widget.jugador.hasTeam = hasTeam;
+
+                        // widget.jugador.save();
+                        jugadores.editPlayer(widget.jugador);
+                      } else
+                        jugadores.createPlayer(aux);
+                      print('guardando el jugador: ${aux.toString()}');
+
+                      Navigator.of(context).pop(true);
+                    }
+                  },
+                ),
+              ],
             ),
-            children: <CardSettingsWidget>[
-              CardSettingsText(
-                label: 'Nombre',
-                initialValue: nombre ?? '',
-                requiredIndicator:
-                    Text('*', style: TextStyle(color: Colors.red)),
-                inputAction: TextInputAction.next,
-                validator: (value) {
-                  if (value == null || value.isEmpty)
-                    return 'Se requiere un nombre';
-                  if (value == '')
-                    return 'Se requiere un nombre';
-                  else
-                    return null;
-                },
-                autovalidateMode: _autoValidateMode,
-                onSaved: (value) => nombre = value,
-                onChanged: (value) {
-                  setState(() {
-                    nombre = value;
-                  });
-                },
-              ),
-              CardSettingsText(
-                label: 'Apellido',
-                initialValue: apellido,
-                requiredIndicator:
-                    Text('*', style: TextStyle(color: Colors.red)),
-                inputAction: TextInputAction.next,
-                validator: (value) {
-                  if (value == null || value.isEmpty)
-                    return 'Se requiere un apellido';
-                  if (value == '')
-                    return 'Se requiere un nombre';
-                  else
-                    return null;
-                },
-                autovalidateMode: _autoValidateMode,
-                onSaved: (value) => apellido = value,
-                onChanged: (value) {
-                  setState(() {
-                    apellido = value;
-                  });
-                },
-              ),
-              CardSettingsInt(
-                label: 'DNI',
-                initialValue: dni,
-                inputAction: TextInputAction.next,
-                validator: (value) {
-                  if (value != null) {
-                    if (value < 0) return 'El valor debe de ser mayor que 0';
-                  }
-                  return null;
-                },
-                enabled: widget.jugador == null ? true : false,
-                autovalidateMode: _autoValidateMode,
-                onSaved: (value) => dni = value,
-                onChanged: (value) {
-                  setState(() {
-                    dni = value;
-                  });
-                },
-              ),
-              CardSettingsDatePicker(
-                firstDate: DateTime(1940),
-                lastDate: DateTime(2015),
-                icon: Icon(Icons.calendar_today),
-                label: 'Fecha de Nacimiento',
-                dateFormat: DateFormat.yMMMMd(),
-                initialValue: nacimiento ?? DateTime(1999, 02, 20),
-                onSaved: (value) =>
-                    nacimiento = updateJustDate(value, nacimiento),
-                onChanged: (value) {
-                  setState(() {
-                    nacimiento = value;
-                  });
-                },
-              ),
-              CardSettingsListPicker(
-                label: 'Liga',
-                initialValue: liga,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    error = true;
-                    return 'Hay que elegir una liga';
-                  } else {
-                    error = false;
-                    return null;
-                  }
-                },
-                autovalidateMode: _autoValidateMode,
-                onSaved: (value) => liga = value,
-                values: [
-                  Leagues.libre.toString(),
-                  Leagues.m30.toString(),
-                  Leagues.m40.toString(),
-                  Leagues.femenino.toString(),
-                ],
-                options: [
-                  'libre',
-                  'm30',
-                  'm40',
-                  'femenino',
-                ],
-                enabled: widget.jugador == null ? true : false,
-                onChanged: (value) {
-                  setState(() {
-                    liga = value;
-                  });
-                },
-              ),
-              CardSettingsInt(
-                label: 'Goles',
-                initialValue: goles,
-                inputAction: TextInputAction.next,
-                validator: (value) {
-                  if (value != null) {
-                    if (value < 0) return 'El valor debe de ser mayor que 0';
-                  }
-                  return null;
-                },
-                enabled: false,
-                autovalidateMode: _autoValidateMode,
-                onSaved: (value) => goles = value,
-                onChanged: (value) {
-                  setState(() {
-                    goles = value;
-                  });
-                },
-              ),
-              CardSettingsInt(
-                label: 'Amarillas',
-                initialValue: amarillas,
-                inputAction: TextInputAction.next,
-                validator: (value) {
-                  if (value != null) {
-                    if (value < 0) return 'El valor debe de ser mayor que 0';
-                  }
-                  return null;
-                },
-                enabled: false,
-                autovalidateMode: _autoValidateMode,
-                onSaved: (value) => amarillas = value,
-                onChanged: (value) {
-                  setState(() {
-                    amarillas = value;
-                  });
-                },
-              ),
-              CardSettingsInt(
-                label: 'Rojas',
-                initialValue: rojas,
-                inputAction: TextInputAction.next,
-                validator: (value) {
-                  if (value != null) {
-                    if (value < 0) return 'El valor debe de ser mayor que 0';
-                  }
-                  return null;
-                },
-                enabled: false,
-                autovalidateMode: _autoValidateMode,
-                onSaved: (value) => rojas = value,
-                onChanged: (value) {
-                  setState(() {
-                    rojas = value;
-                  });
-                },
-              ),
-              CardSettingsButton(
-                label: 'Guardar',
-                isDestructive: false,
-                backgroundColor: kBordo,
-                textColor: Colors.white,
-                bottomSpacing: 4,
-                onPressed: () {
-                  print('Aca se supone que se guarda todo');
-
-                  if (!error && nombre != '' && apellido != '') {
-                    final jugadores =
-                        Provider.of<JugadorData>(context, listen: false);
-                    // if (widget.jugador != null) {
-                    //   jugadores.deletePlayer(widget.jugador);
-                    // }
-                    var aux = Jugador(
-                      nombre: nombre,
-                      apellido: apellido,
-                      amarillas: amarillas,
-                      dni: dni,
-                      nacimiento: nacimiento,
-                      goles: goles,
-                      liga: liga,
-                      rojas: rojas,
-                      hasTeam: hasTeam,
-                    );
-                    if (widget.jugador != null) {
-                      widget.jugador.nombre = nombre;
-                      widget.jugador.apellido = apellido;
-                      widget.jugador.liga = liga;
-                      widget.jugador.amarillas = amarillas;
-                      widget.jugador.dni = dni;
-                      widget.jugador.nacimiento = nacimiento;
-                      widget.jugador.goles = goles;
-                      widget.jugador.rojas = rojas;
-                      widget.jugador.hasTeam = hasTeam;
-
-                      // widget.jugador.save();
-                      jugadores.editPlayer(widget.jugador);
-                    } else
-                      jugadores.createPlayer(aux);
-                    print('guardando el jugador: ${aux.toString()}');
-
-                    Navigator.of(context).pop(true);
-                  }
-                },
-              ),
-            ],
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
