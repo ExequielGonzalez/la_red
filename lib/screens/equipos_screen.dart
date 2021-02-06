@@ -65,7 +65,6 @@ class _EquiposState extends State<Equipos> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // Future.delayed(Duration.zero, () {
     //   Provider.of<EquipoData>(context, listen: false).createTeam();

@@ -78,7 +78,7 @@ class _AdminDialogEquiposState extends State<AdminDialogEquipos> {
                       ],
                     ),
                   ),
-                  Container(
+                  Expanded(
                     child: ListView(
                       shrinkWrap: true,
                       children: _createTeamList(context, league.currentLeague),

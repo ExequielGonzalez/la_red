@@ -211,10 +211,9 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                 textColor: Colors.white,
                 bottomSpacing: 4,
                 onPressed: () async {
-                  //TODO: Guardar toda la informaciíon en hive
                   print('Aca se supone que se guarda todo');
 
-                  if (!error) {
+                  if (!error && equipo1String != '' && equipo2String != '') {
                     var teams = await Hive.openBox<Equipo>(kBoxEquipos);
                     final partidos =
                         Provider.of<PartidoData>(context, listen: false);
@@ -263,8 +262,8 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                     equiposProvider.editTeam(aux.equipo2.first);
                     // aux.equipo1.first.save();
                     // aux.equipo2.first.save();
+                    Navigator.of(context).pop(true);
                   }
-                  Navigator.of(context).pop(true);
                 },
               ),
             ],

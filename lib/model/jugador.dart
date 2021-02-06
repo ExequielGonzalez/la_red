@@ -28,7 +28,6 @@ class Jugador extends HiveObject {
   @HiveField(9)
   int id;
 
-  //TODO: Añadir que cada jugador pertenezca a un equipo
   static int counter = 0;
 
   Jugador({
@@ -69,13 +68,11 @@ class Jugador extends HiveObject {
   }
 
   int compareTo(other) {
-    // TODO: implement compareTo
     return -this.goles.compareTo(other.goles);
   }
 
   @override
   String toString() {
-    // TODO: implement toString
     return 'id: ${this.id}  - counter: $counter - key: ${this.key} - dni: ${this.dni}-> El jugador ${this.nombre} ${this.apellido}, con DNI: ${this.dni}, que juega en la liga ${this.liga} y ha hecho ${this.goles} goles';
     return super.toString();
   }

@@ -395,7 +395,7 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
                   var teams = await Hive.openBox<Equipo>(kBoxEquipos);
                   final partidos =
                       Provider.of<PartidoData>(context, listen: false);
-                  //TODO: Guardar toda la informaciíon en hive
+
                   print('Aca se supone que se guarda todo');
 
                   if (!isFinished) {

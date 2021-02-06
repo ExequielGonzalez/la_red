@@ -15,10 +15,11 @@ class JugadorData with ChangeNotifier {
   final String _sizeDataBase = 'nPlayers';
   final String _identifierDataBase = 'player';
 
-  List<Jugador> getJugadoresSinEquipo() {
+  List<Jugador> getJugadoresSinEquipo(Leagues league) {
     List<Jugador> _aux = [];
     _jugadores.forEach((element) {
-      if (!element.hasTeam) _aux.add(element);
+      if (!element.hasTeam && element.liga == league.toString())
+        _aux.add(element);
     });
     return _aux;
   }

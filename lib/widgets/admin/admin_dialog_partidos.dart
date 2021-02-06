@@ -107,7 +107,7 @@ class _AdminDialogPartidosState extends State<AdminDialogPartidos> {
                       ],
                     ),
                   ),
-                  Container(
+                  Expanded(
                     child: ListView(
                       shrinkWrap: true,
                       children: _createMatchesList(

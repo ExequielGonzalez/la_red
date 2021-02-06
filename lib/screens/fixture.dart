@@ -55,7 +55,6 @@ class _FixtureState extends State<Fixture> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // Future.delayed(Duration.zero, () {
     //   Provider.of<PartidoData>(context, listen: false).createMatchAuto();

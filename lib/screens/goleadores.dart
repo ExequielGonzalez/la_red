@@ -22,7 +22,6 @@ class Goleadores extends StatefulWidget {
 }
 
 class _GoleadoresState extends State<Goleadores> {
-  //TODO: El problema de que la id me cambie esta en esta clase
   double getHeight(double percent) =>
       MediaQuery.of(context).size.height * percent;
   double getWidth(double percent) =>
@@ -65,7 +64,6 @@ class _GoleadoresState extends State<Goleadores> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // Future.delayed(Duration.zero, () {
     //   Provider.of<JugadorData>(context, listen: false).createPlayer();

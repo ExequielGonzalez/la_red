@@ -106,7 +106,7 @@ class _AdminDialogJugadoresState extends State<AdminDialogJugadores> {
                       ],
                     ),
                   ),
-                  Container(
+                  Expanded(
                     child: ListView(
                       shrinkWrap: true,
                       children: _createPlayerList(

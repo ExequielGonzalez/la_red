@@ -101,7 +101,6 @@ class Equipo extends HiveObject {
 
   @override
   String toString() {
-    // TODO: implement toString
     return 'id: ${this.id}  - counter: $counter - key: ${this.key}-> El equipo ${this.nombre} , que juega en la liga ${this.liga} y tiene ${this.puntos} puntos';
   }
 

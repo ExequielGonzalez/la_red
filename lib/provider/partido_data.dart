@@ -120,7 +120,6 @@ class PartidoData with ChangeNotifier {
     return _partidos;
   }
 
-  //TODO: Revisar esta función. Ahora esta eliminando el archivo de la lista, pero no de la base de datos
   void deleteMatch(Partido partido) async {
     var box = await Hive.openBox<Partido>(kBoxPartidos);
     partido.delete();

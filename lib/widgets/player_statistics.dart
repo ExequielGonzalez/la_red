@@ -177,7 +177,7 @@ class PlayerList extends StatelessWidget {
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    '${jugador.nombre} ${jugador.apellido}',
+                    '${jugador.apellido} ${jugador.nombre}',
                     style: kTextStyle.copyWith(
                         fontSize: kFontSize, color: fontColor),
                   ),

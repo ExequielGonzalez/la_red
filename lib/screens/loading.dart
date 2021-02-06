@@ -17,6 +17,8 @@ import 'package:provider/provider.dart';
 
 import '../size_config.dart';
 
+import 'dart:io';
+
 class Loading extends StatefulWidget {
   @override
   _LoadingState createState() => _LoadingState();
@@ -26,32 +28,59 @@ class _LoadingState extends State<Loading> {
   @override
   void initState() {
     super.initState();
-    starFirebase();
+
+    startFirebase();
   }
 
-  void starFirebase() async {
-    await Firebase.initializeApp();
+  Future<bool> checkInternet() async {
+    bool connection = false;
+    try {
+      final result = await InternetAddress.lookup('google.com.ar');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print(
+            '----------------------------------------connected-----------------------------------------------');
+        connection = true;
+      }
+    } on SocketException catch (_) {
+      connection = false;
+      print(
+          '----------------------------------------------------not connected------------------------------------');
+    }
+    return connection;
+  }
 
-    ///Esto es para provocar un reset en todos los celulares.
-    // await cleanDataBase(reset: true, hardReset: false);
+  void startFirebase() async {
+    bool connection =
+        await checkInternet(); //Si hay conexión a internet, se lee firestore. Si no, se sigue con lo que ya hay en hive
+    if (connection) {
+      await Firebase.initializeApp();
 
-    checkCleanDataBase().then((value) {
-      setState(() {
-        progress = 0.20;
+      ///Esto es para provocar un reset en todos los celulares.
+      // await cleanDataBase(reset: true, hardReset: false);
+
+      checkCleanDataBase().then((value) {
+        setState(() {
+          progress = 0.20;
+        });
+        print('Ya se limpio la base de datos : $value');
+        readFirestore(!kRestart);
       });
-      print('Ya se limpio la base de datos : $value');
-      readFirestore(!kRestart);
-    });
+    } else {
+      await Provider.of<JugadorData>(context, listen: false).readPlayers();
+      await Provider.of<EquipoData>(context, listen: false).readTeams();
+      await Provider.of<PartidoData>(context, listen: false).readMatches();
 
-    // if (continueReading) readFirestore(!kRestart);
+      Navigator.pushReplacementNamed(context, '/home');
+    }
   }
 
   Future<bool> checkCleanDataBase() async {
     bool continueReading = false;
+    //Primero se chequea la última lectura a la DB. Si es la primera vez que se abre la aplicación, entonces no hay que borrar nada y se retorna -1.
     var boxConfig = await Hive.openBox(kBoxConfig);
-    var timestamp = DateTime.now().microsecondsSinceEpoch;
     int lastRead = await boxConfig.get('lastReadClean', defaultValue: -1);
     if (lastRead != -1) {
+      //Si es distinto de -1, implica que no es la primera vez que se abre la base de datos
       final firestoreInstance = FirebaseFirestore.instance;
       firestoreInstance
           .collection("config")
@@ -59,8 +88,10 @@ class _LoadingState extends State<Loading> {
           .get()
           .then((value) async {
         if (value.exists) {
-          int lastEditionDatabase = value.get('edited');
+          int lastEditionDatabase = value.get(
+              'edited'); //se revisa cuando fue la ultima vez que se modificó la base de datos
           if (lastEditionDatabase > lastRead) {
+            // corresponde limpiar Hive
             bool softReset = value.get('reset');
             bool hardReset = value.get('hard_reset');
             print(
@@ -87,7 +118,9 @@ class _LoadingState extends State<Loading> {
         }
       });
     }
-    await boxConfig.put('lastReadClean', timestamp);
+    var timestamp = DateTime.now().microsecondsSinceEpoch;
+    await boxConfig.put('lastReadClean',
+        timestamp); //se guarda la última vez que se chequeo esto.
     return continueReading;
   }
 
@@ -96,24 +129,6 @@ class _LoadingState extends State<Loading> {
     await Provider.of<EquipoData>(context, listen: false).readTeams();
     await Provider.of<PartidoData>(context, listen: false).readMatches();
 
-    // if (force) {
-    //   await readPlayersFirestore();
-    //   setState(() {
-    //     progress = 0.40;
-    //   });
-    //   await readTeamsFirestore();
-    //   setState(() {
-    //     progress = 0.60;
-    //   });
-    //   await readMatchesFirestore();
-    //   setState(() {
-    //     progress = 0.80;
-    //   });
-    //   await updateTeamPhotos();
-    //   setState(() {
-    //     progress = 1;
-    //   });
-    // }
     if (force) {
       readPlayersFirestore().then((_) {
         setState(() {
@@ -543,16 +558,13 @@ class _LoadingState extends State<Loading> {
 
     _equipos.forEach((element) async {
       if (element.photoURL == null) {
-        // print('El equipo no tiene foto, sooo, se va a descargar');
         Uint8List _aux;
         _aux = await downloadPhoto(element.liga, element.nombre);
         element.photoURL = _aux;
-        // equiposProvider.editTeam(element);
+
         element.save();
       }
     });
-    // Uint8List foto = await downloadPhoto(
-    //     element.data()["liga"], element.data()["nombre"]);
   }
 
   double width;

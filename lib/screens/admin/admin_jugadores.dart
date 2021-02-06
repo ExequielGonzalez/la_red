@@ -79,6 +79,8 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                 validator: (value) {
                   if (value == null || value.isEmpty)
                     return 'Se requiere un nombre';
+                  if (value == '')
+                    return 'Se requiere un nombre';
                   else
                     return null;
                 },
@@ -99,6 +101,8 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                 validator: (value) {
                   if (value == null || value.isEmpty)
                     return 'Se requiere un apellido';
+                  if (value == '')
+                    return 'Se requiere un nombre';
                   else
                     return null;
                 },
@@ -135,7 +139,7 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                 icon: Icon(Icons.calendar_today),
                 label: 'Fecha de Nacimiento',
                 dateFormat: DateFormat.yMMMMd(),
-                initialValue: DateTime(1999, 02, 20),
+                initialValue: nacimiento ?? DateTime(1999, 02, 20),
                 onSaved: (value) =>
                     nacimiento = updateJustDate(value, nacimiento),
                 onChanged: (value) {
@@ -241,10 +245,9 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                 textColor: Colors.white,
                 bottomSpacing: 4,
                 onPressed: () {
-                  //TODO: Guardar toda la informaciíon en hive
                   print('Aca se supone que se guarda todo');
 
-                  if (!error) {
+                  if (!error && nombre != '' && apellido != '') {
                     final jugadores =
                         Provider.of<JugadorData>(context, listen: false);
                     // if (widget.jugador != null) {
@@ -291,11 +294,6 @@ class _AdminJugadoresState extends State<AdminJugadores> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    // if (!error) {
-    //   Provider.of<JugadorData>(context, listen: false)
-    //       .editPlayer(widget.jugador, widget.index);
-    // }
     super.dispose();
   }
 }

@@ -28,7 +28,7 @@ class _DialogAddJugadoresToTeamState extends State<DialogAddJugadoresToTeam> {
         width: getWidth(0.9), // Change as per your requirement
         child: Column(
           children: [
-            Container(
+            Expanded(
               child: ListView.builder(
                   shrinkWrap: true,
                   itemCount: widget.jugadores.length ?? 0,
@@ -39,7 +39,7 @@ class _DialogAddJugadoresToTeamState extends State<DialogAddJugadoresToTeam> {
                         widget.jugadores[index].hasTeam = value;
                       }),
                       title: Text(
-                          '${widget.jugadores[index].nombre} ${widget.jugadores[index].apellido}'),
+                          '${widget.jugadores[index].apellido} ${widget.jugadores[index].nombre}'),
                     );
                   }),
             ),

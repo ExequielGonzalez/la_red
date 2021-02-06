@@ -108,10 +108,7 @@ class _AdminEquiposState extends State<AdminEquipos> {
     try {
       // Upload raw data.
       await ref.putData(data);
-      // Get raw data.
-      // Uint8List downloadedData = await ref.getData();
-      // prints -> Hello World!
-      // print(utf8.decode(downloadedData));
+
       downloadLink = await ref.getDownloadURL();
       print(downloadLink);
     } catch (e) {
@@ -155,6 +152,8 @@ class _AdminEquiposState extends State<AdminEquipos> {
                 inputAction: TextInputAction.next,
                 validator: (value) {
                   if (value == null || value.isEmpty)
+                    return 'Se requiere un nombre';
+                  if (value == '')
                     return 'Se requiere un nombre';
                   else
                     return null;
@@ -250,10 +249,9 @@ class _AdminEquiposState extends State<AdminEquipos> {
                 textColor: Colors.white,
                 bottomSpacing: 4,
                 onPressed: () async {
-                  //TODO: Guardar toda la informaciíon en hive
                   print('Aca se supone que se guarda todo');
 
-                  if (!error) {
+                  if (!error && nombre != '' && foto != null) {
                     uploadPic(liga, nombre, foto);
                     // dev.debugger();
                     final equipos =
@@ -570,8 +568,9 @@ class CardJugadores extends StatelessWidget implements CardSettingsWidget {
     SizeConfig().init(context);
     width = SizeConfig.safeBlockHorizontal;
     height = SizeConfig.blockSizeVertical;
-
-    final jugadores = Provider.of<JugadorData>(context).getJugadoresSinEquipo();
+    LeaguesProvider league = Provider.of<LeaguesProvider>(context);
+    final jugadores = Provider.of<JugadorData>(context)
+        .getJugadoresSinEquipo(league.currentLeague);
     final jugadoresProvider = Provider.of<JugadoresEquipo>(context);
     var jugadoresEquipo = jugadoresProvider.jugadorEquipo;
 
@@ -637,10 +636,8 @@ class CardJugadores extends StatelessWidget implements CardSettingsWidget {
   }
 
   @override
-  // TODO: implement showMaterialonIOS
   bool get showMaterialonIOS => throw UnimplementedError();
 
   @override
-  // TODO: implement visible
   bool get visible => true;
 }
