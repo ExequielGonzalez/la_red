@@ -182,6 +182,7 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                 },
               ),
               CardSettingsDatePicker(
+                forceCupertino: false,
                 icon: Icon(Icons.calendar_today),
                 label: 'Fecha',
                 dateFormat: DateFormat.yMMMMd(),

@@ -261,6 +261,9 @@ class _LoadingState extends State<Loading> {
       await firestoreInstance.collection("equipos").get().then((value) {
         value.docs.forEach((element) async {
           if (element.exists) {
+            print(
+                'leyendo el equipo: ${element.data()["nombre"]} con la ID: ${element.data()["id"]}');
+
             //Primero se crea la lista de jugadores que pertenecen al equipo.
             List<Jugador> listPlayers =
                 List<Jugador>.from((element.data()["jugadores"].map((item) {
