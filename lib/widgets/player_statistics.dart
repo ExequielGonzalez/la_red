@@ -11,10 +11,10 @@ class PlayerStatitistics extends StatelessWidget {
   double height;
 
   final Equipo equipo;
+  final List<Jugador> jugadores;
+  final String titulo;
 
-  PlayerStatitistics({
-    this.equipo,
-  });
+  PlayerStatitistics({this.equipo, this.jugadores, this.titulo});
 
   final double scale = 0.045;
   final double gridPadding = 1;
@@ -25,7 +25,8 @@ class PlayerStatitistics extends StatelessWidget {
     SizeConfig().init(context);
     width = SizeConfig.safeBlockHorizontal;
     height = SizeConfig.blockSizeVertical;
-    return Expanded(
+    return Flexible(
+      fit: FlexFit.loose,
       child: Padding(
         padding: EdgeInsets.only(top: height * 0.025),
         child: Stack(
@@ -106,12 +107,16 @@ class PlayerStatitistics extends StatelessWidget {
                     Flexible(
                       child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: equipo.jugadores.length,
+                        itemCount: jugadores == null
+                            ? equipo.jugadores.length
+                            : jugadores.length,
                         itemBuilder: (context, index) {
                           return PlayerList(
                               gridPadding: gridPadding,
                               height: height,
-                              jugador: equipo.jugadores[index],
+                              jugador: jugadores == null
+                                  ? equipo.jugadores[index]
+                                  : jugadores[index],
                               width: width,
                               gridWidth: gridWidth);
                         },
@@ -127,7 +132,7 @@ class PlayerStatitistics extends StatelessWidget {
                 padding: EdgeInsets.symmetric(
                     horizontal: width * (0.05), vertical: height * 0.005),
                 child: Text(
-                  'ESTADíSTICAS',
+                  titulo == null ? 'ESTADíSTICAS' : titulo,
                   style: kTextStyleBold.copyWith(
                       color: kBordo, fontSize: kFontSize),
                 ),

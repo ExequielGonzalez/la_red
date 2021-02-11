@@ -40,20 +40,27 @@ class _EquiposState extends State<Equipos> {
     EquiposListItem _listItem;
 
     print(equipos.length);
-    equipos.forEach((element) {
-      if (element.liga == league.toString()) {
-        print(
-            'creando un nuevo listItem con ${element.nombre}, ${element.id} y con jugadores: ${element.jugadores.toString()}');
-        _listItem = EquiposListItem(
-          equipo: element,
-          onTap: () {
-            detalleEquipo(element);
-          },
-        );
 
-        _teamList.add(_listItem);
-      }
-    });
+    try {
+      equipos.forEach((element) {
+        if (element.liga == league.toString()) {
+          print(
+              'creando un nuevo listItem con ${element.nombre}, ${element.id} y con jugadores: ${element.jugadores.toString()}');
+
+          _listItem = EquiposListItem(
+            equipo: element,
+            onTap: () {
+              detalleEquipo(element);
+            },
+          );
+
+          _teamList.add(_listItem);
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+
     // _teamList.forEach((element) {
     //   print('listItem con ${element.equipo.nombre} y ${element.equipo.id}');
     // });

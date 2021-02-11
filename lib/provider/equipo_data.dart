@@ -113,7 +113,9 @@ class EquipoData with ChangeNotifier {
       aux.jugadores = equipo.jugadores;
       aux.nombre = equipo.nombre;
       // aux.partidosAnteriores = equipo.partidosAnteriores;
-      aux.photoURL = equipo.photoURL;
+      if (aux.photoURL == null)
+        aux.photoURL = equipo
+            .photoURL; //TODO: BUscar una mejor forma de hacer esto porque ahora no se puede modificar la foto del equipo. Lo ideal sería guardar el link de la foto en firestore, y entonces cuando todavía no se tiene la foto en memoria, usar la que se obtiene con ese link. Para eso hay que modificar hive.
       aux.liga = equipo.liga;
       aux.save();
     }

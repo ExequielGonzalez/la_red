@@ -590,8 +590,6 @@ class CardJugadores extends StatelessWidget implements CardSettingsWidget {
                     );
                   });
               print(aux);
-
-              // widget.jugadoresDelEquipo = aux ?? widget.jugadoresDelEquipo;
               if (aux != null) jugadoresProvider.addJugadores(aux);
             },
           ),
@@ -602,8 +600,6 @@ class CardJugadores extends StatelessWidget implements CardSettingsWidget {
             minHeight: 0,
           ),
           child: ListView.builder(
-              // itemExtent: getHeight(0.05),
-              // itemCount: widget.jugadoresDelEquipo.length,
               itemCount: jugadoresEquipo.length,
               itemBuilder: (context, index) {
                 return Padding(
@@ -612,19 +608,13 @@ class CardJugadores extends StatelessWidget implements CardSettingsWidget {
                     color: Colors.grey.shade50,
                     child: InkWell(
                       child: Text(
-                        // '${widget.jugadoresDelEquipo[index].nombre} ${widget.jugadoresDelEquipo[index].apellido}',
                         '${jugadoresEquipo[index].nombre} ${jugadoresEquipo[index].apellido}',
                         style: kTextStyle.copyWith(
                             color: Colors.black, fontSize: 14),
                       ),
                       onLongPress: () {
-                        // widget.jugadoresDelEquipo[index].hasTeam = false;
-                        // widget.jugadoresDelEquipo
-                        //     .remove(widget.jugadoresDelEquipo[index]);
                         jugadoresProvider.deleteJugador(
                             context, jugadoresEquipo[index]);
-                        // jugadoresEquipo[index].hasTeam = false;
-                        // jugadoresEquipo.remove(jugadoresEquipo[index]);
                       },
                     ),
                   ),

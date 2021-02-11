@@ -25,23 +25,19 @@ class _DialogShowJugadoresState extends State<DialogShowJugadores> {
       content: Container(
         height: getHeight(0.9), // Change as per your requirement
         width: getWidth(0.9), // Change as per your requirement
-        child: Column(
-          children: [
-            Container(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: widget.jugadores.length ?? 0,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(
-                          '${widget.jugadores[index].nombre} ${widget.jugadores[index].apellido}'),
-                      onTap: () {
-                        Navigator.of(context).pop(widget.jugadores[index]);
-                      },
-                    );
-                  }),
-            ),
-          ],
+        child: Container(
+          child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.jugadores.length ?? 0,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                      '${widget.jugadores[index].apellido} ${widget.jugadores[index].nombre}'),
+                  onTap: () {
+                    Navigator.of(context).pop(widget.jugadores[index]);
+                  },
+                );
+              }),
         ),
       ),
       actions: <Widget>[

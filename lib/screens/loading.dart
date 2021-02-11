@@ -237,7 +237,8 @@ class _LoadingState extends State<Loading> {
               });
             });
           } else
-            print('No es necesario leer firestore. Se usa hive de cache');
+            print(
+                'No es necesario leer firestore. Se usa hive de cache para jugadores');
         } else
           print('Nada para leer en firestore');
       });
@@ -349,19 +350,31 @@ class _LoadingState extends State<Loading> {
                   if (equipos.getEquipos.isEmpty)
                     equipos.createTeam(aux, onFirestore: false);
                   else if (equipos.getEquipos.isNotEmpty) {
-                    if (equipos.getEquipos.singleWhere(
-                            (element2) => element2.id == aux.id,
-                            orElse: () => null) !=
-                        null) {
-                      equipos.editTeam(aux);
-                    } else
+                    bool isAlreadyCreated = false;
+                    equipos.getEquipos.forEach((element2) {
+                      if (element2.id == aux.id) {
+                        isAlreadyCreated = true;
+                        print('editando el equipo ${aux.nombre}');
+                        equipos.editTeam(aux);
+                      } else {
+                        print(
+                            'El equipo ${element2.nombre} no es el equipo ${aux.nombre}');
+                      }
+                    });
+                    if (!isAlreadyCreated) {
+                      print(
+                          'Añadiendo el equipo ${aux.nombre} a la base de datos');
                       equipos.createTeam(aux, onFirestore: false);
+                      aux.photoURL = await downloadPhoto(aux.liga, aux.nombre);
+                      aux.save();
+                    }
                   }
                 }
               });
             });
           } else
-            print('No es necesario leer firestore. Se usa hive de cache');
+            print(
+                'No es necesario leer firestore. Se usa hive de cache para equipos');
         } else
           print('Nada para leer en firestore');
       });
@@ -546,7 +559,8 @@ class _LoadingState extends State<Loading> {
               });
             });
           } else
-            print('No es necesario leer firestore. Se usa hive de cache');
+            print(
+                'No es necesario leer firestore. Se usa hive de cache para partidos');
         } else
           print('Nada para leer en firestore');
       });

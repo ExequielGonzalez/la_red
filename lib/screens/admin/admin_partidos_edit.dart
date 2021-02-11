@@ -5,6 +5,7 @@ import 'package:la_red/model/jugador.dart';
 import 'package:la_red/model/partido.dart';
 import 'package:la_red/provider/equipo_data.dart';
 import 'package:la_red/provider/jugador_data.dart';
+import 'package:la_red/provider/jugadores_equipo_provider.dart';
 import 'package:la_red/provider/partido_data.dart';
 import 'package:la_red/size_config.dart';
 import 'package:la_red/widgets/admin/dialog_show_jugadores.dart';
@@ -46,7 +47,8 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
   String equipo2String = '';
 
   void addGol(context, Equipo equipo) async {
-    final jugadores = Provider.of<JugadorData>(context, listen: false);
+    // final jugadores = Provider.of<JugadorData>(context, listen: false);
+    final jugadores = Provider.of<JugadoresEquipo>(context, listen: false);
     Jugador aux = await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -55,16 +57,26 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
           );
         });
     if (aux != null) {
+      // aux.goles += 1;
+      // jugadores.editPlayer(aux);
+      // setState(() {
+      //   (equipo == equipo1) ? golE1 += 1 : golE2 += 1;
+      // });
+
       aux.goles += 1;
-      jugadores.editPlayer(aux);
+      (equipo == equipo1)
+          ? jugadores.addJugadorEquipo1(aux)
+          : jugadores.addJugadorEquipo2(aux);
       setState(() {
         (equipo == equipo1) ? golE1 += 1 : golE2 += 1;
       });
+      // jugadores.addJugador(aux);
     }
   }
 
   void addAmarilla(context, Equipo equipo) async {
-    final jugadores = Provider.of<JugadorData>(context, listen: false);
+    // final jugadores = Provider.of<JugadorData>(context, listen: false);
+    final jugadores = Provider.of<JugadoresEquipo>(context, listen: false);
     Jugador aux = await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -73,14 +85,21 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
           );
         });
     if (aux != null) {
+      // aux.amarillas += 1;
+      // jugadores.editPlayer(aux);
+      // setState(() {});
       aux.amarillas += 1;
-      jugadores.editPlayer(aux);
+      (equipo == equipo1)
+          ? jugadores.addJugadorEquipo1(aux)
+          : jugadores.addJugadorEquipo2(aux);
+      // jugadores.addJugador(aux);
       setState(() {});
     }
   }
 
   void addRoja(context, Equipo equipo) async {
-    final jugadores = Provider.of<JugadorData>(context, listen: false);
+    // final jugadores = Provider.of<JugadorData>(context, listen: false);
+    final jugadores = Provider.of<JugadoresEquipo>(context, listen: false);
     Jugador aux = await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -89,14 +108,44 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
           );
         });
     if (aux != null) {
+      // aux.rojas += 1;
+      // jugadores.editPlayer(aux);
+      // setState(() {});
       aux.rojas += 1;
-      jugadores.editPlayer(aux);
+      (equipo == equipo1)
+          ? jugadores.addJugadorEquipo1(aux)
+          : jugadores.addJugadorEquipo2(aux);
+      // jugadores.addJugador(aux);
       setState(() {});
     }
   }
 
   void actualizarEstadisticas() {
     final equipos = Provider.of<EquipoData>(context, listen: false);
+    final jugadoresProvider =
+        Provider.of<JugadoresEquipo>(context, listen: false);
+    final jugadores = Provider.of<JugadorData>(context, listen: false);
+
+    if (jugadoresProvider.jugadoresEquipo1.length != 0) {
+      jugadoresProvider.jugadoresEquipo1.forEach((element) {
+        Jugador _aux = jugadores.getJugadorByDNI(element.dni);
+        _aux.goles = element.goles;
+        _aux.amarillas = element.amarillas;
+        _aux.rojas = element.rojas;
+        jugadores.editPlayer(_aux);
+      });
+    }
+
+    if (jugadoresProvider.jugadoresEquipo2.length != 0) {
+      jugadoresProvider.jugadoresEquipo2.forEach((element) {
+        Jugador _aux = jugadores.getJugadorByDNI(element.dni);
+        _aux.goles = element.goles;
+        _aux.amarillas = element.amarillas;
+        _aux.rojas = element.rojas;
+        jugadores.editPlayer(_aux);
+      });
+    }
+
     equipo1.partidosJugados += 1;
     equipo2.partidosJugados += 1;
     if (golE1 == golE2) {
@@ -140,6 +189,9 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
       id = widget.partido.id;
       isFinished = widget.partido.isFinished;
     }
+
+    Provider.of<JugadoresEquipo>(context, listen: false).clearList();
+
     super.initState();
   }
 
@@ -150,9 +202,10 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
     height = SizeConfig.blockSizeVertical;
     final equiposProvider = Provider.of<EquipoData>(context, listen: false);
     equipos = equiposProvider.getEquipos;
-
+    final jugadoresProvider = Provider.of<JugadoresEquipo>(context);
     return Scaffold(
-      body: Column(
+      body: ListView(
+        shrinkWrap: true,
         children: [
           Container(
             padding: EdgeInsets.only(top: 50),
@@ -429,6 +482,23 @@ class _AdminPartidosEditState extends State<AdminPartidosEdit> {
                 },
               ),
             ),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              jugadoresProvider.jugadoresEquipo1.length != 0
+                  ? PlayerStatitistics(
+                      jugadores: jugadoresProvider.jugadoresEquipo1,
+                      titulo: '${equipo1.nombre}',
+                    )
+                  : Container(),
+              jugadoresProvider.jugadoresEquipo2.length != 0
+                  ? PlayerStatitistics(
+                      jugadores: jugadoresProvider.jugadoresEquipo2,
+                      titulo: '${equipo2.nombre}',
+                    )
+                  : Container(),
+            ],
           ),
         ],
       ),
