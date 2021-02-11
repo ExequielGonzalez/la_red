@@ -139,11 +139,11 @@ class _LoadingState extends State<Loading> {
             progress = 0.60;
           });
 
-          readMatchesFirestore().then((_) {
+          updateTeamPhotos().then((_) {
             setState(() {
               progress = 0.80;
             });
-            updateTeamPhotos().then((value) {
+            readMatchesFirestore().then((value) {
               setState(() {
                 progress = 1;
               });
@@ -370,7 +370,7 @@ class _LoadingState extends State<Loading> {
   }
 
   Future<Uint8List> downloadPhoto(String league, String name) async {
-    String downloadLink;
+    // String downloadLink;
     Uint8List downloadedData;
     // print('buscando: $league/$name.text');
     firebase_storage.Reference ref =
@@ -379,9 +379,8 @@ class _LoadingState extends State<Loading> {
     try {
       // Get raw data.
       downloadedData = await ref.getData();
-
-      downloadLink = await ref.getDownloadURL();
-      print(downloadLink);
+      // downloadLink = await ref.getDownloadURL();
+      // print(downloadLink);
     } catch (e) {
       downloadedData = (await rootBundle.load("assets/images/logo.jpg"))
           .buffer

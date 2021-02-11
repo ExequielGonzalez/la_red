@@ -199,7 +199,7 @@ List<Widget> _createPlayerList(context, Leagues league, playersWithTeam) {
                 FlatButton(
                   child: Text("Yes"),
                   onPressed: () async {
-                    jugadoresProvdier.deletePlayer(element);
+                    jugadoresProvdier.deletePlayer(element, context);
                     Navigator.of(context).pop();
                   },
                 ),

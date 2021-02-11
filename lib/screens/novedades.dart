@@ -67,31 +67,37 @@ class _NovedadesState extends State<Novedades> {
                   AlertDialog alert = AlertDialog(
                     title: Text("¡Problema solucionado!"),
                     content: Text(
-                        "Presiona el botón para reiniciar la aplicación con todos tus datos actualizados 😁"),
+                        "Presiona el botón para reiniciar la aplicación con todos tus datos actualizados"),
                     actions: [
                       FlatButton(
                           onPressed: () async {
                             print('aca se borra la DB');
                             var boxConfig = await Hive.openBox(kBoxConfig);
-                            var boxJugadores = await Hive.openBox<Jugador>(
-                              kBoxJugadores,
-                            );
-                            var boxEquipos = await Hive.openBox<Equipo>(
-                              kBoxEquipos,
-                            );
-                            var boxPartidos = await Hive.openBox<Partido>(
-                              kBoxPartidos,
-                            );
-                            boxJugadores.clear();
-                            boxEquipos.clear();
-                            boxPartidos.clear();
-                            await boxConfig.put('lastReadJugador', -1);
-                            await boxConfig.put('lastReadEquipo', -1);
-                            await boxConfig.put('lastReadPartido', -1);
+                            int canClean = await boxConfig
+                                .get('canCleanDataBase', defaultValue: -1);
+                            if (canClean == -1) {
+                              var boxJugadores = await Hive.openBox<Jugador>(
+                                kBoxJugadores,
+                              );
+                              var boxEquipos = await Hive.openBox<Equipo>(
+                                kBoxEquipos,
+                              );
+                              var boxPartidos = await Hive.openBox<Partido>(
+                                kBoxPartidos,
+                              );
+                              boxJugadores.clear();
+                              boxEquipos.clear();
+                              boxPartidos.clear();
+                              await boxConfig.put('lastReadJugador', -1);
+                              await boxConfig.put('lastReadEquipo', -1);
+                              await boxConfig.put('lastReadPartido', -1);
+                              await boxConfig.put('canCleanDataBase', 1);
 
-                            RestartWidget.restartApp(context);
+                              RestartWidget.restartApp(context);
+                            } else
+                              Navigator.pop(context);
                           },
-                          child: Text('Presioname 🤗')),
+                          child: Text('Solucionar')),
                     ],
                   );
 
@@ -109,7 +115,7 @@ class _NovedadesState extends State<Novedades> {
                   //side: BorderSide(color: Colors.black),
                 ),
                 child: Text(
-                  "No se me actualizan los datos 😫",
+                  "No se me actualizan los datos",
                   style: kTextStyleBold.copyWith(
                       fontSize: getHeight(0.024), color: kBordo),
                 ),

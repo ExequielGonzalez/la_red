@@ -30,6 +30,21 @@ class EquipoData with ChangeNotifier {
     return aux;
   }
 
+  Equipo getEquipoByPlayer(Jugador jugador) {
+    Equipo aux;
+
+    _equipos.forEach((element) {
+      print('${element.nombre}');
+
+      element.jugadores.forEach((element2) {
+        if (element2.dni == jugador.dni) {
+          aux = element;
+        }
+      });
+    });
+    return aux;
+  }
+
   void createTeam(Equipo equipo, {bool onFirestore = true}) async {
     _equipos.add(equipo);
     var box = await Hive.openBox<Equipo>(kBoxEquipos);

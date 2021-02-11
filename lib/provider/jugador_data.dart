@@ -1,13 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:la_red/model/equipo.dart';
 
 import 'package:la_red/model/jugador.dart';
 
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 
 import 'dart:developer' as dev;
 
 import '../constants.dart';
+import 'equipo_data.dart';
 
 class JugadorData with ChangeNotifier {
   List<Jugador> _jugadores = [];
@@ -127,23 +130,35 @@ class JugadorData with ChangeNotifier {
   }
 
   //TODO: Pensar la forma de que cuando elimino un jugador de firebase, luego ese jugador se elimine de los hive de todos los celulares
-  void deletePlayer(Jugador jugador) async {
-    // print('eliminando el jugador ${jugador.toString()}');
-    // dev.debugger();
-    var box = await Hive.openBox<Jugador>(kBoxJugadores);
+  //TODO: eliminar del equipo al que pertenece en firebase
+  void deletePlayer(Jugador jugador, context) async {
+    // var box = await Hive.openBox<Jugador>(kBoxJugadores);
 
-    await jugador.delete();
+    if (!jugador.hasTeam) {
+      await jugador.delete();
+      _jugadores.removeWhere((element) => element.id == jugador.id);
+      //
+      final firestoreInstance = FirebaseFirestore.instance;
 
-    _jugadores.removeWhere((element) => element.id == jugador.id);
-
-    final firestoreInstance = FirebaseFirestore.instance;
-    await firestoreInstance
-        .collection("jugadores")
-        .doc('${jugador.dni}')
-        .delete();
-
-    _size -= 1;
-
-    notifyListeners();
+      await firestoreInstance
+          .collection("jugadores")
+          .doc('${jugador.dni}')
+          .delete();
+      // print('borrando jugador : ${jugador.nombre}');
+      //
+      // Equipo equipo = Provider.of<EquipoData>(context, listen: false)
+      //     .getEquipoByPlayer(jugador);
+      //
+      // //TODO: ELiminar el jugador
+      // print(
+      //     'El jugador ${jugador.nombre} juega en el equipo ${equipo.nombre} con el ID: ${equipo.id}');
+      //
+      // await firestoreInstance
+      //     .collection("equipos")
+      //     .doc("${equipo.id}")
+      //     .set(equipo.toJson(), SetOptions(merge: true));
+      _size -= 1;
+      notifyListeners();
+    }
   }
 }

@@ -215,12 +215,15 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                   print('Aca se supone que se guarda todo');
 
                   if (!error && equipo1String != '' && equipo2String != '') {
+                    liga = league.currentLeague.toString();
                     var teams = await Hive.openBox<Equipo>(kBoxEquipos);
                     final partidos =
                         Provider.of<PartidoData>(context, listen: false);
                     equipos.forEach((element) {
-                      if (element.nombre == equipo1String) equipo1 = element;
-                      if (element.nombre == equipo2String) equipo2 = element;
+                      if (element.nombre == equipo1String &&
+                          element.liga == liga) equipo1 = element;
+                      if (element.nombre == equipo2String &&
+                          element.liga == liga) equipo2 = element;
                     });
 
                     List<Equipo> aux1 = [];
@@ -236,7 +239,7 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                       fecha: fecha,
                       isFinished: isFinished,
                       numCancha: numCancha,
-                      liga: league.currentLeague.toString(),
+                      liga: liga,
                     );
 
                     partidos.createMatch(aux);

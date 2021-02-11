@@ -45,6 +45,8 @@ class _AdminJugadoresState extends State<AdminJugadores> {
       goles = widget.jugador.goles;
       rojas = widget.jugador.rojas;
       hasTeam = widget.jugador.hasTeam;
+    } else {
+      nacimiento = DateTime(1999, 02, 20); //TODO: REVISAR
     }
     super.initState();
   }
@@ -135,7 +137,6 @@ class _AdminJugadoresState extends State<AdminJugadores> {
                   },
                 ),
                 CardSettingsDatePicker(
-                  // forceCupertino: true,
                   forceCupertino: true,
                   firstDate: DateTime(1940),
                   lastDate: DateTime.now(),
