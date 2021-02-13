@@ -149,10 +149,14 @@ class _NovedadesState extends State<Novedades> {
                   child: Container(
                     width: getWidth(0.75),
                     child: Center(
-                      child: Text(
-                        "No se me actualizan los datos",
-                        style: kTextStyleBold.copyWith(
-                            fontSize: getHeight(0.024), color: kBordo),
+                      child: FittedBox(
+                        child: Text(
+                          "No se me actualizan los datos",
+                          style: kTextStyleBold.copyWith(
+                            fontSize: getHeight(0.024),
+                            color: kBordo,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -196,7 +200,7 @@ class _NovedadesState extends State<Novedades> {
                                 minLines: 1,
                                 keyboardType: TextInputType.multiline,
                                 decoration: InputDecoration(
-                                  labelText: 'Descripción del error',
+                                  labelText: 'Mensaje',
                                   icon: Icon(Icons.message),
                                 ),
                               ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-bool kAdmin = true;
+bool kAdmin = !true;
 
 bool kRestart = false;
 

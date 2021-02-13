@@ -53,7 +53,10 @@ class FixtureListItem extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: Image.memory(partido.equipo1.first.photoURL),
+                    child: partido.equipo1.first.photoURL != null
+                        ? Image.memory(partido.equipo1.first.photoURL)
+                        : Image.network(
+                            "https://i.pinimg.com/originals/ee/5c/dd/ee5cdda7b543adff757890a64f03a4f1.png"),
                   ),
                 ),
               ),
@@ -72,7 +75,10 @@ class FixtureListItem extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(4.0),
-                    child: Image.memory(partido.equipo2.first.photoURL),
+                    child: partido.equipo2.first.photoURL != null
+                        ? Image.memory(partido.equipo2.first.photoURL)
+                        : Image.network(
+                            "https://i.pinimg.com/originals/ee/5c/dd/ee5cdda7b543adff757890a64f03a4f1.png"),
                   ),
                 ),
               ),

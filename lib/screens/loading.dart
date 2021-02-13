@@ -262,8 +262,8 @@ class _LoadingState extends State<Loading> {
       await firestoreInstance.collection("equipos").get().then((value) {
         value.docs.forEach((element) async {
           if (element.exists) {
-            print(
-                'leyendo el equipo: ${element.data()["nombre"]} con la ID: ${element.data()["id"]}');
+            // print(
+            //     'leyendo el equipo: ${element.data()["nombre"]} con la ID: ${element.data()["id"]}');
 
             //Primero se crea la lista de jugadores que pertenecen al equipo.
             List<Jugador> listPlayers =
@@ -354,7 +354,7 @@ class _LoadingState extends State<Loading> {
                     equipos.getEquipos.forEach((element2) {
                       if (element2.id == aux.id) {
                         isAlreadyCreated = true;
-                        print('editando el equipo ${aux.nombre}');
+                        // print('editando el equipo ${aux.nombre}');
                         equipos.editTeam(aux);
                       } else {
                         print(
@@ -362,8 +362,8 @@ class _LoadingState extends State<Loading> {
                       }
                     });
                     if (!isAlreadyCreated) {
-                      print(
-                          'Añadiendo el equipo ${aux.nombre} a la base de datos');
+                      // print(
+                      //     'Añadiendo el equipo ${aux.nombre} a la base de datos');
                       equipos.createTeam(aux, onFirestore: false);
                       aux.photoURL = await downloadPhoto(aux.liga, aux.nombre);
                       aux.save();
@@ -424,6 +424,9 @@ class _LoadingState extends State<Loading> {
         await firestoreInstance.collection("partidos").get().then((value) {
           value.docs.forEach((element) async {
             if (element.exists) {
+              // print(element.data()["equipo1"]);
+              // print(element.data()["equipo2"]);
+
               //Primero se crean los dos equipos que conforman el partido.
               List<Equipo> equipo1 =
                   List<Equipo>.from((element.data()["equipo1"].map((item) {
@@ -442,11 +445,11 @@ class _LoadingState extends State<Loading> {
               List<Equipo> _temporaryListEquipo2 = [];
 
               equipo1.forEach((element1) {
-                print('buscando ${element1.id}');
+                // print('buscando ${element1.id}');
                 _temporaryListEquipo1.add(equipos.getEquipoById(element1.id));
               });
               equipo2.forEach((element1) {
-                print('buscando ${element1.id}');
+                // print('buscando ${element1.id}');
                 _temporaryListEquipo2.add(equipos.getEquipoById(element1.id));
               });
 
@@ -530,10 +533,10 @@ class _LoadingState extends State<Loading> {
                         .add(equipos.getEquipoById(element1.id));
                   });
 
-                  print(
-                      'el equipo 1 es: ${_temporaryListEquipo1.first.nombre} y tiene los jugadores: ${_temporaryListEquipo1.first.jugadores}');
-                  print(
-                      'el equipo 2 es: ${_temporaryListEquipo2.first.nombre} y tiene los jugadores: ${_temporaryListEquipo2.first.jugadores}');
+                  // print(
+                  //     'el equipo 1 es: ${_temporaryListEquipo1.first.nombre} y tiene los jugadores: ${_temporaryListEquipo1.first.jugadores}');
+                  // print(
+                  //     'el equipo 2 es: ${_temporaryListEquipo2.first.nombre} y tiene los jugadores: ${_temporaryListEquipo2.first.jugadores}');
 
                   //Se crea el partido con la información de firestore, pero no se le
                   //agregan los equipos

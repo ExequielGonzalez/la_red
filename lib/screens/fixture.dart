@@ -136,7 +136,7 @@ class _FixtureState extends State<Fixture> {
                               child: Text(
                                 'PARTIDOS',
                                 style: kTextStyleBold.copyWith(
-                                    color: kBordo, fontSize: 30),
+                                    color: kBordo, fontSize: getWidth(0.045)),
                               ),
                             ),
                             Expanded(

@@ -57,8 +57,8 @@ class Equipo extends HiveObject {
   }) {
     this.id = this.nombre + this.liga;
 
-    print(
-        'Constructor de Equipo: Creando equipo ${this.nombre} con id: ${this.id}. El counter vale $counter. key: ${this.key}. Los jugadores del equipo son: ${jugadores.toString()}');
+    // print(
+    //     'Constructor de Equipo: Creando equipo ${this.nombre} con id: ${this.id}. El counter vale $counter. key: ${this.key}. Los jugadores del equipo son: ${jugadores.toString()}');
   }
 
   Equipo.auto() {

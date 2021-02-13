@@ -15,6 +15,7 @@ import '../../constants.dart';
 
 class AdminPartidosCreate extends StatefulWidget {
   Partido partido;
+
   AdminPartidosCreate({this.partido});
 
   @override
@@ -29,9 +30,11 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
   Equipo equipo1;
   Equipo equipo2;
   int numCancha = 0;
+
   // DateTime fecha = DateTime(2020, 10, 10, 20, 30);
   DateTime fecha = DateTime.now();
-  String hora = '';
+  DateTime hora = DateTime.now();
+  // String hora = '';
   int golE1 = 0;
   int golE2 = 0;
   String id = '';
@@ -197,11 +200,11 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
               CardSettingsTimePicker(
                 icon: Icon(Icons.access_time),
                 label: 'Hora',
-                initialValue: TimeOfDay(hour: fecha.hour, minute: fecha.minute),
-                onSaved: (value) => fecha = updateJustTime(value, fecha),
+                initialValue: TimeOfDay(hour: hora.hour, minute: hora.minute),
+                onSaved: (value) => hora = updateJustTime(value, hora),
                 onChanged: (value) {
                   setState(() {
-                    fecha = updateJustTime(value, fecha);
+                    hora = updateJustTime(value, hora);
                   });
                 },
               ),
@@ -212,8 +215,6 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                 textColor: Colors.white,
                 bottomSpacing: 4,
                 onPressed: () async {
-                  print('Aca se supone que se guarda todo');
-
                   if (!error && equipo1String != '' && equipo2String != '') {
                     liga = league.currentLeague.toString();
                     var teams = await Hive.openBox<Equipo>(kBoxEquipos);
@@ -231,6 +232,9 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                     aux1.add(equipo1);
                     aux2.add(equipo2);
 
+                    fecha = fecha
+                        .add(Duration(hours: hora.hour, minutes: hora.minute));
+
                     var aux = Partido(
                       equipo1: HiveList(teams, objects: aux1),
                       equipo2: HiveList(teams, objects: aux2),
@@ -245,27 +249,11 @@ class _AdminPartidosCreateState extends State<AdminPartidosCreate> {
                     partidos.createMatch(aux);
                     print('guardando el partido: ${aux.toString()}');
 
-                    // var games = await Hive.openBox<Partido>(kBoxPartidos);
-
-                    // List<Partido> _aux1 =
-                    //     aux.equipo1.first.partidosAnteriores ?? [];
-                    // print('Ya hay ${aux1.length} partidos creados ');
-                    // List<Partido> _aux2 =
-                    //     aux.equipo2.first.partidosAnteriores ?? [];
-                    //
-                    // _aux1.add(aux);
-                    // _aux2.add(aux);
-
                     print('Ya hay ${aux1.length} partidos creados ');
-                    // aux.equipo1.first.partidosAnteriores =
-                    //     HiveList(games, objects: _aux1);
-                    // aux.equipo2.first.partidosAnteriores =
-                    //     HiveList(games, objects: _aux2);
 
                     equiposProvider.editTeam(aux.equipo1.first);
                     equiposProvider.editTeam(aux.equipo2.first);
-                    // aux.equipo1.first.save();
-                    // aux.equipo2.first.save();
+
                     Navigator.of(context).pop(true);
                   }
                 },
