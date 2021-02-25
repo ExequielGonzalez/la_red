@@ -19,7 +19,7 @@ class GoleadoresListItem extends StatelessWidget {
     SizeConfig().init(context);
     width = SizeConfig.safeBlockHorizontal;
     height = SizeConfig.blockSizeVertical;
-    _nombre = jugador.nombre + ' ' + jugador.apellido;
+    _nombre = jugador.apellido + ' ' + jugador.nombre;
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: width * (0.004),

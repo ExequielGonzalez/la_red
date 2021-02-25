@@ -1,16 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:la_red/model/equipo.dart';
 
 import 'package:la_red/model/jugador.dart';
 
 import 'package:hive/hive.dart';
-import 'package:provider/provider.dart';
 
 import 'dart:developer' as dev;
 
 import '../constants.dart';
-import 'equipo_data.dart';
 
 class JugadorData with ChangeNotifier {
   List<Jugador> _jugadores = [];
@@ -42,12 +39,20 @@ class JugadorData with ChangeNotifier {
   Jugador getPlayer(index) => _jugadores.elementAt(index);
   int get playerLength => _jugadores.length;
 
+  bool isAlreadyCreated(Jugador jugador) {
+    bool alreadyExist = false;
+    _jugadores.forEach((element) {
+      if (element.dni == jugador.dni) alreadyExist = true;
+    });
+    return alreadyExist;
+  }
+
   void createPlayer(Jugador jugador, {bool onFirestore = true}) async {
     _jugadores.add(jugador);
     var box = await Hive.openBox<Jugador>(kBoxJugadores);
 
     await box.add(jugador);
-    if (onFirestore) {
+    if (onFirestore && !isAlreadyCreated(jugador)) {
       var boxConfig = await Hive.openBox(kBoxConfig);
       final firestoreInstance = FirebaseFirestore.instance;
 
@@ -66,6 +71,7 @@ class JugadorData with ChangeNotifier {
       );
     }
     _size += 1;
+
     notifyListeners();
   }
 

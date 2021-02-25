@@ -168,7 +168,7 @@ List<Widget> _createPlayerList(context, Leagues league, playersWithTeam) {
           child: Container(
             color: Colors.grey.shade50,
             child: Text(
-              '${element.nombre} ${element.apellido}',
+              '${element.apellido} ${element.nombre}',
               style: kTextStyle.copyWith(color: Colors.black, fontSize: 14),
             ),
           ),

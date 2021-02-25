@@ -64,9 +64,17 @@ class EquiposListItem extends StatelessWidget {
                 ),
               ),
             ),
-            Text(
-              equipo.nombre,
-              style: kTextStyle.copyWith(fontSize: kFontSize),
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.only(right: width * 0.03),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    equipo.nombre,
+                    style: kTextStyle.copyWith(fontSize: kFontSize),
+                  ),
+                ),
+              ),
             )
           ],
         ),

@@ -262,14 +262,21 @@ class _LoadingState extends State<Loading> {
       await firestoreInstance.collection("equipos").get().then((value) {
         value.docs.forEach((element) async {
           if (element.exists) {
-            // print(
-            //     'leyendo el equipo: ${element.data()["nombre"]} con la ID: ${element.data()["id"]}');
+            print(
+                'leyendo el equipo: ${element.data()["nombre"]} con la ID: ${element.data()["id"]}');
 
             //Primero se crea la lista de jugadores que pertenecen al equipo.
             List<Jugador> listPlayers =
                 List<Jugador>.from((element.data()["jugadores"].map((item) {
               return Jugador.fromJson(item);
             })));
+
+            //TODO: BORRAR
+            if (element.data()["id"] == "J. UNIDA C.Leagues.femenino") {
+              print('----------Acá esta---------');
+              print(listPlayers.length);
+              print(listPlayers);
+            }
 
             //Luego en esta lista auxiliar se toman los jugadores que ya estan
             // en hive que conciden con los jugadores que se leyeron de firestore
@@ -279,6 +286,12 @@ class _LoadingState extends State<Loading> {
             listPlayers.forEach((element) {
               _temporaryList.add(jugadores.getJugadorByDNI(element.dni));
             });
+            //TODO: BORRAR
+            if (element.data()["id"] == "J. UNIDA C.Leagues.femenino") {
+              print('----------Acá esta---------');
+              print(_temporaryList.length);
+              print(_temporaryList);
+            }
 
             //Se crea el equipo con la información de firestore, pero no se le
             //agregan los jugadores
@@ -290,13 +303,18 @@ class _LoadingState extends State<Loading> {
             if (equipos.getEquipos.isEmpty)
               equipos.createTeam(aux, onFirestore: false);
             else if (equipos.getEquipos.isNotEmpty) {
-              if (equipos.getEquipos.singleWhere(
-                      (element2) => element2.id == aux.id,
-                      orElse: () => null) !=
-                  null) {
-                equipos.editTeam(aux);
-              } else
+              bool isAlreadyCreated = false;
+              equipos.getEquipos.forEach((element2) {
+                if (element2.id == aux.id) {
+                  isAlreadyCreated = true;
+                  // print('editando el equipo ${aux.nombre}');
+                  equipos.editTeam(aux);
+                }
+              });
+              if (!isAlreadyCreated) {
+                print('Añadiendo el equipo ${aux.nombre} a la base de datos');
                 equipos.createTeam(aux, onFirestore: false);
+              }
             }
           }
         });
@@ -339,7 +357,8 @@ class _LoadingState extends State<Loading> {
                   listPlayers.forEach((element) {
                     _temporaryList.add(jugadores.getJugadorByDNI(element.dni));
                   });
-
+                  print(
+                      'Creando en el arranque el equipo ${element.data()["id"]}');
                   //Se crea el equipo con la información de firestore, pero no se le
                   //agregan los jugadores
                   Equipo aux = Equipo.fromFirestore(element);
@@ -424,8 +443,8 @@ class _LoadingState extends State<Loading> {
         await firestoreInstance.collection("partidos").get().then((value) {
           value.docs.forEach((element) async {
             if (element.exists) {
-              // print(element.data()["equipo1"]);
-              // print(element.data()["equipo2"]);
+              print(element.data()["equipo1"]);
+              print(element.data()["equipo2"]);
 
               //Primero se crean los dos equipos que conforman el partido.
               List<Equipo> equipo1 =

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:la_red/constants.dart';
@@ -30,7 +31,7 @@ class AdminFAB extends StatelessWidget {
       fabSize: width * 0.15,
       fabElevation: 8.0,
       fabIconBorder: CircleBorder(),
-      // Also can use specific color based on wether
+      // Also can use specific color based on whether
       // the menu is open or not:
       // fabOpenColor: Colors.white
       // fabCloseColor: Colors.white
@@ -44,6 +45,7 @@ class AdminFAB extends StatelessWidget {
       onDisplayChange: (isOpen) {
         print("The menu is ${isOpen ? "open" : "closed"}");
       },
+
       children: <Widget>[
         RawMaterialButton(
             onPressed: () {
@@ -76,6 +78,14 @@ class AdminFAB extends StatelessWidget {
                 builder: (BuildContext context) {
                   return AdminDialogJugadores();
                 });
+          },
+          onLongPress: () async {
+            print('long press');
+            final firestoreInstance = FirebaseFirestore.instance;
+            await firestoreInstance.collection("config").doc('timestamp').set(
+              {'edited': DateTime.now().microsecondsSinceEpoch},
+              SetOptions(merge: true),
+            );
           },
           shape: CircleBorder(),
           padding: const EdgeInsets.all(24.0),

@@ -29,9 +29,11 @@ class _LeaguesTabState extends State<LeaguesTab> {
             )),
           ),
           child: Center(
-            child: Text(
-              widget.text.toUpperCase(),
-              style: kTextStyleBold.copyWith(fontSize: widget.width * 0.04),
+            child: FittedBox(
+              child: Text(
+                widget.text.toUpperCase(),
+                style: kTextStyleBold.copyWith(fontSize: widget.width * 0.035),
+              ),
             ),
           ),
         ),
