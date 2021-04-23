@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_version/get_version.dart';
 import 'package:hive/hive.dart';
 import 'package:la_red/constants.dart';
 import 'package:la_red/model/equipo.dart';
@@ -80,6 +81,39 @@ class _LoadingState extends State<Loading> {
     var boxConfig = await Hive.openBox(kBoxConfig);
     int lastRead = await boxConfig.get('lastReadClean', defaultValue: -1);
     if (lastRead != -1) {
+      //TODO: ESTO no sirve porque lastReadVersion solo funciona una vez. Hay que ligarlo de alguna manera a firebase
+      String projectCode;
+// Platform messages may fail, so we use a try/catch PlatformException.
+      try {
+        projectCode = await GetVersion.projectCode;
+        print('code version: $projectCode');
+      } on PlatformException {
+        projectCode = '0';
+      }
+      int lastReadVersion =
+          await boxConfig.get('lastReadVersion', defaultValue: -1);
+      if (projectCode == '4' && lastReadVersion == -1) {
+        var boxJugadores = await Hive.openBox<Jugador>(
+          kBoxJugadores,
+        );
+        var boxEquipos = await Hive.openBox<Equipo>(
+          kBoxEquipos,
+        );
+        var boxPartidos = await Hive.openBox<Partido>(
+          kBoxPartidos,
+        );
+        boxJugadores.clear();
+        boxEquipos.clear();
+        boxPartidos.clear();
+        await boxConfig.put('lastReadJugador', -1);
+        await boxConfig.put('lastReadEquipo', -1);
+        await boxConfig.put('lastReadPartido', -1);
+
+        var timestamp = DateTime.now().microsecondsSinceEpoch;
+        await boxConfig.put('lastReadVersion',
+            timestamp); //se guarda la última vez que se chequeo esto.
+      }
+
       //Si es distinto de -1, implica que no es la primera vez que se abre la base de datos
       final firestoreInstance = FirebaseFirestore.instance;
       firestoreInstance
@@ -272,7 +306,7 @@ class _LoadingState extends State<Loading> {
             })));
 
             //TODO: BORRAR
-            if (element.data()["id"] == "J. UNIDA C.Leagues.femenino") {
+            if (element.data()["id"] == "ABUELO Y ROBERTOLeagues.libre") {
               print('----------Acá esta---------');
               print(listPlayers.length);
               print(listPlayers);
@@ -287,7 +321,7 @@ class _LoadingState extends State<Loading> {
               _temporaryList.add(jugadores.getJugadorByDNI(element.dni));
             });
             //TODO: BORRAR
-            if (element.data()["id"] == "J. UNIDA C.Leagues.femenino") {
+            if (element.data()["id"] == "ABUELO Y ROBERTOLeagues.libre") {
               print('----------Acá esta---------');
               print(_temporaryList.length);
               print(_temporaryList);
@@ -446,6 +480,12 @@ class _LoadingState extends State<Loading> {
               print(element.data()["equipo1"]);
               print(element.data()["equipo2"]);
 
+              //TODO: BORRAR
+              if (element.data()["id"] == "2021-02-27-0-0-Leagues.libre-3") {
+                print('----------Acá esta el bendito partido---------');
+                print('${element.data()["fecha"]}');
+              }
+
               //Primero se crean los dos equipos que conforman el partido.
               List<Equipo> equipo1 =
                   List<Equipo>.from((element.data()["equipo1"].map((item) {
@@ -472,10 +512,10 @@ class _LoadingState extends State<Loading> {
                 _temporaryListEquipo2.add(equipos.getEquipoById(element1.id));
               });
 
-              // print(
-              //     'el equipo 1 es: ${_temporaryListEquipo1.first.nombre} y tiene los jugadores: ${_temporaryListEquipo1.first.jugadores}');
-              // print(
-              //     'el equipo 2 es: ${_temporaryListEquipo2.first.nombre} y tiene los jugadores: ${_temporaryListEquipo2.first.jugadores}');
+              print(
+                  'el equipo 1 es: ${_temporaryListEquipo1.first.nombre} y tiene los jugadores: ${_temporaryListEquipo1.first.jugadores}');
+              print(
+                  'el equipo 2 es: ${_temporaryListEquipo2.first.nombre} y tiene los jugadores: ${_temporaryListEquipo2.first.jugadores}');
 
               //Se crea el partido con la información de firestore, pero no se le
               //agregan los equipos
@@ -489,13 +529,35 @@ class _LoadingState extends State<Loading> {
               if (partidos.getPartidos.isEmpty)
                 partidos.createMatch(aux, onFirestore: false);
               else if (partidos.getPartidos.isNotEmpty) {
-                if (partidos.getPartidos.singleWhere(
-                        (element2) => element2.id == aux.id,
-                        orElse: () => null) !=
-                    null) {
-                  partidos.editMatch(aux);
-                } else
+                bool isAlreadyCreated = false;
+                partidos.getPartidos.forEach((element2) {
+                  if (element2.id == aux.id) {
+                    isAlreadyCreated = true;
+                    // print('lo nuevo: ${aux.id}');
+                    // print('lo viejo: ${element2.id}');
+                    // print(
+                    //     'editando el partido  ${element2.equipo1.first.nombre} vs ${element2.equipo2.first.nombre} que antes era ${aux.equipo1.first.nombre} vs ${aux.equipo2.first.nombre}');
+                    partidos.editMatch(aux);
+                    // print('lo nuevo: ${aux.id}');
+                    // print('lo viejo: ${element2.id}');
+                  } else {
+                    // print(
+                    //     'El partido ${element2.equipo1.first.nombre} vs ${element2.equipo2.first.nombre} no es el partido ${aux.equipo1.first.nombre} vs ${aux.equipo2.first.nombre}');
+                  }
+                });
+                if (!isAlreadyCreated) {
+                  print(
+                      'Añadiendo el partido ${aux.equipo1.first.nombre} vs ${aux.equipo2.first.nombre} a la base de datos');
                   partidos.createMatch(aux, onFirestore: false);
+                }
+                // if (partidos.getPartidos.singleWhere(
+                //         (element2) => element2.id == aux.id,
+                //         orElse: () => null) !=
+                //     null) {
+                //   partidos.editMatch(aux);
+                // } else
+                //   partidos.createMatch(aux, onFirestore: false);
+
               }
             }
           });

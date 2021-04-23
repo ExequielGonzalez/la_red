@@ -202,6 +202,7 @@ List<Widget> _createMatchesList(context, Leagues league, gamesFinished) {
           showDialog(
             context: context,
             barrierDismissible: true,
+
             child: AlertDialog(
               content: Text(
                 "¿Deseas eliminar el partido entre ${element.equipo1.first.nombre} vs ${element.equipo2.first.nombre}?",

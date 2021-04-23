@@ -37,7 +37,7 @@ class Partido extends HiveObject {
     this.isFinished,
   }) {
     this.id =
-        '${this.fecha.year.toString()}-${this.fecha.month.toString().padLeft(2, '0')}-${this.fecha.day.toString().padLeft(2, '0')}-${this.fecha.minute.toString()}-${this.fecha.millisecond.toString()}-${this.liga}-${this.numCancha.toString()}'; //id tiene que arrancar en 0
+        '${this.fecha.year.toString()}-${this.fecha.month.toString().padLeft(2, '0')}-${this.fecha.day.toString().padLeft(2, '0')}-${this.fecha.hour.toString()}-${this.fecha.minute.toString()}-${this.fecha.millisecond.toString()}-${this.liga}-${this.numCancha.toString()}'; //id tiene que arrancar en 0
 
     // print(
     //     'Constructor de Partido: Creando el partido entre ${this.equipo1.first.nombre} vs  ${this.equipo2.first.nombre} con id: ${this.id}.  key: ${this.key}. El partido es en la fecha: ${this.fecha}');

@@ -38,6 +38,10 @@ class _FixtureState extends State<Fixture> {
     FixtureListItem _listItem;
 
     print(partidos.length);
+    // partidos.forEach((element) {
+    //   print(
+    //       '${element.equipo1.first.nombre} vs ${element.equipo2.first.nombre}');
+    // });
     partidos.forEach((element) {
       if (element.liga == league.toString() && !element.isFinished) {
         print(

@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
 import 'package:hive/hive.dart';
 import 'package:la_red/constants.dart';
 import 'package:la_red/provider/equipo_data.dart';
@@ -81,6 +81,7 @@ void main() async {
   boxList = await _openBox();
 
   // await readFirestore();
+
   runApp(RestartWidget(child: MyApp(database: boxList)));
 }
 

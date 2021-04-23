@@ -28,7 +28,7 @@ class PartidoData with ChangeNotifier {
 
   List<Partido> getMatchesByTeam(Equipo equipo) {
     print(
-        'en el metodo getMatchesByTeam se recibio el equipo ${equipo.nombre}, que tiene ${equipo.jugadores.length} jugadores y son: ${equipo.jugadores}');
+        'en el metodo getMatchesByTeam se recibio el equipo ${equipo.nombre} de la liga ${equipo.liga}, que tiene ${equipo.jugadores.length} jugadores y son: ${equipo.jugadores}');
     List<Partido> _aux = [];
     _partidos.forEach((element) {
       if (element.equipo1.first.id == equipo.id ||
